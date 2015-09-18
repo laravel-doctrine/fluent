@@ -1,0 +1,43 @@
+{
+  "name": "laravel-doctrine/doctrine-fluent-mapping-driver",
+  "description": "A fluent PHP mapping driver for Doctrine2.",
+  "license": "MIT",
+  "keywords": [
+    "doctrine",
+    "laravel",
+    "orm",
+    "data mapper",
+    "database",
+    "mappings",
+    "mapping driver",
+    "fluent"
+  ],
+  "authors": [
+    {
+      "name": "Guido Contreras Woda",
+      "email": "guiwoda@gmail.com"
+    },
+    {
+      "name": "Patrick Brouwers",
+      "email": "patrick@maatwebsite.nl"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "doctrine/orm": "2.5.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "mockery/mockery": "~0.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "LaravelDoctrine\\Fluent\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests"
+    ]
+  }
+}
