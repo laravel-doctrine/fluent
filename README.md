@@ -2,7 +2,7 @@
 
 [![GitHub release](https://img.shields.io/github/release/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/doctrine-fluent-mapping-driver)
 [![Travis](https://img.shields.io/travis/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://travis-ci.org/laravel-doctrine/doctrine-fluent-mapping-driver)
-[![StyleCI](https://styleci.io/repos/39161118/shield)](https://styleci.io/repos/39161118)
+[![StyleCI](https://styleci.io/repos/42745661/shield)](https://styleci.io/repos/42745661)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://github.com/laravel-doctrine/doctrine-fluent-mapping-driver)
 [![Packagist](https://img.shields.io/packagist/dm/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/doctrine-fluent-mapping-driver)
 [![Packagist](https://img.shields.io/packagist/dt/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/doctrine-fluent-mapping-driver)
