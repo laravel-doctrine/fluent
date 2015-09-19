@@ -26,17 +26,15 @@ abstract class AbstractMapper implements Mapper
      * @param ClassMetadataInfo $metadata
      * @param Fluent            $builder
      */
-    public function map(ClassMetadataInfo $metadata, Fluent $builder = null)
+    public function map(ClassMetadataInfo $metadata, Fluent $builder)
     {
-        if ($builder) {
-            $this->mapping->map(
-                $builder
-            );
+        $this->mapping->map(
+            $builder
+        );
 
-            // Build all pending fields
-            foreach ($builder->getPendingFields() as $field) {
-                $field->build();
-            }
+        // Build all pending fields
+        foreach ($builder->getPendingFields() as $field) {
+            $field->build();
         }
     }
 

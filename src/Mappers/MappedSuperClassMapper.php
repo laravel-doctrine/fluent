@@ -3,7 +3,6 @@
 namespace LaravelDoctrine\Fluent\Mappers;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Fluent;
 
 final class MappedSuperClassMapper extends AbstractMapper
@@ -12,10 +11,13 @@ final class MappedSuperClassMapper extends AbstractMapper
      * @param ClassMetadataInfo $metadata
      * @param Fluent            $builder
      */
-    public function map(ClassMetadataInfo $metadata, Fluent $builder = null)
+    public function map(ClassMetadataInfo $metadata, Fluent $builder)
     {
-        $builder = Builder::createMappedSuperClass(
-            $this->getBuilder($metadata)
+        $classMetaDataBuilder = $this->getBuilder($metadata);
+        $classMetaDataBuilder->setMappedSuperClass();
+
+        $builder->setBuilder(
+            $classMetaDataBuilder
         );
 
         parent::map($metadata, $builder);

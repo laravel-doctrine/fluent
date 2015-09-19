@@ -3,7 +3,7 @@
 namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
 
@@ -13,6 +13,11 @@ class Builder extends AbstractBuilder implements Fluent
      * @var array
      */
     protected $pendingFields = [];
+
+    /**
+     * @var array
+     */
+    protected $customMethods = [];
 
     /**
      * @param string|callable $name
@@ -120,40 +125,6 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param ClassMetadataBuilder $builder
-     *
-     * @return Builder
-     */
-    public static function createEntity(ClassMetadataBuilder $builder)
-    {
-        return new static($builder);
-    }
-
-    /**
-     * @param ClassMetadataBuilder $builder
-     *
-     * @return Builder
-     */
-    public static function createEmbeddable(ClassMetadataBuilder $builder)
-    {
-        $builder->setEmbeddable();
-
-        return new static($builder);
-    }
-
-    /**
-     * @param ClassMetadataBuilder $builder
-     *
-     * @return Builder
-     */
-    public static function createMappedSuperClass(ClassMetadataBuilder $builder)
-    {
-        $builder->setMappedSuperClass();
-
-        return new static($builder);
-    }
-
-    /**
      * @return array
      */
     public function getPendingFields()
@@ -167,5 +138,37 @@ class Builder extends AbstractBuilder implements Fluent
     protected function addPendingField($field)
     {
         $this->pendingFields[] = $field;
+    }
+
+    /**
+     * @param string        $method
+     * @param callable|null $callback
+     */
+    public function extend($method, callable $callback = null)
+    {
+        if (!is_callable($callback)) {
+            throw new InvalidArgumentException('Fluent builder should be extended with a closure argument, none given');
+        }
+
+        $this->customMethods[$method] = $callback;
+    }
+
+    /**
+     * @param $method
+     * @param $params
+     *
+     * @return mixed
+     */
+    public function __call($method, $params)
+    {
+        if (isset($this->customMethods[$method])) {
+
+            // Add builder as first closure param, append the given params
+            array_unshift($params, $this);
+
+            return call_user_func_array($this->customMethods[$method], $params);
+        }
+
+        throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
     }
 }

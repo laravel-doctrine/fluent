@@ -2,6 +2,8 @@
 
 namespace LaravelDoctrine\Fluent;
 
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+
 interface Fluent
 {
     /**
@@ -48,4 +50,20 @@ interface Fluent
      * @return bool
      */
     public function isEmbeddedClass();
+
+    /**
+     * @return ClassMetadataBuilder
+     */
+    public function getBuilder();
+
+    /**
+     * @param ClassMetadataBuilder $builder
+     */
+    public function setBuilder(ClassMetadataBuilder $builder);
+
+    /**
+     * @param string        $method
+     * @param callable|null $callback
+     */
+    public function extend($method, callable $callback = null);
 }

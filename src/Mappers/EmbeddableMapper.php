@@ -3,7 +3,6 @@
 namespace LaravelDoctrine\Fluent\Mappers;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Fluent;
 
 final class EmbeddableMapper extends AbstractMapper
@@ -12,10 +11,13 @@ final class EmbeddableMapper extends AbstractMapper
      * @param ClassMetadataInfo $metadata
      * @param Fluent            $builder
      */
-    public function map(ClassMetadataInfo $metadata, Fluent $builder = null)
+    public function map(ClassMetadataInfo $metadata, Fluent $builder)
     {
-        $builder = Builder::createEmbeddable(
-            $this->getBuilder($metadata)
+        $classMetaDataBuilder = $this->getBuilder($metadata);
+        $classMetaDataBuilder->setEmbeddable();
+
+        $builder->setBuilder(
+            $classMetaDataBuilder
         );
 
         parent::map($metadata, $builder);
@@ -24,6 +26,7 @@ final class EmbeddableMapper extends AbstractMapper
     /**
      * Returns whether the class with the specified name should have its metadata loaded.
      * This is only the case if it is either mapped as an Entity or a MappedSuperclass.
+     *
      * @return bool
      */
     public function isTransient()

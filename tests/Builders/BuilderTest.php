@@ -4,10 +4,12 @@ namespace Tests\Builders;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\Table;
 use LaravelDoctrine\Fluent\Entity;
+use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
@@ -28,12 +30,14 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             FluentEntity::class
         ));
 
-        $this->fluent = Builder::createEntity($this->builder);
+        $this->fluent = new Builder();
+        $this->fluent->setBuilder($this->builder);
     }
 
     public function test_can_create_entity()
     {
-        $entity = Builder::createEntity($this->builder);
+        $entity = new Builder();
+        $entity->setBuilder($this->builder);
 
         $this->assertInstanceOf(Builder::class, $entity);
         $this->assertFalse($entity->getClassMetadata()->isEmbeddedClass);
@@ -42,7 +46,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_create_embeddable()
     {
-        $entity = Builder::createEmbeddable($this->builder);
+        $entity = new Builder();
+        $this->builder->setEmbeddable();
+        $entity->setBuilder($this->builder);
 
         $this->assertInstanceOf(Builder::class, $entity);
         $this->assertTrue($entity->getClassMetadata()->isEmbeddedClass);
@@ -50,7 +56,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_create_superclass()
     {
-        $entity = Builder::createMappedSuperClass($this->builder);
+        $entity = new Builder();
+        $this->builder->setMappedSuperClass();
+        $entity->setBuilder($this->builder);
 
         $this->assertInstanceOf(Builder::class, $entity);
         $this->assertFalse($entity->getClassMetadata()->isEmbeddedClass);
@@ -74,7 +82,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_cannot_use_table_settings_for_embeddable()
     {
-        $fluent = Builder::createEmbeddable($this->builder);
+        $fluent = new Builder();
+        $this->builder->setEmbeddable();
+        $fluent->setBuilder($this->builder);
 
         $this->setExpectedException(LogicException::class);
 
@@ -92,7 +102,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_cannot_use_entity_settings_for_embeddable()
     {
-        $fluent = Builder::createEmbeddable($this->builder);
+        $fluent = new Builder();
+        $this->builder->setEmbeddable();
+        $fluent->setBuilder($this->builder);
 
         $this->setExpectedException(LogicException::class);
 
@@ -130,7 +142,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_cannot_add_increments_to_embeddable()
     {
-        $fluent = Builder::createEmbeddable($this->builder);
+        $fluent = new Builder();
+        $this->builder->setEmbeddable();
+        $fluent->setBuilder($this->builder);
 
         $this->setExpectedException(LogicException::class);
 
@@ -149,6 +163,58 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $field->getBuilder()->build();
 
         $this->assertContains('name', $this->fluent->getClassMetadata()->getFieldNames());
+    }
+
+    public function test_can_extend_fluent()
+    {
+        $this->fluent->extend('timestamps', function (Fluent $builder) {
+            $builder->string('createdAt');
+        });
+
+        $this->fluent->timestamps();
+
+        foreach ($this->fluent->getPendingFields() as $field) {
+            $field->build();
+        }
+
+        $this->assertContains('createdAt', $this->fluent->getClassMetadata()->getFieldNames());
+    }
+
+    public function test_can_extend_fluent_with_params()
+    {
+        $this->fluent->extend('timestamps', function (Fluent $builder, $createdAt, $updatedAt) {
+            $builder->string($createdAt);
+            $builder->string($updatedAt);
+        });
+
+        $this->fluent->timestamps('other_created_field', 'other_updated_field');
+
+        foreach ($this->fluent->getPendingFields() as $field) {
+            $field->build();
+        }
+
+        $this->assertContains('other_created_field', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('other_updated_field', $this->fluent->getClassMetadata()->getFieldNames());
+    }
+
+    public function test_fluent_should_be_extended_with_closure()
+    {
+        $this->setExpectedException(
+            InvalidArgumentException::class,
+            'Fluent builder should be extended with a closure argument, none given'
+        );
+
+        $this->fluent->extend('fail');
+    }
+
+    public function test_fluent_builder_method_should_exist()
+    {
+        $this->setExpectedException(
+            InvalidArgumentException::class,
+            'Fluent builder method [doesNotExist] does not exist'
+        );
+
+        $this->fluent->doesNotExist();
     }
 }
 

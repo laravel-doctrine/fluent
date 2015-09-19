@@ -13,11 +13,13 @@ The package also provides a fluent Builder over Doctrine's ClassMetadataBuilder,
 
 ## Standalone usage
 
-You need to set the `LaravelDoctrine\Fluent\FluentMappingDriver` as your MappingDriver implementation in your EntityManager
+You need to set the `LaravelDoctrine\Fluent\FluentDriver` as your MappingDriver implementation in your EntityManager
 
 ```
 $configuration = new Configuration();
-$driver = new FluentMappingDriver($configuration->getNamingStrategy());
+$driver = new FluentDriver([
+    'optionally/your/paths'
+]);
 $configuration->setMetadataDriverImpl($driver);
 ```
 

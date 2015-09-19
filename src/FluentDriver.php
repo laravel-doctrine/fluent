@@ -5,6 +5,7 @@ namespace LaravelDoctrine\Fluent;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\ORM\Mapping\MappingException;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Locators\FluentMappingFileLocator;
 use LaravelDoctrine\Fluent\Mappers\MapperSet;
 
@@ -26,14 +27,21 @@ class FluentDriver implements MappingDriver
     protected $locator;
 
     /**
+     * @var Fluent
+     */
+    protected $builder;
+
+    /**
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param array $paths
+     * @param array  $paths
+     * @param Fluent $builder
      */
-    public function __construct(array $paths = [])
+    public function __construct(array $paths = [], Fluent $builder = null)
     {
         $this->mappers = new MapperSet();
+        $this->builder = $builder ?: new Builder();
         $this->locator = new FluentMappingFileLocator($paths);
 
         $this->loadMappingFilesFromPaths();
@@ -47,11 +55,12 @@ class FluentDriver implements MappingDriver
      */
     public function loadMetadataForClass($className, ClassMetadata $metadata)
     {
-        $this->mappers->getMapperFor($className)->map($metadata);
+        $this->mappers->getMapperFor($className)->map($metadata, $this->builder);
     }
 
     /**
      * Gets the names of all mapped classes known to this driver.
+     *
      * @throws MappingException
      * @return array            The names of all mapped classes known to this driver.
      */
@@ -101,6 +110,14 @@ class FluentDriver implements MappingDriver
     public function addMapping(Mapping $mapping)
     {
         $this->mappers->add($mapping);
+    }
+
+    /**
+     * @return Fluent
+     */
+    public function getBuilder()
+    {
+        return $this->builder;
     }
 
     /**

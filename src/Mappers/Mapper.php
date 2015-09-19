@@ -11,7 +11,7 @@ interface Mapper
      * @param ClassMetadataInfo $metadata
      * @param Fluent            $builder
      */
-    public function map(ClassMetadataInfo $metadata, Fluent $builder = null);
+    public function map(ClassMetadataInfo $metadata, Fluent $builder);
 
     /**
      * Returns whether the class with the specified name should have its metadata loaded.

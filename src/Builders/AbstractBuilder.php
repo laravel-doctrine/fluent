@@ -15,9 +15,9 @@ abstract class AbstractBuilder
     /**
      * The constructor is protected to force factory method usage
      *
-     * @param ClassMetadataBuilder $builder
+     * @param ClassMetadataBuilder|null $builder
      */
-    public function __construct(ClassMetadataBuilder $builder)
+    public function __construct(ClassMetadataBuilder $builder = null)
     {
         $this->builder = $builder;
     }
@@ -28,6 +28,14 @@ abstract class AbstractBuilder
     public function getBuilder()
     {
         return $this->builder;
+    }
+
+    /**
+     * @param ClassMetadataBuilder $builder
+     */
+    public function setBuilder(ClassMetadataBuilder $builder)
+    {
+        $this->builder = $builder;
     }
 
     /**
