@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Builders;
+namespace Tests\Builders;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;

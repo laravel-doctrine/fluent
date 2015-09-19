@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Locators;
+namespace Tests\Locators;
 
 use Doctrine\ORM\Mapping\MappingException;
 use LaravelDoctrine\Fluent\Locators\FluentMappingFileLocator;

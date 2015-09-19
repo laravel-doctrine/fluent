@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Mappers;
+namespace Tests\Mappers;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;

@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Relations;
+namespace Tests\Relations;
 
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Relations\JoinColumn;

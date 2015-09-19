@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Mappers;
+namespace Tests\Mappers;
 
 use Doctrine\ORM\Mapping\MappingException;
 use LaravelDoctrine\Fluent\Mappers\EmbeddableMapper;
