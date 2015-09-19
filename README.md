@@ -4,7 +4,7 @@
 [![Travis](https://img.shields.io/travis/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://travis-ci.org/laravel-doctrine/doctrine-fluent-mapping-driver)
 [![StyleCI](https://styleci.io/repos/42745661/shield)](https://styleci.io/repos/42745661)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://github.com/laravel-doctrine/doctrine-fluent-mapping-driver)
-[![Coverage Status](https://coveralls.io/repos/laravel-doctrine/doctrine-fluent-mapping-driver/badge.svg?branch=master&service=github)](https://coveralls.io/github/laravel-doctrine/doctrine-fluent-mapping-driver?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://coveralls.io/github/laravel-doctrine/doctrine-fluent-mapping-driver?branch=master)
 [![Packagist](https://img.shields.io/packagist/dt/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/doctrine-fluent-mapping-driver)
 
 This mapping driver allows you to manage your mappings in an Object Oriented approach, by implementing FluentMapping and EmbeddableMapping interfaces.
