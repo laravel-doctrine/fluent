@@ -16,7 +16,7 @@ after_script:
 
 sudo: false
 
-script: phpunit --coverage-clover=coverage.clover
+script: php vendor/bin/phpunit --coverage-clover=coverage.clover
 
 matrix:
   fast_finish: true
