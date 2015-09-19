@@ -1,11 +1,11 @@
 # Fluent Mapping Driver
 
-[![GitHub release](https://img.shields.io/github/release/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/doctrine-fluent-mapping-driver)
-[![Travis](https://img.shields.io/travis/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://travis-ci.org/laravel-doctrine/doctrine-fluent-mapping-driver)
+[![GitHub release](https://img.shields.io/github/release/laravel-doctrine/fluent.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/fluent)
+[![Travis](https://img.shields.io/travis/laravel-doctrine/fluent.svg?style=flat-square)](https://travis-ci.org/laravel-doctrine/fluent)
 [![StyleCI](https://styleci.io/repos/42745661/shield)](https://styleci.io/repos/42745661)
-[![Scrutinizer](https://img.shields.io/scrutinizer/g/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-doctrine/doctrine-fluent-mapping-driver/)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-doctrine/doctrine-fluent-mapping-driver/)
-[![Packagist](https://img.shields.io/packagist/dt/laravel-doctrine/doctrine-fluent-mapping-driver.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/doctrine-fluent-mapping-driver)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/laravel-doctrine/fluent.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-doctrine/fluent/)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/laravel-doctrine/fluent.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-doctrine/fluent/)
+[![Packagist](https://img.shields.io/packagist/dt/laravel-doctrine/fluent.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/fluent)
 
 This mapping driver allows you to manage your mappings in an Object Oriented approach, by implementing FluentMapping and EmbeddableMapping interfaces.
 
