@@ -2,7 +2,6 @@
 
 namespace LaravelDoctrine\Fluent\Mappers;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Fluent;
@@ -24,10 +23,10 @@ abstract class AbstractMapper implements Mapper
     }
 
     /**
-     * @param ClassMetadata $metadata
-     * @param Fluent        $builder
+     * @param ClassMetadataInfo $metadata
+     * @param Fluent            $builder
      */
-    public function map(ClassMetadata $metadata, Fluent $builder = null)
+    public function map(ClassMetadataInfo $metadata, Fluent $builder = null)
     {
         if ($builder) {
             $this->mapping->map(
