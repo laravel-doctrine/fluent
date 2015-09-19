@@ -1,0 +1,23 @@
+<?php
+
+namespace LaravelDoctrine\Fluent\Mappers;
+
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use LaravelDoctrine\Fluent\Fluent;
+
+interface Mapper
+{
+    /**
+     * @param ClassMetadata $metadata
+     * @param Fluent        $builder
+     */
+    public function map(ClassMetadata $metadata, Fluent $builder = null);
+
+    /**
+     * Returns whether the class with the specified name should have its metadata loaded.
+     * This is only the case if it is either mapped as an Entity or a MappedSuperclass.
+     *
+     * @return bool
+     */
+    public function isTransient();
+}
