@@ -21,6 +21,11 @@ class FluentDriver implements MappingDriver
     protected $mappers;
 
     /**
+     * @var FluentMappingFileLocator
+     */
+    protected $locator;
+
+    /**
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *

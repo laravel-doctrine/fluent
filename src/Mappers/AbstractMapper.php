@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent\Mappers;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Mapping;
 
@@ -41,11 +42,11 @@ abstract class AbstractMapper implements Mapper
     }
 
     /**
-     * @param ClassMetadata $metadata
+     * @param ClassMetadataInfo $metadata
      *
      * @return ClassMetadataBuilder
      */
-    protected function getBuilder(ClassMetadata $metadata)
+    protected function getBuilder(ClassMetadataInfo $metadata)
     {
         return new ClassMetadataBuilder($metadata);
     }
