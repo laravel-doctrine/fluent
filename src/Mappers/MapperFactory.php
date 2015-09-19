@@ -15,9 +15,9 @@ class MapperFactory
      * @var array
      */
     protected static $types = [
-        'Entity'           => Entity::class,
-        'Embeddable'       => Embeddable::class,
-        'MappedSuperClass' => MappedSuperClass::class
+        Entity::class           => EntityMapper::class,
+        Embeddable::class       => EmbeddableMapper::class,
+        MappedSuperClass::class => MappedSuperClassMapper::class
     ];
 
     /**
@@ -29,13 +29,9 @@ class MapperFactory
     {
         $reflection = new ReflectionClass($mapping->mapFor());
 
-        foreach (static::$types as $type => $class) {
-            if ($reflection->implementsInterface($class)) {
-                $mapper = __NAMESPACE__ . '\\' . $type . 'Mapper';
-
-                if (class_exists($mapper)) {
-                    return new $mapper($mapping);
-                }
+        foreach (static::$types as $interface => $mapper) {
+            if ($reflection->implementsInterface($interface)) {
+                return new $mapper($mapping);
             }
         }
 

@@ -4,13 +4,18 @@ namespace Tests\Builders;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\Table;
 use LaravelDoctrine\Fluent\Entity;
 use LaravelDoctrine\Fluent\Fluent;
+use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use LaravelDoctrine\Fluent\Relations\OneToMany;
+use LaravelDoctrine\Fluent\Relations\Relation;
 use LogicException;
+use Tests\FakeEntity;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,6 +37,15 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->fluent = new Builder();
         $this->fluent->setBuilder($this->builder);
+        $this->fluent->setNamingStrategy(new DefaultNamingStrategy());
+    }
+
+    public function test_can_get_builder()
+    {
+        $entity = new Builder();
+        $entity->setBuilder($this->builder);
+
+        $this->assertInstanceOf(ClassMetadataBuilder::class, $entity->getBuilder());
     }
 
     public function test_can_create_entity()
@@ -72,12 +86,26 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Table::class, $table);
         $this->assertEquals('users', $table->getClassMetadata()->getTableName());
 
+        // Fluently change name
+        $table->setName('users2');
+        $this->assertEquals('users2', $table->getClassMetadata()->getTableName());
+
         // Closure usage
         $table = $this->fluent->table(function ($table) {
+            $this->assertInstanceOf(Table::class, $table);
+            $table->setName('users3');
+        });
+
+        $this->assertInstanceOf(Table::class, $table);
+        $this->assertEquals('users3', $table->getClassMetadata()->getTableName());
+
+        // Closure2 usage
+        $table = $this->fluent->table('users4', function ($table) {
             $this->assertInstanceOf(Table::class, $table);
         });
 
         $this->assertInstanceOf(Table::class, $table);
+        $this->assertEquals('users4', $table->getClassMetadata()->getTableName());
     }
 
     public function test_cannot_use_table_settings_for_embeddable()
@@ -163,6 +191,66 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $field->getBuilder()->build();
 
         $this->assertContains('name', $this->fluent->getClassMetadata()->getFieldNames());
+    }
+
+    public function test_can_add_relation()
+    {
+        $relation = $this->fluent->addRelation(new OneToMany(
+            $this->builder,
+            new DefaultNamingStrategy(),
+            'children',
+            FluentEntity::class
+        ), function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(OneToMany::class, $relation);
+        });
+
+        $this->assertInstanceOf(OneToMany::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
+    }
+
+    public function test_can_add_belongs_to()
+    {
+        $relation = $this->fluent->belongsTo('parent', FakeEntity::class, function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(ManyToOne::class, $relation);
+        });
+
+        $this->assertInstanceOf(ManyToOne::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
+    }
+
+    public function test_can_add_many_to_one()
+    {
+        $relation = $this->fluent->manyToOne('parent', FakeEntity::class, function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(ManyToOne::class, $relation);
+        });
+
+        $this->assertInstanceOf(ManyToOne::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
+    }
+
+    public function test_can_add_has_many()
+    {
+        $relation = $this->fluent->hasMany('children', FakeEntity::class, function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(OneToMany::class, $relation);
+        });
+
+        $this->assertInstanceOf(OneToMany::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
+    }
+
+    public function test_can_add_one_to_many()
+    {
+        $relation = $this->fluent->oneToMany('children', FakeEntity::class, function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(OneToMany::class, $relation);
+        });
+
+        $this->assertInstanceOf(OneToMany::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
     }
 
     public function test_can_extend_fluent()

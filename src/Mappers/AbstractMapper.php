@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent\Mappers;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Mapping;
 
@@ -25,19 +26,24 @@ abstract class AbstractMapper implements Mapper
     /**
      * @param ClassMetadataInfo $metadata
      * @param Fluent            $builder
+     * @param NamingStrategy    $namingStrategy
      */
-    public function map(ClassMetadataInfo $metadata, Fluent $builder)
+    public function map(ClassMetadataInfo $metadata, Fluent $builder, NamingStrategy $namingStrategy)
     {
         $cm = new ClassMetadataBuilder($metadata);
 
         $this->setType($cm);
         $builder->setBuilder($cm);
+        $builder->setNamingStrategy($namingStrategy);
 
         $this->mapping->map($builder);
 
-        // Build all pending fields
         foreach ($builder->getPendingFields() as $field) {
             $field->build();
+        }
+
+        foreach ($builder->getPendingRelations() as $relation) {
+            $relation->build();
         }
     }
 

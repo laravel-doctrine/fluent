@@ -12,6 +12,8 @@ class StubEntityMapping implements Mapping
     {
         $builder->increments('id');
         $builder->string('name');
+        $builder->belongsTo('parent', StubEntity::class)->inversedBy('parent');
+        $builder->hasMany('children', StubEntity::class)->mappedBy('parent');
     }
 
     public function mapFor()

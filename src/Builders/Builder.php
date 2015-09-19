@@ -5,6 +5,9 @@ namespace LaravelDoctrine\Fluent\Builders;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Fluent;
+use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use LaravelDoctrine\Fluent\Relations\OneToMany;
+use LaravelDoctrine\Fluent\Relations\Relation;
 use LogicException;
 
 class Builder extends AbstractBuilder implements Fluent
@@ -13,6 +16,11 @@ class Builder extends AbstractBuilder implements Fluent
      * @var array
      */
     protected $pendingFields = [];
+
+    /**
+     * @var array
+     */
+    protected $pendingRelations = [];
 
     /**
      * @var array
@@ -117,6 +125,89 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param               $field
+     * @param               $entity
+     * @param callable|null $callback
+     *
+     * @return ManyToOne
+     */
+    public function belongsTo($field, $entity, callable $callback = null)
+    {
+        return $this->manyToOne($field, $entity, $callback);
+    }
+
+    /**
+     * @param string   $field
+     * @param string   $entity
+     * @param callable $callback
+     *
+     * @return ManyToOne
+     */
+    public function manyToOne($field, $entity, callable $callback = null)
+    {
+        return $this->addRelation(
+            new ManyToOne(
+                $this->builder,
+                $this->namingStrategy,
+                $field,
+                $entity
+            ),
+            $callback
+        );
+    }
+
+    /**
+     * @param               $field
+     * @param               $entity
+     * @param callable|null $callback
+     *
+     * @return OneToMany
+     */
+    public function hasMany($field, $entity, callable $callback = null)
+    {
+        return $this->oneToMany($field, $entity, $callback);
+    }
+
+    /**
+     * @param string   $field
+     * @param string   $entity
+     * @param callable $callback
+     *
+     * @return OneToMany
+     */
+    public function oneToMany($field, $entity, callable $callback = null)
+    {
+        return $this->addRelation(
+            new OneToMany(
+                $this->builder,
+                $this->namingStrategy,
+                $field,
+                $entity
+            ),
+            $callback
+        );
+    }
+
+    /**
+     * Adds a custom relation to the entity.
+     *
+     * @param \LaravelDoctrine\Fluent\Relations\Relation $relation
+     * @param callable|null                              $callback
+     *
+     * @return Relation
+     */
+    public function addRelation(Relation $relation, callable $callback = null)
+    {
+        if (is_callable($callback)) {
+            $callback($relation);
+        }
+
+        $this->addPendingRelation($relation);
+
+        return $relation;
+    }
+
+    /**
      * @return bool
      */
     public function isEmbeddedClass()
@@ -125,7 +216,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @return array
+     * @return array|Field[]
      */
     public function getPendingFields()
     {
@@ -133,11 +224,27 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param $field
+     * @param Field $field
      */
-    protected function addPendingField($field)
+    protected function addPendingField(Field $field)
     {
         $this->pendingFields[] = $field;
+    }
+
+    /**
+     * @return array|Relation[]
+     */
+    public function getPendingRelations()
+    {
+        return $this->pendingRelations;
+    }
+
+    /**
+     * @param Relation $relation
+     */
+    protected function addPendingRelation(Relation $relation)
+    {
+        $this->pendingRelations[] = $relation;
     }
 
     /**

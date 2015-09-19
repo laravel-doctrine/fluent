@@ -4,6 +4,7 @@ namespace tests\Mappers;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Mappers\EntityMapper;
 use LaravelDoctrine\Fluent\Mappers\Mapper;
@@ -41,10 +42,13 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->mapper->map(
             $metadata,
-            $builder
+            $builder,
+            new DefaultNamingStrategy()
         );
 
         $this->assertContains('id', $metadata->fieldNames);
         $this->assertContains('name', $metadata->fieldNames);
+        $this->assertContains(StubEntity::class, $metadata->associationMappings['parent']['targetEntity']);
+        $this->assertContains(StubEntity::class, $metadata->associationMappings['children']['targetEntity']);
     }
 }

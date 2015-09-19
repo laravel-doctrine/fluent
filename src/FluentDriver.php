@@ -4,7 +4,9 @@ namespace LaravelDoctrine\Fluent;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Locators\FluentMappingFileLocator;
 use LaravelDoctrine\Fluent\Mappers\MapperSet;
@@ -32,17 +34,24 @@ class FluentDriver implements MappingDriver
     protected $builder;
 
     /**
+     * @var NamingStrategy
+     */
+    private $namingStrategy;
+
+    /**
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param array  $paths
-     * @param Fluent $builder
+     * @param array          $paths
+     * @param NamingStrategy $namingStrategy
+     * @param Fluent         $builder
      */
-    public function __construct(array $paths = [], Fluent $builder = null)
+    public function __construct(array $paths = [], NamingStrategy $namingStrategy = null, Fluent $builder = null)
     {
-        $this->mappers = new MapperSet();
-        $this->builder = $builder ?: new Builder();
-        $this->locator = new FluentMappingFileLocator($paths);
+        $this->mappers        = new MapperSet();
+        $this->builder        = $builder ?: new Builder();
+        $this->locator        = new FluentMappingFileLocator($paths);
+        $this->namingStrategy = $namingStrategy ?: new DefaultNamingStrategy();
 
         $this->loadMappingFilesFromPaths();
     }
@@ -55,7 +64,7 @@ class FluentDriver implements MappingDriver
      */
     public function loadMetadataForClass($className, ClassMetadata $metadata)
     {
-        $this->mappers->getMapperFor($className)->map($metadata, $this->builder);
+        $this->mappers->getMapperFor($className)->map($metadata, $this->builder, $this->namingStrategy);
     }
 
     /**

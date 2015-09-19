@@ -53,4 +53,28 @@ class MapperSetTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->mapperSet->hasMapperFor(StubEntity::class));
         $this->assertFalse($this->mapperSet->hasMapperFor('baz'));
     }
+
+    public function test_can_check_if_has_mappers()
+    {
+        $set = new MapperSet;
+        $this->assertFalse($set->hasMappers());
+
+        $set->add(new StubEntityMapping);
+        $this->assertTrue($set->hasMappers());
+    }
+
+    public function test_can_get_mappers()
+    {
+        $set = new MapperSet;
+        $this->assertCount(0, $set->getMappers());
+
+        $mapping = new StubEntityMapping;
+
+        $set->add($mapping);
+        $this->assertCount(1, $set->getMappers());
+
+        // Mapping will only get registered once
+        $set->add($mapping);
+        $this->assertCount(1, $set->getMappers());
+    }
 }

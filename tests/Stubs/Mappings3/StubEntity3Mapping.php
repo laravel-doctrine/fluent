@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Stubs\Mappings2;
+namespace Tests\Stubs\Mappings3;
 
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Mapping;

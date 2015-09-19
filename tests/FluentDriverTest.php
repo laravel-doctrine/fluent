@@ -4,6 +4,7 @@ namespace Tests;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Entity;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\FluentDriver;
@@ -170,6 +171,31 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
             new ClassMetadataInfo(FakeEntity::class)
         );
     }
+
+    public function test_can_get_paths()
+    {
+        $driver = new FluentDriver([
+            __DIR__ . '/Stubs/Mappings'
+        ]);
+
+        $this->assertEquals([
+            __DIR__ . '/Stubs/Mappings'
+        ], $driver->getPaths());
+    }
+
+    public function test_can_get_builder()
+    {
+        $driver = new FluentDriver();
+        $this->assertInstanceOf(Fluent::class, $driver->getBuilder());
+        $this->assertInstanceOf(Builder::class, $driver->getBuilder());
+    }
+
+    public function test_can_set_custom_builder()
+    {
+        $driver = new FluentDriver([], null, new CustomBuilder());
+        $this->assertInstanceOf(Fluent::class, $driver->getBuilder());
+        $this->assertInstanceOf(CustomBuilder::class, $driver->getBuilder());
+    }
 }
 
 class FakeClassMapping implements Mapping
@@ -189,4 +215,8 @@ class FakeClassMapping implements Mapping
 class FakeEntity implements Entity
 {
     protected $id, $name;
+}
+
+class CustomBuilder extends Builder
+{
 }
