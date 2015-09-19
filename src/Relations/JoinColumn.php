@@ -32,7 +32,7 @@ class JoinColumn
     protected $unique = false;
 
     /**
-     * @var null
+     * @var string|null
      */
     protected $onDelete = null;
 
@@ -169,7 +169,7 @@ class JoinColumn
     }
 
     /**
-     * @return null
+     * @return string|null
      */
     public function getOnDelete()
     {

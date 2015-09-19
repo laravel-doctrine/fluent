@@ -2,8 +2,8 @@
 
 namespace LaravelDoctrine\Fluent\Relations;
 
-use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder;
 
 /**
  * @method $this mappedBy($fieldName)
@@ -13,11 +13,16 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 class OneToMany extends AbstractRelation
 {
     /**
+     * @var OneToManyAssociationBuilder
+     */
+    protected $association;
+
+    /**
      * @param ClassMetadataBuilder $builder
      * @param string               $relation
      * @param string               $entity
      *
-     * @return AssociationBuilder
+     * @return OneToManyAssociationBuilder
      */
     protected function createAssociation(ClassMetadataBuilder $builder, $relation, $entity)
     {
