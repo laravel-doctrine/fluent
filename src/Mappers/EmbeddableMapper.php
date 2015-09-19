@@ -2,25 +2,16 @@
 
 namespace LaravelDoctrine\Fluent\Mappers;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use LaravelDoctrine\Fluent\Fluent;
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 
 final class EmbeddableMapper extends AbstractMapper
 {
     /**
-     * @param ClassMetadataInfo $metadata
-     * @param Fluent            $builder
+     * @param ClassMetadataBuilder $metadata
      */
-    public function map(ClassMetadataInfo $metadata, Fluent $builder)
+    public function setType(ClassMetadataBuilder $metadata)
     {
-        $classMetaDataBuilder = $this->getBuilder($metadata);
-        $classMetaDataBuilder->setEmbeddable();
-
-        $builder->setBuilder(
-            $classMetaDataBuilder
-        );
-
-        parent::map($metadata, $builder);
+        $metadata->setEmbeddable();
     }
 
     /**

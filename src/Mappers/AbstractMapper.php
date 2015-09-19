@@ -28,9 +28,12 @@ abstract class AbstractMapper implements Mapper
      */
     public function map(ClassMetadataInfo $metadata, Fluent $builder)
     {
-        $this->mapping->map(
-            $builder
-        );
+        $cm = new ClassMetadataBuilder($metadata);
+
+        $this->setType($cm);
+        $builder->setBuilder($cm);
+
+        $this->mapping->map($builder);
 
         // Build all pending fields
         foreach ($builder->getPendingFields() as $field) {
@@ -39,12 +42,10 @@ abstract class AbstractMapper implements Mapper
     }
 
     /**
-     * @param ClassMetadataInfo $metadata
-     *
-     * @return ClassMetadataBuilder
+     * @param ClassMetadataBuilder $metadata
      */
-    protected function getBuilder(ClassMetadataInfo $metadata)
+    protected function setType(ClassMetadataBuilder $metadata)
     {
-        return new ClassMetadataBuilder($metadata);
+        // By default nothing has to be done
     }
 }
