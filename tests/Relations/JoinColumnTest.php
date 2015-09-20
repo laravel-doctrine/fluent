@@ -18,10 +18,7 @@ class JoinColumnTest extends \PHPUnit_Framework_TestCase
             new DefaultNamingStrategy(),
             'parent',
             'parent_id',
-            'id',
-            true,
-            true,
-            'onDelete'
+            'id'
         );
     }
 
@@ -29,9 +26,9 @@ class JoinColumnTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('parent_id', $this->column->getJoinColumn());
         $this->assertEquals('id', $this->column->getReferenceColumn());
-        $this->assertTrue($this->column->isNullable());
-        $this->assertTrue($this->column->isUnique());
-        $this->assertEquals('onDelete', $this->column->getOnDelete());
+        $this->assertFalse($this->column->isNullable());
+        $this->assertFalse($this->column->isUnique());
+        $this->assertNull($this->column->getOnDelete());
     }
 
     public function test_can_set_foreign_key()

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
+use LaravelDoctrine\Fluent\Relations\OneToOne;
 use LaravelDoctrine\Fluent\Relations\Relation;
 
 interface Fluent
@@ -49,6 +50,24 @@ interface Fluent
      * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function string($name, callable $callback = null);
+
+    /**
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
+     *
+     * @return OneToOne
+     */
+    public function hasOne($field, $entity, callable $callback = null);
+
+    /**
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
+     *
+     * @return OneToOne
+     */
+    public function oneToOne($field, $entity, callable $callback = null);
 
     /**
      * @param               $field

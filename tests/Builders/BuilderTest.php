@@ -13,6 +13,7 @@ use LaravelDoctrine\Fluent\Entity;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
+use LaravelDoctrine\Fluent\Relations\OneToOne;
 use LaravelDoctrine\Fluent\Relations\Relation;
 use LogicException;
 use Tests\FakeEntity;
@@ -206,6 +207,28 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(OneToMany::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
+    }
+
+    public function test_can_add_has_one()
+    {
+        $relation = $this->fluent->hasOne('one', FakeEntity::class, function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(OneToOne::class, $relation);
+        });
+
+        $this->assertInstanceOf(OneToOne::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
+    }
+
+    public function test_can_add_one_to_one()
+    {
+        $relation = $this->fluent->oneToOne('one', FakeEntity::class, function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(OneToOne::class, $relation);
+        });
+
+        $this->assertInstanceOf(OneToOne::class, $relation);
         $this->assertContains($relation, $this->fluent->getPendingRelations());
     }
 

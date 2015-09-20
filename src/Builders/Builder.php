@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
+use LaravelDoctrine\Fluent\Relations\OneToOne;
 use LaravelDoctrine\Fluent\Relations\Relation;
 use LogicException;
 
@@ -122,6 +123,38 @@ class Builder extends AbstractBuilder implements Fluent
     public function string($name, callable $callback = null)
     {
         return $this->field(Type::STRING, $name, $callback);
+    }
+
+    /**
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
+     *
+     * @return OneToOne
+     */
+    public function hasOne($field, $entity, callable $callback = null)
+    {
+        return $this->oneToOne($field, $entity, $callback);
+    }
+
+    /**
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
+     *
+     * @return OneToOne
+     */
+    public function oneToOne($field, $entity, callable $callback = null)
+    {
+        return $this->addRelation(
+            new OneToOne(
+                $this->builder,
+                $this->namingStrategy,
+                $field,
+                $entity
+            ),
+            $callback
+        );
     }
 
     /**
