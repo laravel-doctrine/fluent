@@ -38,12 +38,8 @@ abstract class AbstractMapper implements Mapper
 
         $this->mapping->map($builder);
 
-        foreach ($builder->getPendingFields() as $field) {
-            $field->build();
-        }
-
-        foreach ($builder->getPendingRelations() as $relation) {
-            $relation->build();
+        foreach ($builder->getQueued() as $buildable) {
+            $buildable->build();
         }
     }
 

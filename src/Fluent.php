@@ -163,10 +163,5 @@ interface Fluent
     /**
      * @return array|Field[]
      */
-    public function getPendingFields();
-
-    /**
-     * @return array|Relation[]
-     */
-    public function getPendingRelations();
+    public function getQueued();
 }

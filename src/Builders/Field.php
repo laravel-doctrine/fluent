@@ -5,8 +5,9 @@ namespace LaravelDoctrine\Fluent\Builders;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\FieldBuilder;
+use LaravelDoctrine\Fluent\Buildable;
 
-class Field
+class Field implements Buildable
 {
     /**
      * @var FieldBuilder

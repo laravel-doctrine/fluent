@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
+use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -15,14 +16,9 @@ use LogicException;
 class Builder extends AbstractBuilder implements Fluent
 {
     /**
-     * @var array
+     * @var array|Buildable[]
      */
-    protected $pendingFields = [];
-
-    /**
-     * @var array
-     */
-    protected $pendingRelations = [];
+    protected $queued = [];
 
     /**
      * @var array
@@ -91,7 +87,7 @@ class Builder extends AbstractBuilder implements Fluent
             $callback($field);
         }
 
-        $this->addPendingField($field);
+        $this->queue($field);
 
         return $field;
     }
@@ -268,7 +264,7 @@ class Builder extends AbstractBuilder implements Fluent
             $callback($relation);
         }
 
-        $this->addPendingRelation($relation);
+        $this->queue($relation);
 
         return $relation;
     }
@@ -282,35 +278,19 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @return array|Field[]
+     * @return array|Buildable[]
      */
-    public function getPendingFields()
+    public function getQueued()
     {
-        return $this->pendingFields;
+        return $this->queued;
     }
 
     /**
-     * @param Field $field
+     * @param Buildable $buildable
      */
-    protected function addPendingField(Field $field)
+    protected function queue(Buildable $buildable)
     {
-        $this->pendingFields[] = $field;
-    }
-
-    /**
-     * @return array|Relation[]
-     */
-    public function getPendingRelations()
-    {
-        return $this->pendingRelations;
-    }
-
-    /**
-     * @param Relation $relation
-     */
-    protected function addPendingRelation(Relation $relation)
-    {
-        $this->pendingRelations[] = $relation;
+        $this->queued[] = $buildable;
     }
 
     /**

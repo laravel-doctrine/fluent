@@ -148,7 +148,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(Field::class, $field);
-        $this->assertContains($field, $this->fluent->getPendingFields());
+        $this->assertContains($field, $this->fluent->getQueued());
 
         $field->getBuilder()->build();
 
@@ -162,7 +162,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(Field::class, $field);
-        $this->assertContains($field, $this->fluent->getPendingFields());
+        $this->assertContains($field, $this->fluent->getQueued());
 
         $field->getBuilder()->build();
 
@@ -188,7 +188,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(Field::class, $field);
-        $this->assertContains($field, $this->fluent->getPendingFields());
+        $this->assertContains($field, $this->fluent->getQueued());
 
         $field->getBuilder()->build();
 
@@ -208,7 +208,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(OneToMany::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_add_has_one()
@@ -219,7 +219,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(OneToOne::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_add_one_to_one()
@@ -230,7 +230,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(OneToOne::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_add_belongs_to()
@@ -241,7 +241,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(ManyToOne::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_add_many_to_one()
@@ -252,7 +252,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(ManyToOne::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_add_has_many()
@@ -263,7 +263,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(OneToMany::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_add_one_to_many()
@@ -274,7 +274,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(OneToMany::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_add_belongs_to_many()
@@ -285,7 +285,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(ManyToMany::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_add_many_to_many()
@@ -296,7 +296,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(ManyToMany::class, $relation);
-        $this->assertContains($relation, $this->fluent->getPendingRelations());
+        $this->assertContains($relation, $this->fluent->getQueued());
     }
 
     public function test_can_extend_fluent()
@@ -307,7 +307,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->fluent->timestamps();
 
-        foreach ($this->fluent->getPendingFields() as $field) {
+        foreach ($this->fluent->getQueued() as $field) {
             $field->build();
         }
 
@@ -323,7 +323,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->fluent->timestamps('other_created_field', 'other_updated_field');
 
-        foreach ($this->fluent->getPendingFields() as $field) {
+        foreach ($this->fluent->getQueued() as $field) {
             $field->build();
         }
 

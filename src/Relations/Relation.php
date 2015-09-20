@@ -4,8 +4,9 @@ namespace LaravelDoctrine\Fluent\Relations;
 
 use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use LaravelDoctrine\Fluent\Buildable;
 
-interface Relation
+interface Relation extends Buildable
 {
     /**
      * @param array $cascade
@@ -32,9 +33,4 @@ interface Relation
      * @return AssociationBuilder
      */
     public function getAssociation();
-
-    /**
-     * Build the association
-     */
-    public function build();
 }
