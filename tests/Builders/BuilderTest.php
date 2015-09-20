@@ -301,7 +301,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_extend_fluent()
     {
-        $this->fluent->extend('timestamps', function (Fluent $builder) {
+        $this->fluent->macro('timestamps', function (Fluent $builder) {
             $builder->string('createdAt');
         });
 
@@ -316,7 +316,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_extend_fluent_with_params()
     {
-        $this->fluent->extend('timestamps', function (Fluent $builder, $createdAt, $updatedAt) {
+        $this->fluent->macro('timestamps', function (Fluent $builder, $createdAt, $updatedAt) {
             $builder->string($createdAt);
             $builder->string($updatedAt);
         });
@@ -338,7 +338,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             'Fluent builder should be extended with a closure argument, none given'
         );
 
-        $this->fluent->extend('fail');
+        $this->fluent->macro('fail');
     }
 
     public function test_fluent_builder_method_should_exist()

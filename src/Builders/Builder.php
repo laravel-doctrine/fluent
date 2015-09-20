@@ -23,7 +23,7 @@ class Builder extends AbstractBuilder implements Fluent
     /**
      * @var array
      */
-    protected $customMethods = [];
+    protected $macros = [];
 
     /**
      * @param string|callable $name
@@ -297,13 +297,13 @@ class Builder extends AbstractBuilder implements Fluent
      * @param string        $method
      * @param callable|null $callback
      */
-    public function extend($method, callable $callback = null)
+    public function macro($method, callable $callback = null)
     {
         if (!is_callable($callback)) {
             throw new InvalidArgumentException('Fluent builder should be extended with a closure argument, none given');
         }
 
-        $this->customMethods[$method] = $callback;
+        $this->macros[$method] = $callback;
     }
 
     /**
@@ -314,12 +314,12 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function __call($method, $params)
     {
-        if (isset($this->customMethods[$method])) {
+        if (isset($this->macros[$method])) {
 
             // Add builder as first closure param, append the given params
             array_unshift($params, $this);
 
-            return call_user_func_array($this->customMethods[$method], $params);
+            return call_user_func_array($this->macros[$method], $params);
         }
 
         throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
