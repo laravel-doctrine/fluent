@@ -2,6 +2,7 @@
 
 namespace Tests\Builders;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
@@ -30,6 +31,25 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      * @var Builder
      */
     protected $fluent;
+
+    protected $types = [
+        'string'        => Type::STRING,
+        'text'          => Type::TEXT,
+        'integer'       => Type::INTEGER,
+        'smallInteger'  => Type::SMALLINT,
+        'bigInteger'    => Type::BIGINT,
+        'float'         => Type::FLOAT,
+        'decimal'       => Type::DECIMAL,
+        'boolean'       => Type::BOOLEAN,
+        'jsonArray'     => Type::JSON_ARRAY,
+        'date'          => Type::DATE,
+        'dateTime'      => Type::DATETIME,
+        'dateTimeTz'    => Type::DATETIMETZ,
+        'time'          => Type::TIME,
+        'timestamp'     => Type::DATETIME,
+        'timestampTz'   => Type::DATETIMETZ,
+        'binary'        => Type::BINARY
+    ];
 
     protected function setUp()
     {
@@ -168,6 +188,39 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains('id', $this->fluent->getClassMetadata()->getIdentifier());
         $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertEquals(Type::INTEGER, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+    }
+
+    public function test_can_add_small_increments_to_entity()
+    {
+        $field = $this->fluent->smallIncrements('id', function ($field) {
+            $this->assertInstanceOf(Field::class, $field);
+        });
+
+        $this->assertInstanceOf(Field::class, $field);
+        $this->assertContains($field, $this->fluent->getQueued());
+
+        $field->getBuilder()->build();
+
+        $this->assertContains('id', $this->fluent->getClassMetadata()->getIdentifier());
+        $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertEquals(Type::SMALLINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+    }
+
+    public function test_can_add_big_increments_to_entity()
+    {
+        $field = $this->fluent->bigIncrements('id', function ($field) {
+            $this->assertInstanceOf(Field::class, $field);
+        });
+
+        $this->assertInstanceOf(Field::class, $field);
+        $this->assertContains($field, $this->fluent->getQueued());
+
+        $field->getBuilder()->build();
+
+        $this->assertContains('id', $this->fluent->getClassMetadata()->getIdentifier());
+        $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertEquals(Type::BIGINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
     }
 
     public function test_cannot_add_increments_to_embeddable()
@@ -181,9 +234,80 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $fluent->increments('id');
     }
 
-    public function test_can_add_string()
+    public function test_cannot_add_small_increments_to_embeddable()
     {
-        $field = $this->fluent->string('name', function ($field) {
+        $fluent = new Builder();
+        $this->builder->setEmbeddable();
+        $fluent->setBuilder($this->builder);
+
+        $this->setExpectedException(LogicException::class);
+
+        $fluent->smallIncrements('id');
+    }
+
+    public function test_cannot_add_big_increments_to_embeddable()
+    {
+        $fluent = new Builder();
+        $this->builder->setEmbeddable();
+        $fluent->setBuilder($this->builder);
+
+        $this->setExpectedException(LogicException::class);
+
+        $fluent->bigIncrements('id');
+    }
+
+    public function test_can_add_all_fields()
+    {
+        foreach ($this->types as $method => $type) {
+            $field = $this->fluent->{$method}($method, function ($field) {
+                $this->assertInstanceOf(Field::class, $field);
+            });
+
+            $this->assertInstanceOf(Field::class, $field);
+            $this->assertContains($field, $this->fluent->getQueued());
+
+            $field->getBuilder()->build();
+
+            $this->assertContains($method, $this->fluent->getClassMetadata()->getFieldNames());
+            $this->assertEquals($type, $this->fluent->getClassMetadata()->getFieldMapping($method)['type']);
+        }
+    }
+
+    public function test_all_fields_can_be_nullable()
+    {
+        foreach ($this->types as $method => $type) {
+            $field = $this->fluent->{$method}($method)->nullable();
+
+            $this->assertInstanceOf(Field::class, $field);
+            $this->assertContains($field, $this->fluent->getQueued());
+
+            $field->getBuilder()->build();
+
+            $this->assertContains($method, $this->fluent->getClassMetadata()->getFieldNames());
+            $this->assertEquals($type, $this->fluent->getClassMetadata()->getFieldMapping($method)['type']);
+            $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping($method)['nullable']);
+        }
+    }
+
+    public function test_all_fields_can_be_unique()
+    {
+        foreach ($this->types as $method => $type) {
+            $field = $this->fluent->{$method}($method)->unique();
+
+            $this->assertInstanceOf(Field::class, $field);
+            $this->assertContains($field, $this->fluent->getQueued());
+
+            $field->getBuilder()->build();
+
+            $this->assertContains($method, $this->fluent->getClassMetadata()->getFieldNames());
+            $this->assertEquals($type, $this->fluent->getClassMetadata()->getFieldMapping($method)['type']);
+            $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping($method)['unique']);
+        }
+    }
+
+    public function test_can_add_unsigned_integer_to_entity()
+    {
+        $field = $this->fluent->unsignedInteger('id', function ($field) {
             $this->assertInstanceOf(Field::class, $field);
         });
 
@@ -192,7 +316,58 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $field->getBuilder()->build();
 
-        $this->assertContains('name', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertEquals(Type::INTEGER, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('id')['options']['unsigned']);
+    }
+
+    public function test_can_add_unsigned_small_integer_to_entity()
+    {
+        $field = $this->fluent->unsignedSmallInteger('id', function ($field) {
+            $this->assertInstanceOf(Field::class, $field);
+        });
+
+        $this->assertInstanceOf(Field::class, $field);
+        $this->assertContains($field, $this->fluent->getQueued());
+
+        $field->getBuilder()->build();
+
+        $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertEquals(Type::SMALLINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('id')['options']['unsigned']);
+    }
+
+    public function test_can_add_unsigned_big_integer_to_entity()
+    {
+        $field = $this->fluent->unsignedBigInteger('id', function ($field) {
+            $this->assertInstanceOf(Field::class, $field);
+        });
+
+        $this->assertInstanceOf(Field::class, $field);
+        $this->assertContains($field, $this->fluent->getQueued());
+
+        $field->getBuilder()->build();
+
+        $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertEquals(Type::BIGINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('id')['options']['unsigned']);
+    }
+
+    public function test_can_add_remember_token()
+    {
+        $field = $this->fluent->rememberToken('rememberToken', function ($field) {
+            $this->assertInstanceOf(Field::class, $field);
+        });
+
+        $this->assertInstanceOf(Field::class, $field);
+        $this->assertContains($field, $this->fluent->getQueued());
+
+        $field->getBuilder()->build();
+
+        $this->assertContains('rememberToken', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertEquals('string', $this->fluent->getClassMetadata()->getFieldMapping('rememberToken')['type']);
+        $this->assertEquals(100, $this->fluent->getClassMetadata()->getFieldMapping('rememberToken')['length']);
+        $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('rememberToken')['nullable']);
     }
 
     public function test_can_add_relation()

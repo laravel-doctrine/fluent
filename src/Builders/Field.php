@@ -2,11 +2,22 @@
 
 namespace LaravelDoctrine\Fluent\Builders;
 
+use BadMethodCallException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\FieldBuilder;
 use LaravelDoctrine\Fluent\Buildable;
 
+/**
+ * @method $this unique($flag = true)
+ * @method $this nullable($flag = true)
+ * @method $this length($length)
+ * @method $this columnName($column)
+ * @method $this precision($precision)
+ * @method $this scale($scale)
+ * @method $this default($default)
+ * @method $this columnDefinition($def)
+ */
 class Field implements Buildable
 {
     /**
@@ -44,29 +55,19 @@ class Field implements Buildable
     }
 
     /**
-     * @return $this
-     */
-    public function nullable()
-    {
-        $this->builder->nullable();
-
-        return $this;
-    }
-
-    /**
-     * @param $column
+     * @param $columnName
      *
      * @return $this
      */
-    public function setColumnName($column)
+    public function name($columnName)
     {
-        $this->builder->columnName($column);
+        $this->columnName($columnName);
 
         return $this;
     }
 
     /**
-     * @return $this
+     * @return Field
      */
     public function autoIncrement()
     {
@@ -78,7 +79,7 @@ class Field implements Buildable
     /**
      * @param string $strategy
      *
-     * @return $this
+     * @return Field
      */
     public function generatedValue($strategy)
     {
@@ -88,7 +89,7 @@ class Field implements Buildable
     }
 
     /**
-     * @return $this
+     * @return Field
      */
     public function unsigned()
     {
@@ -98,7 +99,55 @@ class Field implements Buildable
     }
 
     /**
-     * @return $this
+     * @param $default
+     *
+     * @return Field
+     */
+    public function setDefault($default)
+    {
+        $this->builder->option('default', $default);
+
+        return $this;
+    }
+
+    /**
+     * @param $fixed
+     *
+     * @return Field
+     */
+    public function fixed($fixed)
+    {
+        $this->builder->option('fixed', $fixed);
+
+        return $this;
+    }
+
+    /**
+     * @param $comment
+     *
+     * @return Field
+     */
+    public function comment($comment)
+    {
+        $this->builder->option('comment', $comment);
+
+        return $this;
+    }
+
+    /**
+     * @param $collation
+     *
+     * @return Field
+     */
+    public function collation($collation)
+    {
+        $this->builder->option('collation', $collation);
+
+        return $this;
+    }
+
+    /**
+     * @return Field
      */
     public function primary()
     {
@@ -108,7 +157,7 @@ class Field implements Buildable
     }
 
     /**
-     * @return $this
+     * @return Field
      */
     public function build()
     {
@@ -123,5 +172,30 @@ class Field implements Buildable
     public function getBuilder()
     {
         return $this->builder;
+    }
+
+    /**
+     * Magic call method works as a proxy for the Doctrine FieldBuilder
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @throws BadMethodCallException
+     * @return $this
+     */
+    public function __call($method, $args)
+    {
+        // Work around reserved keywords
+        if ($method === 'default') {
+            return call_user_func_array([$this, 'setDefault'], $args);
+        }
+
+        if (method_exists($this->getBuilder(), $method)) {
+            call_user_func_array([$this->getBuilder(), $method], $args);
+
+            return $this;
+        }
+
+        throw new BadMethodCallException("FieldBuilder method [{$method}] does not exist.");
     }
 }

@@ -2,6 +2,7 @@
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->exclude('vendor')
+    ->exclude('tests')
     ->in(__DIR__);
 
 return Symfony\CS\Config\Config::create()

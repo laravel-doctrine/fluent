@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
+use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
@@ -45,12 +46,180 @@ interface Fluent
     public function increments($name, callable $callback = null);
 
     /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function smallIncrements($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function bigIncrements($name, callable $callback = null);
+
+    /**
      * @param          $name
      * @param callable $callback
      *
      * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function string($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function text($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function integer($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function smallInteger($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function bigInteger($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function unsignedSmallInteger($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function unsignedInteger($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function unsignedBigInteger($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function float($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function decimal($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function boolean($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function jsonArray($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function date($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function dateTime($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function dateTimeTz($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function time($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function timestamp($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function timestampTz($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function binary($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function rememberToken($name = 'rememberToken', callable $callback = null);
 
     /**
      * @param string        $field
@@ -164,4 +333,5 @@ interface Fluent
      * @return array|Field[]
      */
     public function getQueued();
+
 }

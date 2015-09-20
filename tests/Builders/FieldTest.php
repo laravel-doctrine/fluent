@@ -2,6 +2,7 @@
 
 namespace Tests\Builders;
 
+use BadMethodCallException;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\Field;
@@ -42,7 +43,16 @@ class FieldTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_set_column_name()
     {
-        $this->field->setColumnName('name_column');
+        $this->field->columnName('name_column');
+
+        $this->field->build();
+
+        $this->assertEquals('name_column', $this->builder->getClassMetadata()->getFieldMapping('name')['columnName']);
+    }
+
+    public function test_can_set_name()
+    {
+        $this->field->name('name_column');
 
         $this->field->build();
 
@@ -76,6 +86,55 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->builder->getClassMetadata()->getFieldMapping('name')['options']['unsigned']);
     }
 
+    public function test_can_set_default()
+    {
+        $this->field->setDefault('default');
+
+        $this->field->build();
+
+        $this->assertEquals('default',
+            $this->builder->getClassMetadata()->getFieldMapping('name')['options']['default']);
+    }
+
+    public function test_can_set_default_fluently()
+    {
+        $this->field->default('default2');
+
+        $this->field->build();
+
+        $this->assertEquals('default2',
+            $this->builder->getClassMetadata()->getFieldMapping('name')['options']['default']);
+    }
+
+    public function test_can_set_fixed()
+    {
+        $this->field->fixed('fixed');
+
+        $this->field->build();
+
+        $this->assertEquals('fixed', $this->builder->getClassMetadata()->getFieldMapping('name')['options']['fixed']);
+    }
+
+    public function test_can_set_comment()
+    {
+        $this->field->comment('comment');
+
+        $this->field->build();
+
+        $this->assertEquals('comment',
+            $this->builder->getClassMetadata()->getFieldMapping('name')['options']['comment']);
+    }
+
+    public function test_can_set_collation()
+    {
+        $this->field->collation('collation');
+
+        $this->field->build();
+
+        $this->assertEquals('collation',
+            $this->builder->getClassMetadata()->getFieldMapping('name')['options']['collation']);
+    }
+
     public function test_can_make_field_primary()
     {
         $this->field->primary();
@@ -83,5 +142,15 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->field->build();
 
         $this->assertTrue($this->builder->getClassMetadata()->getFieldMapping('name')['id']);
+    }
+
+    public function test_cannot_call_non_existing_field_builder_methods()
+    {
+        $this->setExpectedException(
+            BadMethodCallException::class,
+            'FieldBuilder method [nonExisting] does not exist.'
+        );
+
+        $this->field->nonExisting();
     }
 }
