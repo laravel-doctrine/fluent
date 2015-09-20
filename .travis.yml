@@ -19,4 +19,6 @@ sudo: false
 script: php vendor/bin/phpunit --coverage-clover=coverage.clover
 
 matrix:
+  allow_failures:
+    - php: 7.0
   fast_finish: true
