@@ -7,9 +7,14 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToOne;
+use Tests\Relations\Traits\OneTo;
+use Tests\Relations\Traits\Ownable;
+use Tests\Relations\Traits\Owning;
 
 class OneToOneTest extends RelationTestCase
 {
+    use OneTo, Owning, Ownable;
+
     /**
      * @var ManyToOne
      */

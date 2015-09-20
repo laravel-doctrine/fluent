@@ -4,16 +4,36 @@ namespace LaravelDoctrine\Fluent\Relations;
 
 use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use Doctrine\ORM\Mapping\NamingStrategy;
+use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
+use LaravelDoctrine\Fluent\Relations\Traits\Owning;
 
 /**
  * @method $this inversedBy($fieldName)
+ * @method $this foreignKey($foreignKey)
+ * @method $this localKey($localKey)
+ * @method $this setJoinColumn($joinColumn)
+ * @method $this setReferenceColumn($referenceColumn)
+ * @method $this nullable()
+ * @method $this unique()
+ * @method $this onDelete($onDelete = null)
  */
 class ManyToOne extends AbstractRelation
 {
+    use ManyTo, Owning;
+
     /**
-     * @var array
+     * @param ClassMetadataBuilder $builder
+     * @param NamingStrategy       $namingStrategy
+     * @param string               $relation
+     * @param string               $entity
      */
-    protected $joinColumns = [];
+    public function __construct(ClassMetadataBuilder $builder, NamingStrategy $namingStrategy, $relation, $entity)
+    {
+        parent::__construct($builder, $namingStrategy, $relation, $entity);
+
+        $this->addJoinColumn($relation);
+    }
 
     /**
      * @param ClassMetadataBuilder $builder
@@ -24,11 +44,6 @@ class ManyToOne extends AbstractRelation
      */
     protected function createAssociation(ClassMetadataBuilder $builder, $relation, $entity)
     {
-        $this->addJoinColumn(new JoinColumn(
-            $this->namingStrategy,
-            $this->relation
-        ));
-
         return $this->builder->createManyToOne(
             $relation,
             $entity
@@ -36,76 +51,38 @@ class ManyToOne extends AbstractRelation
     }
 
     /**
-     * Build the association
-     */
-    public function build()
-    {
-        foreach ($this->getJoinColumns() as $column) {
-            $this->association->addJoinColumn(
-                $column->getJoinColumn(),
-                $column->getReferenceColumn(),
-                $column->isNullable(),
-                $column->isUnique(),
-                $column->getOnDelete()
-            );
-        }
-
-        parent::build();
-    }
-
-    /**
-     * @return $this
-     */
-    public function nullable()
-    {
-        $this->getJoinColumn()->nullable();
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function unique()
-    {
-        $this->getJoinColumn()->unique();
-
-        return $this;
-    }
-
-    /**
-     * @param null $onDelete
+     * @param callable $callback
      *
-     * @return $this
-     */
-    public function onDelete($onDelete = null)
-    {
-        $this->getJoinColumn()->onDelete($onDelete);
-
-        return $this;
-    }
-
-    /**
-     * @param JoinColumn $column
-     */
-    public function addJoinColumn(JoinColumn $column)
-    {
-        $this->joinColumns[] = $column;
-    }
-
-    /**
      * @return JoinColumn
      */
-    public function getJoinColumn()
+    public function getJoinColumn(callable $callback = null)
     {
-        return reset($this->joinColumns);
+        $joinColumn = reset($this->joinColumns);
+
+        if (is_callable($callback)) {
+            $callback($joinColumn);
+        }
+
+        return $joinColumn;
     }
 
     /**
-     * @return array|JoinColumn[]
+     * Magic call method works as a proxy for the Doctrine associationBuilder
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @throws BadMethodCallException
+     * @return $this
      */
-    public function getJoinColumns()
+    public function __call($method, $args)
     {
-        return $this->joinColumns;
+        if (method_exists($this->getJoinColumn(), $method)) {
+            call_user_func_array([$this->getJoinColumn(), $method], $args);
+
+            return $this;
+        }
+
+        parent::__call($method, $args);
     }
 }

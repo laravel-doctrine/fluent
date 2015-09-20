@@ -24,7 +24,7 @@ class JoinColumn
     /**
      * @var bool
      */
-    protected $nullable = false;
+    protected $nullable = true;
 
     /**
      * @var bool
@@ -46,13 +46,26 @@ class JoinColumn
      * @param string         $relation
      * @param string|null    $joinColumn
      * @param string|null    $referenceColumn
+     * @param bool           $nullable
+     * @param bool           $unique
+     * @param string|null    $onDelete
      */
-    public function __construct(NamingStrategy $namingStrategy, $relation, $joinColumn = null, $referenceColumn = null)
-    {
-        $this->joinColumn      = $joinColumn;
-        $this->referenceColumn = $referenceColumn;
-        $this->relation        = $relation;
-        $this->namingStrategy  = $namingStrategy;
+    public function __construct(
+        NamingStrategy $namingStrategy,
+        $relation,
+        $joinColumn = null,
+        $referenceColumn = null,
+        $nullable = true,
+        $unique = false,
+        $onDelete = null
+    ) {
+        $this->joinColumn       = $joinColumn;
+        $this->referenceColumn  = $referenceColumn;
+        $this->relation         = $relation;
+        $this->namingStrategy   = $namingStrategy;
+        $this->nullable         = $nullable;
+        $this->onDelete         = $onDelete;
+        $this->unique           = $unique;
     }
 
     /**

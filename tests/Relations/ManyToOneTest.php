@@ -5,10 +5,14 @@ namespace Tests\Relations;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use LaravelDoctrine\Fluent\Relations\JoinColumn;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use Tests\Relations\Traits\Owning;
 
 class ManyToOneTest extends RelationTestCase
 {
+    use Owning;
+
     /**
      * @var ManyToOne
      */
@@ -31,6 +35,37 @@ class ManyToOneTest extends RelationTestCase
         ));
 
         $this->relation = new ManyToOne($this->builder, new DefaultNamingStrategy(), $this->field, FluentEntity::class);
+    }
+
+    public function test_can_add_join_column()
+    {
+        $this->relation->addJoinColumn('children');
+
+        $this->relation->build();
+
+        $assoc = $this->getAssocValue($this->field, 'joinColumns')[1];
+
+        $this->assertEquals('children_id', $assoc['name']);
+        $this->assertEquals('id', $assoc['referencedColumnName']);
+        $this->assertFalse($assoc['nullable']);
+    }
+
+    public function test_can_get_join_columns()
+    {
+        $this->assertCount(1, $this->relation->getJoinColumns());
+
+        $this->relation->addJoinColumn('children');
+
+        $this->assertCount(2, $this->relation->getJoinColumns());
+    }
+
+    public function test_can_get_join_column()
+    {
+        $joinColumn = $this->relation->getJoinColumn(function ($joinColumn) {
+            $this->assertInstanceOf(JoinColumn::class, $joinColumn);
+        });
+
+        $this->assertInstanceOf(JoinColumn::class, $joinColumn);
     }
 
     public function test_can_set_nullable()

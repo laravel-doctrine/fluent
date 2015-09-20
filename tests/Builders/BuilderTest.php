@@ -11,6 +11,7 @@ use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\Table;
 use LaravelDoctrine\Fluent\Entity;
 use LaravelDoctrine\Fluent\Fluent;
+use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
 use LaravelDoctrine\Fluent\Relations\OneToOne;
@@ -273,6 +274,28 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(OneToMany::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
+    }
+
+    public function test_can_add_belongs_to_many()
+    {
+        $relation = $this->fluent->belongsToMany('children', FakeEntity::class, function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(ManyToMany::class, $relation);
+        });
+
+        $this->assertInstanceOf(ManyToMany::class, $relation);
+        $this->assertContains($relation, $this->fluent->getPendingRelations());
+    }
+
+    public function test_can_add_many_to_many()
+    {
+        $relation = $this->fluent->manyToMany('children', FakeEntity::class, function ($relation) {
+            $this->assertInstanceOf(Relation::class, $relation);
+            $this->assertInstanceOf(ManyToMany::class, $relation);
+        });
+
+        $this->assertInstanceOf(ManyToMany::class, $relation);
         $this->assertContains($relation, $this->fluent->getPendingRelations());
     }
 

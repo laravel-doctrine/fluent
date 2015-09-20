@@ -7,9 +7,15 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
+use Tests\Relations\Traits\Indexable;
+use Tests\Relations\Traits\OneTo;
+use Tests\Relations\Traits\Orderable;
+use Tests\Relations\Traits\Ownable;
 
 class OneToManyTest extends RelationTestCase
 {
+    use OneTo, Indexable, Orderable, Ownable;
+
     /**
      * @var OneToMany
      */
@@ -37,23 +43,5 @@ class OneToManyTest extends RelationTestCase
 
         $this->relation = new OneToMany($this->builder, new DefaultNamingStrategy(), $this->field, FluentEntity::class);
         $this->relation->mappedBy('parent');
-    }
-
-    public function test_can_call_magic_one_to_many_assoc_methods()
-    {
-        $this->relation->setIndexBy('parent_id');
-
-        $this->relation->build();
-
-        $this->assertEquals('parent_id', $this->getAssocValue($this->field, 'indexBy'));
-    }
-
-    public function test_can_order_one_to_many_associations()
-    {
-        $this->relation->orderBy('id', 'DESC');
-
-        $this->relation->build();
-
-        $this->assertEquals('DESC', $this->getAssocValue($this->field, 'orderBy')['id']);
     }
 }

@@ -5,6 +5,7 @@ namespace LaravelDoctrine\Fluent\Builders;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Fluent;
+use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
 use LaravelDoctrine\Fluent\Relations\OneToOne;
@@ -212,6 +213,38 @@ class Builder extends AbstractBuilder implements Fluent
     {
         return $this->addRelation(
             new OneToMany(
+                $this->builder,
+                $this->namingStrategy,
+                $field,
+                $entity
+            ),
+            $callback
+        );
+    }
+
+    /**
+     * @param               $field
+     * @param               $entity
+     * @param callable|null $callback
+     *
+     * @return ManyToMany
+     */
+    public function belongsToMany($field, $entity, callable $callback = null)
+    {
+        return $this->manyToMany($field, $entity, $callback);
+    }
+
+    /**
+     * @param string   $field
+     * @param string   $entity
+     * @param callable $callback
+     *
+     * @return ManyToMany
+     */
+    public function manyToMany($field, $entity, callable $callback = null)
+    {
+        return $this->addRelation(
+            new ManyToMany(
                 $this->builder,
                 $this->namingStrategy,
                 $field,

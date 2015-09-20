@@ -26,7 +26,7 @@ class JoinColumnTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('parent_id', $this->column->getJoinColumn());
         $this->assertEquals('id', $this->column->getReferenceColumn());
-        $this->assertFalse($this->column->isNullable());
+        $this->assertTrue($this->column->isNullable());
         $this->assertFalse($this->column->isUnique());
         $this->assertNull($this->column->getOnDelete());
     }
@@ -93,10 +93,10 @@ class JoinColumnTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->column->isUnique());
     }
 
-    public function test_can_set_on_delete()
+    public function test_can_set_onDelete()
     {
-        $this->column->onDelete('delete');
+        $this->column->onDelete('CASCADE');
 
-        $this->assertEquals('delete', $this->column->getOnDelete());
+        $this->assertEquals('CASCADE', $this->column->getOnDelete());
     }
 }

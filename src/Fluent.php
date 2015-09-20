@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
+use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
 use LaravelDoctrine\Fluent\Relations\OneToOne;
@@ -104,6 +105,24 @@ interface Fluent
      * @return OneToMany
      */
     public function oneToMany($field, $entity, callable $callback = null);
+
+    /**
+     * @param               $field
+     * @param               $entity
+     * @param callable|null $callback
+     *
+     * @return ManyToMany
+     */
+    public function belongsToMany($field, $entity, callable $callback = null);
+
+    /**
+     * @param string   $field
+     * @param string   $entity
+     * @param callable $callback
+     *
+     * @return ManyToMany
+     */
+    public function manyToMany($field, $entity, callable $callback = null);
 
     /**
      * Adds a custom relation to the entity.

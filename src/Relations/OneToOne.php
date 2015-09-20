@@ -4,6 +4,8 @@ namespace LaravelDoctrine\Fluent\Relations;
 
 use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use LaravelDoctrine\Fluent\Relations\Traits\Ownable;
+use LaravelDoctrine\Fluent\Relations\Traits\Owning;
 
 /**
  * @method $this inversedBy($fieldName)
@@ -11,6 +13,8 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
  */
 class OneToOne extends AbstractRelation
 {
+    use Owning, Ownable;
+
     /**
      * @param ClassMetadataBuilder $builder
      * @param string               $relation
