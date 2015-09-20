@@ -46,22 +46,9 @@ class JoinColumn
      * @param string         $relation
      * @param string|null    $joinColumn
      * @param string|null    $referenceColumn
-     * @param bool|false     $nullable
-     * @param bool|false     $unique
-     * @param null           $onDelete
      */
-    public function __construct(
-        NamingStrategy $namingStrategy,
-        $relation,
-        $joinColumn = null,
-        $referenceColumn = null,
-        $nullable = false,
-        $unique = false,
-        $onDelete = null
-    ) {
-        $this->unique          = $unique;
-        $this->nullable        = $nullable;
-        $this->onDelete        = $onDelete;
+    public function __construct(NamingStrategy $namingStrategy, $relation, $joinColumn = null, $referenceColumn = null)
+    {
         $this->joinColumn      = $joinColumn;
         $this->referenceColumn = $referenceColumn;
         $this->relation        = $relation;
