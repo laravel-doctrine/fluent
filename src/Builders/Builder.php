@@ -125,11 +125,7 @@ class Builder extends AbstractBuilder implements Fluent
     {
         $field = Field::make($this->builder, $type, $name);
 
-        if (is_callable($callback)) {
-            $callback($field);
-        }
-
-        $this->queue($field);
+        $this->callbackAndQueue($field, $callback);
 
         return $field;
     }
@@ -180,7 +176,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param          $name
+     * @param string   $name
      * @param callable $callback
      *
      * @return Field
@@ -592,11 +588,7 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function addRelation(Relation $relation, callable $callback = null)
     {
-        if (is_callable($callback)) {
-            $callback($relation);
-        }
-
-        $this->queue($relation);
+        $this->callbackAndQueue($relation, $callback);
 
         return $relation;
     }
@@ -616,11 +608,7 @@ class Builder extends AbstractBuilder implements Fluent
             $embeddable
         );
 
-        if (is_callable($callback)) {
-            $callback($embedded);
-        }
-
-        $this->queue($embedded);
+        $this->callbackAndQueue($embedded, $callback);
 
         return $embedded;
     }
@@ -687,13 +675,26 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param Buildable     $buildable
+     * @param callable|null $callback
+     */
+    protected function callbackAndQueue(Buildable $buildable, callable $callback = null)
+    {
+        if (is_callable($callback)) {
+            $callback($buildable);
+        }
+
+        $this->queue($buildable);
+    }
+
+    /**
      * Reset queued fields/relations/embeddables
      *
      * @return $this
      */
     public function resetQueued()
     {
-        $this->queued = null;
+        $this->queued = [];
 
         return $this;
     }

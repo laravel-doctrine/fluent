@@ -155,4 +155,12 @@ abstract class AbstractRelation implements Relation
 
         throw new BadMethodCallException("Relation method [{$method}] does not exist.");
     }
+
+    /**
+     * @return NamingStrategy
+     */
+    public function getNamingStrategy()
+    {
+        return $this->namingStrategy;
+    }
 }

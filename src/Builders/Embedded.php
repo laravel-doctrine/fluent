@@ -18,14 +18,14 @@ class Embedded extends AbstractBuilder implements Buildable
     protected $relation;
 
     /**
-     * @var string|bool|null
+     * @var string|null
      */
     protected $columnPrefix = null;
 
     /**
-     * @param ClassMetadataBuilder|null $builder
-     * @param string                    $relation
-     * @param string                    $embeddable
+     * @param ClassMetadataBuilder $builder
+     * @param string               $relation
+     * @param string               $embeddable
      */
     public function __construct(ClassMetadataBuilder $builder, $relation, $embeddable)
     {
@@ -35,7 +35,7 @@ class Embedded extends AbstractBuilder implements Buildable
     }
 
     /**
-     * @param string|bool|null $prefix
+     * @param string|null $prefix
      *
      * @return Embedded
      */

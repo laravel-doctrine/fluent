@@ -14,7 +14,7 @@ trait Orderable
      */
     public function orderBy($name, $order = 'ASC')
     {
-        $this->association->setOrderBy([
+        $this->getAssociation()->setOrderBy([
             $name => $order
         ]);
 

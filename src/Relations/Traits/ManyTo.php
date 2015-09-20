@@ -3,6 +3,7 @@
 namespace LaravelDoctrine\Fluent\Relations\Traits;
 
 use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
+use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Relations\JoinColumn;
 
 trait ManyTo
@@ -49,7 +50,7 @@ trait ManyTo
         $onDelete = null
     ) {
         $joinColumn = new JoinColumn(
-            $this->namingStrategy,
+            $this->getNamingStrategy(),
             $relation,
             $joinColumn,
             $referenceColumn,
@@ -83,4 +84,9 @@ trait ManyTo
      * @return AssociationBuilder
      */
     abstract public function getAssociation();
+
+    /**
+     * @return NamingStrategy
+     */
+    abstract public function getNamingStrategy();
 }

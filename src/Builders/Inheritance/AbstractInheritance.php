@@ -53,15 +53,15 @@ abstract class AbstractInheritance implements Inheritance
      */
     public function map($name, $class = null)
     {
-        if (!is_array($name)) {
-            $this->builder->addDiscriminatorMapClass($name, $class);
+        if (is_array($name)) {
+            foreach ($name as $name => $class) {
+                $this->map($name, $class);
+            }
 
             return $this;
         }
 
-        foreach ($name as $name => $class) {
-            $this->map($name, $class);
-        }
+        $this->builder->addDiscriminatorMapClass($name, $class);
 
         return $this;
     }
