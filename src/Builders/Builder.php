@@ -13,6 +13,9 @@ use LaravelDoctrine\Fluent\Relations\OneToOne;
 use LaravelDoctrine\Fluent\Relations\Relation;
 use LogicException;
 
+/**
+ * @method $this array($name, callable $callback = null)
+ */
 class Builder extends AbstractBuilder implements Fluent
 {
     /**
@@ -231,6 +234,39 @@ class Builder extends AbstractBuilder implements Fluent
      *
      * @return Field
      */
+    public function guid($name, callable $callback = null)
+    {
+        return $this->field(Type::GUID, $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function blob($name, callable $callback = null)
+    {
+        return $this->field(Type::BLOB, $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function object($name, callable $callback = null)
+    {
+        return $this->field(Type::OBJECT, $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
     public function float($name, callable $callback = null)
     {
         return $this->field(Type::FLOAT, $name, $callback)->precision(8)->scale(2);
@@ -256,6 +292,28 @@ class Builder extends AbstractBuilder implements Fluent
     public function boolean($name, callable $callback = null)
     {
         return $this->field(Type::BOOLEAN, $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function setArray($name, callable $callback = null)
+    {
+        return $this->field(Type::TARRAY, $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function simpleArray($name, callable $callback = null)
+    {
+        return $this->field(Type::SIMPLE_ARRAY, $name, $callback);
     }
 
     /**
@@ -573,6 +631,11 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function __call($method, $params)
     {
+        // Workaround for reserved keywords
+        if ($method === 'array') {
+            return call_user_func_array([$this, 'setArray'], $params);
+        }
+
         if (isset($this->macros[$method])) {
 
             // Add builder as first closure param, append the given params

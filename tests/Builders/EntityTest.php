@@ -40,4 +40,17 @@ class EntityTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->builder->getClassMetadata()->isReadOnly);
     }
+
+    public function test_can_enable_2nd_level_cache()
+    {
+        $this->assertFalse($this->builder->getClassMetadata()->isReadOnly);
+
+        $this->entity->cacheable();
+        $this->assertEquals(ClassMetadataInfo::CACHE_USAGE_READ_ONLY, $this->builder->getClassMetadata()->cache['usage']);
+        $this->assertEquals('tests_stubs_entities_stubentity', $this->builder->getClassMetadata()->cache['region']);
+
+        $this->entity->cacheable(ClassMetadataInfo::CACHE_USAGE_READ_WRITE, 'custom_region');
+        $this->assertEquals(ClassMetadataInfo::CACHE_USAGE_READ_WRITE, $this->builder->getClassMetadata()->cache['usage']);
+        $this->assertEquals('custom_region', $this->builder->getClassMetadata()->cache['region']);
+    }
 }

@@ -35,6 +35,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected $fluent;
 
+    /**
+     * @var array
+     */
     protected $types = [
         'string'       => Type::STRING,
         'text'         => Type::TEXT,
@@ -43,6 +46,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         'bigInteger'   => Type::BIGINT,
         'float'        => Type::FLOAT,
         'decimal'      => Type::DECIMAL,
+        'object'       => Type::OBJECT,
         'boolean'      => Type::BOOLEAN,
         'jsonArray'    => Type::JSON_ARRAY,
         'date'         => Type::DATE,
@@ -51,7 +55,12 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         'time'         => Type::TIME,
         'timestamp'    => Type::DATETIME,
         'timestampTz'  => Type::DATETIMETZ,
-        'binary'       => Type::BINARY
+        'binary'       => Type::BINARY,
+        'guid'         => Type::GUID,
+        'blob'         => Type::BLOB,
+        'array'        => Type::TARRAY,
+        'setArray'     => Type::TARRAY,
+        'simpleArray'  => Type::SIMPLE_ARRAY
     ];
 
     protected function setUp()

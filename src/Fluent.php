@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
+use LaravelDoctrine\Fluent\Builders\Embedded;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -11,6 +12,9 @@ use LaravelDoctrine\Fluent\Relations\OneToMany;
 use LaravelDoctrine\Fluent\Relations\OneToOne;
 use LaravelDoctrine\Fluent\Relations\Relation;
 
+/**
+ * @method $this array($name, callable $callback = null)
+ */
 interface Fluent
 {
     /**
@@ -340,4 +344,53 @@ interface Fluent
      * @return $this
      */
     public function resetQueued();
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function guid($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function blob($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function object($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function setArray($name, callable $callback = null);
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function simpleArray($name, callable $callback = null);
+
+    /**
+     * @param string        $field
+     * @param string        $embeddable
+     * @param callable|null $callback
+     *
+     * @return Embedded
+     */
+    public function embed($field, $embeddable, callable $callback = null);
 }
