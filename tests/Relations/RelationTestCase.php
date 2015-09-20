@@ -5,7 +5,6 @@ namespace Tests\Relations;
 use BadMethodCallException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use InvalidArgumentException;
-use LaravelDoctrine\Fluent\Entity;
 
 class RelationTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -76,7 +75,7 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
     }
 }
 
-class FluentEntity implements Entity
+class FluentEntity
 {
     protected $parent, $children;
 }

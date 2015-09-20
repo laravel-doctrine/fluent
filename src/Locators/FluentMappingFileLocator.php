@@ -10,12 +10,14 @@ class FluentMappingFileLocator
 {
     /**
      * Mapping files should end on Mapping.php
+     *
      * @var string
      */
     protected $fileExtension = 'Mapping.php';
 
     /**
      * The paths where to look for mapping files.
+     *
      * @var array
      */
     protected $paths = [];
@@ -93,9 +95,8 @@ class FluentMappingFileLocator
     {
         $before = get_declared_classes();
         require_once($file->getPathName());
-        $diff  = array_diff(get_declared_classes(), $before);
-        $class = reset($diff);
+        $diff = array_diff(get_declared_classes(), $before);
 
-        return $class;
+        return end($diff);
     }
 }

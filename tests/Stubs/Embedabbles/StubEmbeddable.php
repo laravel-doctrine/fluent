@@ -2,9 +2,7 @@
 
 namespace Tests\Stubs\Embedabbles;
 
-use LaravelDoctrine\Fluent\Embeddable;
-
-class StubEmbeddable implements Embeddable
+class StubEmbeddable
 {
     protected $name;
 }

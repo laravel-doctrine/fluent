@@ -2,11 +2,11 @@
 
 namespace Tests\Stubs\Mappings;
 
+use LaravelDoctrine\Fluent\EmbeddableMapping;
 use LaravelDoctrine\Fluent\Fluent;
-use LaravelDoctrine\Fluent\Mapping;
 use Tests\Stubs\Embedabbles\StubEmbeddable;
 
-class StubEmbeddableMapping implements Mapping
+class StubEmbeddableMapping extends EmbeddableMapping
 {
     /**
      * Load the object's metadata through the Metadata Builder object.

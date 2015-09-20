@@ -3,11 +3,10 @@
 namespace LaravelDoctrine\Fluent\Mappers;
 
 use Doctrine\ORM\Mapping\MappingException;
-use LaravelDoctrine\Fluent\Embeddable;
-use LaravelDoctrine\Fluent\Entity;
-use LaravelDoctrine\Fluent\MappedSuperClass;
+use LaravelDoctrine\Fluent\EmbeddableMapping;
+use LaravelDoctrine\Fluent\EntityMapping;
+use LaravelDoctrine\Fluent\MappedSuperClassMapping;
 use LaravelDoctrine\Fluent\Mapping;
-use ReflectionClass;
 
 class MapperFactory
 {
@@ -15,9 +14,9 @@ class MapperFactory
      * @var array
      */
     protected static $types = [
-        Entity::class           => EntityMapper::class,
-        Embeddable::class       => EmbeddableMapper::class,
-        MappedSuperClass::class => MappedSuperClassMapper::class
+        Mapping::ENTITY             => EntityMapper::class,
+        Mapping::EMBEDDABLE         => EmbeddableMapper::class,
+        Mapping::MAPPED_SUPER_CLASS => MappedSuperClassMapper::class
     ];
 
     /**
@@ -27,14 +26,10 @@ class MapperFactory
      */
     public static function create(Mapping $mapping)
     {
-        $reflection = new ReflectionClass($mapping->mapFor());
-
-        foreach (static::$types as $interface => $mapper) {
-            if ($reflection->implementsInterface($interface)) {
-                return new $mapper($mapping);
-            }
+        if (isset(static::$types[$mapping->mapAs()])) {
+            return new static::$types[$mapping->mapAs()]($mapping);
         }
 
-        throw new MappingException('Your mapped class should implement ' . Entity::class . ', ' . MappedSuperClass::class . ' or ' . Embeddable::class);
+        throw new MappingException('Your mapping class should extend ' . EntityMapping::class . ', ' . MappedSuperClassMapping::class . ' or ' . EmbeddableMapping::class);
     }
 }

@@ -36,23 +36,29 @@ class MapperFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(MappedSuperClassMapper::class, $mapper);
     }
 
-    public function test_can_only_create_mapper_when_mapFor_implements_interface()
+    public function test_can_only_create_mapper_when_mapAs_returns_a_valid_type()
     {
         $this->setExpectedException(
             MappingException::class,
-            'Your mapped class should implement LaravelDoctrine\Fluent\Entity, LaravelDoctrine\Fluent\MappedSuperClass or LaravelDoctrine\Fluent\Embeddable'
+            'Your mapping class should extend LaravelDoctrine\Fluent\EntityMapping, LaravelDoctrine\Fluent\MappedSuperClassMapping or LaravelDoctrine\Fluent\EmbeddableMapping'
         );
 
         MapperFactory::create(new WrongMapping);
     }
 }
 
-class WrongEntity
-{
-}
-
 class WrongMapping implements Mapping
 {
+    /**
+     * The given class should be mapped as Entity, Embeddable or MappedSuperClass
+     *
+     * @return string
+     */
+    public function mapAs()
+    {
+        return 'NonExistingType';
+    }
+
     /**
      * Load the object's metadata through the Metadata Builder object.
      *
@@ -64,10 +70,11 @@ class WrongMapping implements Mapping
 
     /**
      * Returns the fully qualified name of the entity that this mapper maps.
+     *
      * @return string
      */
     public function mapFor()
     {
-        return WrongEntity::class;
+        return 'wrong';
     }
 }

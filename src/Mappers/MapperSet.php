@@ -3,8 +3,9 @@
 namespace LaravelDoctrine\Fluent\Mappers;
 
 use Doctrine\ORM\Mapping\MappingException;
-use LaravelDoctrine\Fluent\Embeddable;
-use LaravelDoctrine\Fluent\Entity;
+use LaravelDoctrine\Fluent\EmbeddableMapping;
+use LaravelDoctrine\Fluent\EntityMapping;
+use LaravelDoctrine\Fluent\MappedSuperClassMapping;
 use LaravelDoctrine\Fluent\Mapping;
 
 class MapperSet
@@ -37,8 +38,8 @@ class MapperSet
         if (!$this->hasMapperFor($className)) {
             throw new MappingException(
                 "Class [$className] does not have a mapping configuration. " .
-                "Make sure you create a Mapping class for it that extends " . Mapping::class . " and make sure your entity extends either " .
-                Entity::class . " or " . Embeddable::class . ". " .
+                "Make sure you create a Mapping class that extends either " .
+                EntityMapping::class . ", " . EmbeddableMapping::class . " or " . MappedSuperClassMapping::class . ". " .
                 "If you are using inheritance mapping, remember to create mappings for " .
                 "every child of the inheritance tree."
             );

@@ -2,9 +2,7 @@
 
 namespace Tests\Stubs\MappedSuperClasses;
 
-use LaravelDoctrine\Fluent\MappedSuperClass;
-
-class StubMappedSuperClass implements MappedSuperClass
+class StubMappedSuperClass
 {
     protected $name;
 }

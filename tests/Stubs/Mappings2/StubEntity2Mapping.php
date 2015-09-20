@@ -2,11 +2,11 @@
 
 namespace Tests\Stubs\Mappings2;
 
+use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
-use LaravelDoctrine\Fluent\Mapping;
 use Tests\Stubs\Entities\StubEntity2;
 
-class StubEntity2Mapping implements Mapping
+class StubEntity2Mapping extends EntityMapping
 {
     public function map(Fluent $builder)
     {

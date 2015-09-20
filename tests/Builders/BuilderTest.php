@@ -14,8 +14,6 @@ use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\JoinedTableInheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\SingleTableInheritance;
 use LaravelDoctrine\Fluent\Builders\Table;
-use LaravelDoctrine\Fluent\Embeddable;
-use LaravelDoctrine\Fluent\Entity;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -585,7 +583,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class FluentEntity implements Entity
+class FluentEntity
 {
     protected $id, $name;
 }

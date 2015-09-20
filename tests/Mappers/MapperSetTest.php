@@ -37,7 +37,7 @@ class MapperSetTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(
             MappingException::class,
-            'Class [baz] does not have a mapping configuration. Make sure you create a Mapping class for it that extends LaravelDoctrine\Fluent\Mapping and make sure your entity extends either LaravelDoctrine\Fluent\Entity or LaravelDoctrine\Fluent\Embeddable. If you are using inheritance mapping, remember to create mappings for every child of the inheritance tree'
+            'Class [baz] does not have a mapping configuration. Make sure you create a Mapping class that extends either LaravelDoctrine\Fluent\EntityMapping, LaravelDoctrine\Fluent\EmbeddableMapping or LaravelDoctrine\Fluent\MappedSuperClassMapping. If you are using inheritance mapping, remember to create mappings for every child of the inheritance tree.'
         );
 
         $this->mapperSet->getMapperFor('baz');

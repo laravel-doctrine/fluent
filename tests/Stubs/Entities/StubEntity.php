@@ -2,9 +2,7 @@
 
 namespace Tests\Stubs\Entities;
 
-use LaravelDoctrine\Fluent\Entity;
-
-class StubEntity implements Entity
+class StubEntity
 {
     protected $id, $name, $parent, $children;
 }

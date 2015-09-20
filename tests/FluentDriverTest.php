@@ -5,7 +5,7 @@ namespace Tests;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
 use LaravelDoctrine\Fluent\Builders\Builder;
-use LaravelDoctrine\Fluent\Entity;
+use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\FluentDriver;
 use LaravelDoctrine\Fluent\Mappers\EmbeddableMapper;
@@ -163,7 +163,7 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException(
             MappingException::class,
-            'Class [Tests\FakeEntity] does not have a mapping configuration. Make sure you create a Mapping class for it that extends LaravelDoctrine\Fluent\Mapping and make sure your entity extends either LaravelDoctrine\Fluent\Entity or LaravelDoctrine\Fluent\Embeddable. If you are using inheritance mapping, remember to create mappings for every child of the inheritance tree'
+            'Class [Tests\FakeEntity] does not have a mapping configuration. Make sure you create a Mapping class that extends either LaravelDoctrine\Fluent\EntityMapping, LaravelDoctrine\Fluent\EmbeddableMapping or LaravelDoctrine\Fluent\MappedSuperClassMapping. If you are using inheritance mapping, remember to create mappings for every child of the inheritance tree.'
         );
 
         $driver->loadMetadataForClass(
@@ -198,7 +198,7 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class FakeClassMapping implements Mapping
+class FakeClassMapping extends EntityMapping
 {
     public function map(Fluent $builder)
     {
@@ -212,7 +212,7 @@ class FakeClassMapping implements Mapping
     }
 }
 
-class FakeEntity implements Entity
+class FakeEntity
 {
     protected $id, $name;
 }

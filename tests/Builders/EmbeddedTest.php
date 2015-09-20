@@ -5,7 +5,6 @@ namespace Tests\Builders;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\Embedded;
-use LaravelDoctrine\Fluent\Embeddable;
 
 class EmbeddedTest extends \PHPUnit_Framework_TestCase
 {
@@ -71,7 +70,7 @@ class EmbeddedTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class FluentEmbeddable implements Embeddable
+class FluentEmbeddable
 {
 
 }
