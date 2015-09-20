@@ -41,6 +41,8 @@ abstract class AbstractMapper implements Mapper
         foreach ($builder->getQueued() as $buildable) {
             $buildable->build();
         }
+
+        $builder->resetQueued();
     }
 
     /**

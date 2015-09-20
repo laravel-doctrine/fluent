@@ -8,8 +8,10 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
+use LaravelDoctrine\Fluent\Builders\Embedded;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\Table;
+use LaravelDoctrine\Fluent\Embeddable;
 use LaravelDoctrine\Fluent\Entity;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
@@ -19,6 +21,7 @@ use LaravelDoctrine\Fluent\Relations\OneToOne;
 use LaravelDoctrine\Fluent\Relations\Relation;
 use LogicException;
 use Tests\FakeEntity;
+use Tests\Stubs\Embedabbles\StubEmbeddable;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,22 +36,22 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     protected $fluent;
 
     protected $types = [
-        'string'        => Type::STRING,
-        'text'          => Type::TEXT,
-        'integer'       => Type::INTEGER,
-        'smallInteger'  => Type::SMALLINT,
-        'bigInteger'    => Type::BIGINT,
-        'float'         => Type::FLOAT,
-        'decimal'       => Type::DECIMAL,
-        'boolean'       => Type::BOOLEAN,
-        'jsonArray'     => Type::JSON_ARRAY,
-        'date'          => Type::DATE,
-        'dateTime'      => Type::DATETIME,
-        'dateTimeTz'    => Type::DATETIMETZ,
-        'time'          => Type::TIME,
-        'timestamp'     => Type::DATETIME,
-        'timestampTz'   => Type::DATETIMETZ,
-        'binary'        => Type::BINARY
+        'string'       => Type::STRING,
+        'text'         => Type::TEXT,
+        'integer'      => Type::INTEGER,
+        'smallInteger' => Type::SMALLINT,
+        'bigInteger'   => Type::BIGINT,
+        'float'        => Type::FLOAT,
+        'decimal'      => Type::DECIMAL,
+        'boolean'      => Type::BOOLEAN,
+        'jsonArray'    => Type::JSON_ARRAY,
+        'date'         => Type::DATE,
+        'dateTime'     => Type::DATETIME,
+        'dateTimeTz'   => Type::DATETIMETZ,
+        'time'         => Type::TIME,
+        'timestamp'    => Type::DATETIME,
+        'timestampTz'  => Type::DATETIMETZ,
+        'binary'       => Type::BINARY
     ];
 
     protected function setUp()
@@ -472,6 +475,16 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(ManyToMany::class, $relation);
         $this->assertContains($relation, $this->fluent->getQueued());
+    }
+
+    public function test_can_embed_embeddables()
+    {
+        $embedded = $this->fluent->embed('embedded', StubEmbeddable::class, function ($embedded) {
+            $this->assertInstanceOf(Embedded::class, $embedded);
+        });
+
+        $this->assertInstanceOf(Embedded::class, $embedded);
+        $this->assertContains($embedded, $this->fluent->getQueued());
     }
 
     public function test_can_extend_fluent()

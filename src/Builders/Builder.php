@@ -505,6 +505,30 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param string        $field
+     * @param string        $embeddable
+     * @param callable|null $callback
+     *
+     * @return Embedded
+     */
+    public function embed($field, $embeddable, callable $callback = null)
+    {
+        $embedded = new Embedded(
+            $this->builder,
+            $field,
+            $embeddable
+        );
+
+        if (is_callable($callback)) {
+            $callback($embedded);
+        }
+
+        $this->queue($embedded);
+
+        return $embedded;
+    }
+
+    /**
      * @return bool
      */
     public function isEmbeddedClass()
@@ -558,5 +582,17 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
+    }
+
+    /**
+     * Reset queued fields/relations/embeddables
+     *
+     * @return $this
+     */
+    public function resetQueued()
+    {
+        $this->queued = null;
+
+        return $this;
     }
 }

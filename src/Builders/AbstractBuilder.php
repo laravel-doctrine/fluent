@@ -19,8 +19,6 @@ abstract class AbstractBuilder
     protected $namingStrategy;
 
     /**
-     * The constructor is protected to force factory method usage
-     *
      * @param ClassMetadataBuilder|null $builder
      */
     public function __construct(ClassMetadataBuilder $builder = null)

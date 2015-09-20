@@ -334,4 +334,10 @@ interface Fluent
      */
     public function getQueued();
 
+    /**
+     * Reset queued fields/relations/embeddables
+     *
+     * @return $this
+     */
+    public function resetQueued();
 }
