@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Embedded;
 use LaravelDoctrine\Fluent\Builders\Field;
+use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
@@ -393,4 +394,26 @@ interface Fluent
      * @return Embedded
      */
     public function embed($field, $embeddable, callable $callback = null);
+
+    /**
+     * @param string        $type
+     * @param callable|null $callback
+     *
+     * @return Inheritance
+     */
+    public function inheritance($type, callable $callback = null);
+
+    /**
+     * @param callable|null $callback
+     *
+     * @return Inheritance
+     */
+    public function singleTableInheritance(callable $callback = null);
+
+    /**
+     * @param callable|null $callback
+     *
+     * @return Inheritance
+     */
+    public function joinedTableInheritance(callable $callback = null);
 }

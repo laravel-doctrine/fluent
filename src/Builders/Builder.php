@@ -5,6 +5,8 @@ namespace LaravelDoctrine\Fluent\Builders;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
+use LaravelDoctrine\Fluent\Builders\Inheritance\InheritanceFactory;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -73,6 +75,43 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         return $entity;
+    }
+
+    /**
+     * @param string        $type
+     * @param callable|null $callback
+     *
+     * @return Inheritance
+     */
+    public function inheritance($type, callable $callback = null)
+    {
+        $inheritance = InheritanceFactory::create($type, $this->builder);
+
+        if (is_callable($callback)) {
+            $callback($inheritance);
+        }
+
+        return $inheritance;
+    }
+
+    /**
+     * @param callable|null $callback
+     *
+     * @return Inheritance
+     */
+    public function singleTableInheritance(callable $callback = null)
+    {
+        return $this->inheritance(Inheritance::SINGLE, $callback);
+    }
+
+    /**
+     * @param callable|null $callback
+     *
+     * @return Inheritance
+     */
+    public function joinedTableInheritance(callable $callback = null)
+    {
+        return $this->inheritance(Inheritance::JOINED, $callback);
     }
 
     /**

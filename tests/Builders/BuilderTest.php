@@ -10,6 +10,9 @@ use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Embedded;
 use LaravelDoctrine\Fluent\Builders\Field;
+use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
+use LaravelDoctrine\Fluent\Builders\Inheritance\JoinedTableInheritance;
+use LaravelDoctrine\Fluent\Builders\Inheritance\SingleTableInheritance;
 use LaravelDoctrine\Fluent\Builders\Table;
 use LaravelDoctrine\Fluent\Embeddable;
 use LaravelDoctrine\Fluent\Entity;
@@ -160,6 +163,39 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf(\LaravelDoctrine\Fluent\Builders\Entity::class, $entity);
+    }
+
+    public function test_can_set_inheritance()
+    {
+        $inheritance = $this->fluent->inheritance(Inheritance::SINGLE, function ($inheritance) {
+            $this->assertInstanceOf(SingleTableInheritance::class, $inheritance);
+            $this->assertInstanceOf(Inheritance::class, $inheritance);
+        });
+
+        $this->assertInstanceOf(SingleTableInheritance::class, $inheritance);
+        $this->assertInstanceOf(Inheritance::class, $inheritance);
+    }
+
+    public function test_can_set_single_table_inheritance()
+    {
+        $inheritance = $this->fluent->singleTableInheritance(function ($inheritance) {
+            $this->assertInstanceOf(SingleTableInheritance::class, $inheritance);
+            $this->assertInstanceOf(Inheritance::class, $inheritance);
+        });
+
+        $this->assertInstanceOf(SingleTableInheritance::class, $inheritance);
+        $this->assertInstanceOf(Inheritance::class, $inheritance);
+    }
+
+    public function test_can_set_joined_table_inheritance()
+    {
+        $inheritance = $this->fluent->joinedTableInheritance(function ($inheritance) {
+            $this->assertInstanceOf(JoinedTableInheritance::class, $inheritance);
+            $this->assertInstanceOf(Inheritance::class, $inheritance);
+        });
+
+        $this->assertInstanceOf(JoinedTableInheritance::class, $inheritance);
+        $this->assertInstanceOf(Inheritance::class, $inheritance);
     }
 
     public function test_cannot_use_entity_settings_for_embeddable()
