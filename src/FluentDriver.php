@@ -7,26 +7,16 @@ use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\Mapping\NamingStrategy;
+use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
-use LaravelDoctrine\Fluent\Locators\FluentMappingFileLocator;
 use LaravelDoctrine\Fluent\Mappers\MapperSet;
 
 class FluentDriver implements MappingDriver
 {
     /**
-     * @var array
-     */
-    protected $classCache = [];
-
-    /**
      * @var MapperSet
      */
     protected $mappers;
-
-    /**
-     * @var FluentMappingFileLocator
-     */
-    protected $locator;
 
     /**
      * @var Fluent
@@ -36,24 +26,23 @@ class FluentDriver implements MappingDriver
     /**
      * @var NamingStrategy
      */
-    private $namingStrategy;
+    protected $namingStrategy;
 
     /**
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param array          $paths
+     * @param array          $mappings
      * @param NamingStrategy $namingStrategy
      * @param Fluent         $builder
      */
-    public function __construct(array $paths = [], NamingStrategy $namingStrategy = null, Fluent $builder = null)
+    public function __construct(array $mappings = [], NamingStrategy $namingStrategy = null, Fluent $builder = null)
     {
         $this->mappers        = new MapperSet();
         $this->builder        = $builder ?: new Builder();
-        $this->locator        = new FluentMappingFileLocator($paths);
         $this->namingStrategy = $namingStrategy ?: new DefaultNamingStrategy();
 
-        $this->loadMappingFilesFromPaths();
+        $this->addMappings($mappings);
     }
 
     /**
@@ -92,22 +81,23 @@ class FluentDriver implements MappingDriver
     }
 
     /**
-     * @return array
+     * @param array $mappings
      */
-    public function getPaths()
+    public function addMappings(array $mappings = [])
     {
-        return $this->locator->getPaths();
-    }
+        foreach ($mappings as $class) {
+            if (!class_exists($class)) {
+                throw new InvalidArgumentException("Mapping class [{$class}] does not exist");
+            }
 
-    /**
-     * @param array $paths
-     */
-    public function addPaths($paths)
-    {
-        $this->locator->addPaths($paths);
+            $mapping = new $class;
 
-        // We should load these news paths
-        $this->loadMappingFilesFromPaths();
+            if (!$mapping instanceof Mapping) {
+                throw new InvalidArgumentException("Mapping class [{$class}] should implement " . Mapping::class);
+            }
+
+            $this->addMapping($mapping);
+        }
     }
 
     /**
@@ -135,21 +125,5 @@ class FluentDriver implements MappingDriver
     public function getMappers()
     {
         return $this->mappers;
-    }
-
-    /**
-     * @throws MappingException
-     */
-    protected function loadMappingFilesFromPaths()
-    {
-        foreach ($this->locator->getAllClassNames() as $className) {
-            if (class_exists($className)) {
-                $mapping = new $className;
-
-                if ($mapping instanceof Mapping) {
-                    $this->mappers->add($mapping);
-                }
-            }
-        }
     }
 }
