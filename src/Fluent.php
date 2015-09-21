@@ -3,7 +3,6 @@
 namespace LaravelDoctrine\Fluent;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Embedded;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
@@ -319,16 +318,6 @@ interface Fluent
     public function getBuilder();
 
     /**
-     * @param ClassMetadataBuilder $builder
-     */
-    public function setBuilder(ClassMetadataBuilder $builder);
-
-    /**
-     * @param NamingStrategy $namingStrategy
-     */
-    public function setNamingStrategy(NamingStrategy $namingStrategy);
-
-    /**
      * @param string        $method
      * @param callable|null $callback
      */
@@ -338,13 +327,6 @@ interface Fluent
      * @return array|Field[]
      */
     public function getQueued();
-
-    /**
-     * Reset queued fields/relations/embeddables
-     *
-     * @return $this
-     */
-    public function resetQueued();
 
     /**
      * @param string        $name

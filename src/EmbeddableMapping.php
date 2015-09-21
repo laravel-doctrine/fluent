@@ -2,15 +2,16 @@
 
 namespace LaravelDoctrine\Fluent;
 
+use LaravelDoctrine\Fluent\Mappers\EmbeddableMapper;
+use LaravelDoctrine\Fluent\Mappers\MapperSet;
+
 abstract class EmbeddableMapping implements Mapping
 {
     /**
-     * The given class should be mapped as Entity, Embeddable or MappedSuperClass
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function mapAs()
+    public function addMapperTo(MapperSet $mappers)
     {
-        return Mapping::EMBEDDABLE;
+        $mappers->addMapper($this->mapFor(), new EmbeddableMapper($this));
     }
 }

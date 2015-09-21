@@ -37,14 +37,9 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
     public function test_it_should_delegate_the_proper_mapping_to_the_mapping_class()
     {
         $metadata = new ClassMetadataInfo(StubEntity::class);
-        $builder  = new Builder();
-        $builder->setBuilder(new ClassMetadataBuilder($metadata));
+        $builder  = new Builder(new ClassMetadataBuilder($metadata));
 
-        $this->mapper->map(
-            $metadata,
-            $builder,
-            new DefaultNamingStrategy()
-        );
+        $this->mapper->map($builder);
 
         $this->assertContains('id', $metadata->fieldNames);
         $this->assertContains('name', $metadata->fieldNames);

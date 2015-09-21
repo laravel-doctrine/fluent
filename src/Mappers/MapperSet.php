@@ -22,9 +22,7 @@ class MapperSet
      */
     public function add(Mapping $mapping)
     {
-        if (!$this->hasMapperFor($mapping->mapFor())) {
-            $this->mappers[$mapping->mapFor()] = MapperFactory::create($mapping);
-        }
+        $mapping->addMapperTo($this);
     }
 
     /**
@@ -80,5 +78,16 @@ class MapperSet
     public function getClassNames()
     {
         return array_keys($this->mappers);
+    }
+
+    /**
+     * Add a mapper to the given class.
+     *
+     * @param string $class
+     * @param Mapper $mapper
+     */
+    public function addMapper($class, Mapper $mapper)
+    {
+        $this->mappers[$class] = $mapper;
     }
 }

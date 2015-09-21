@@ -4,9 +4,8 @@ namespace LaravelDoctrine\Fluent;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\ORM\Mapping\NamingStrategy;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Mappers\MapperSet;
@@ -19,29 +18,14 @@ class FluentDriver implements MappingDriver
     protected $mappers;
 
     /**
-     * @var Fluent
-     */
-    protected $builder;
-
-    /**
-     * @var NamingStrategy
-     */
-    protected $namingStrategy;
-
-    /**
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param array          $mappings
-     * @param NamingStrategy $namingStrategy
-     * @param Fluent         $builder
+     * @param array $mappings
      */
-    public function __construct(array $mappings = [], NamingStrategy $namingStrategy = null, Fluent $builder = null)
+    public function __construct(array $mappings = [])
     {
-        $this->mappers        = new MapperSet();
-        $this->builder        = $builder ?: new Builder();
-        $this->namingStrategy = $namingStrategy ?: new DefaultNamingStrategy();
-
+        $this->mappers = new MapperSet();
         $this->addMappings($mappings);
     }
 
@@ -53,7 +37,9 @@ class FluentDriver implements MappingDriver
      */
     public function loadMetadataForClass($className, ClassMetadata $metadata)
     {
-        $this->mappers->getMapperFor($className)->map($metadata, $this->builder, $this->namingStrategy);
+        $this->mappers->getMapperFor($className)->map(new Builder(
+            new ClassMetadataBuilder($metadata)
+        ));
     }
 
     /**
@@ -109,14 +95,6 @@ class FluentDriver implements MappingDriver
     public function addMapping(Mapping $mapping)
     {
         $this->mappers->add($mapping);
-    }
-
-    /**
-     * @return Fluent
-     */
-    public function getBuilder()
-    {
-        return $this->builder;
     }
 
     /**

@@ -2,20 +2,16 @@
 
 namespace LaravelDoctrine\Fluent\Mappers;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Fluent;
 
 interface Mapper
 {
     /**
-     * @param ClassMetadataInfo $metadata
-     * @param Fluent            $builder
-     * @param NamingStrategy    $namingStrategy
+     * @param Fluent $builder
      *
-     * @return
+     * @return void
      */
-    public function map(ClassMetadataInfo $metadata, Fluent $builder, NamingStrategy $namingStrategy);
+    public function map(Fluent $builder);
 
     /**
      * Returns whether the class with the specified name should have its metadata loaded.

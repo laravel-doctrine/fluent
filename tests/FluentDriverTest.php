@@ -205,20 +205,6 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
             new ClassMetadataInfo(FakeEntity::class)
         );
     }
-
-    public function test_can_get_builder()
-    {
-        $driver = new FluentDriver();
-        $this->assertInstanceOf(Fluent::class, $driver->getBuilder());
-        $this->assertInstanceOf(Builder::class, $driver->getBuilder());
-    }
-
-    public function test_can_set_custom_builder()
-    {
-        $driver = new FluentDriver([], null, new CustomBuilder());
-        $this->assertInstanceOf(Fluent::class, $driver->getBuilder());
-        $this->assertInstanceOf(CustomBuilder::class, $driver->getBuilder());
-    }
 }
 
 class FakeClassMapping extends EntityMapping

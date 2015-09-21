@@ -2,35 +2,16 @@
 
 namespace LaravelDoctrine\Fluent;
 
+use LaravelDoctrine\Fluent\Mappers\MapperSet;
+
 interface Mapping
 {
     /**
-     * Map the class as Entity
-     *
-     * @const
-     */
-    const ENTITY = 'Entity';
-
-    /**
-     * Map the class as Embeddable
-     *
-     * @const
-     */
-    const EMBEDDABLE = 'Embeddable';
-
-    /**
-     * Map the class as MappedSuperClass
-     *
-     * @const
-     */
-    const MAPPED_SUPER_CLASS = 'MappedSuperClass';
-
-    /**
-     * The given class should be mapped as Entity, Embeddable or MappedSuperClass
+     * Returns the fully qualified name of the class that this mapper maps.
      *
      * @return string
      */
-    public function mapAs();
+    public function mapFor();
 
     /**
      * Load the object's metadata through the Metadata Builder object.
@@ -40,9 +21,9 @@ interface Mapping
     public function map(Fluent $builder);
 
     /**
-     * Returns the fully qualified name of the class that this mapper maps.
+     * Create the corresponding mapper and add it to the current mapper set.
      *
-     * @return string
+     * @param MapperSet $mappers
      */
-    public function mapFor();
+    public function addMapperTo(MapperSet $mappers);
 }

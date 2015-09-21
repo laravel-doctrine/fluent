@@ -604,6 +604,7 @@ class Builder extends AbstractBuilder implements Fluent
     {
         $embedded = new Embedded(
             $this->builder,
+            $this->namingStrategy,
             $field,
             $embeddable
         );
@@ -685,17 +686,5 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         $this->queue($buildable);
-    }
-
-    /**
-     * Reset queued fields/relations/embeddables
-     *
-     * @return $this
-     */
-    public function resetQueued()
-    {
-        $this->queued = [];
-
-        return $this;
     }
 }

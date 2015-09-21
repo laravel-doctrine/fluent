@@ -4,6 +4,7 @@ namespace Tests\Builders;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Embedded;
 
 class EmbeddedTest extends \PHPUnit_Framework_TestCase
@@ -26,6 +27,7 @@ class EmbeddedTest extends \PHPUnit_Framework_TestCase
 
         $this->embedded = new Embedded(
             $this->builder,
+            new DefaultNamingStrategy,
             'field',
             FluentEmbeddable::class
         );
