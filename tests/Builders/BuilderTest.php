@@ -509,7 +509,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_extend_fluent()
     {
-        $this->fluent->macro('timestamps', function (Fluent $builder) {
+        Builder::macro('timestamps', function (Fluent $builder) {
             $builder->string('createdAt');
         });
 
@@ -524,7 +524,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_extend_fluent_with_params()
     {
-        $this->fluent->macro('timestamps', function (Fluent $builder, $createdAt, $updatedAt) {
+        Builder::macro('timestamps', function (Fluent $builder, $createdAt, $updatedAt) {
             $builder->string($createdAt);
             $builder->string($updatedAt);
         });
@@ -557,6 +557,39 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->fluent->doesNotExist();
+    }
+
+    public function test_two_different_instances_of_fluent_contain_all_macros()
+    {
+        Builder::macro('aMacro', function(Fluent $builder){
+            $builder->string('aField');
+        });
+
+        $this->fluent->aMacro();
+
+        Builder::macro('anotherMacro', function(Fluent $builder){
+            $builder->string('anotherField');
+        });
+
+        $this->fluent->anotherMacro();
+
+        $fluent = new Builder(new ClassMetadataBuilder(new ClassMetadataInfo(FluentEntity::class)));
+
+        $fluent->aMacro();
+        $fluent->anotherMacro();
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        foreach ($fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        $this->assertContains('aField',       $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('anotherField', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('aField',       $fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('anotherField', $fluent->getClassMetadata()->getFieldNames());
     }
 }
 

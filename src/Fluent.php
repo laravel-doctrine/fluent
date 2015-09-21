@@ -321,7 +321,7 @@ interface Fluent
      * @param string        $method
      * @param callable|null $callback
      */
-    public function macro($method, callable $callback = null);
+    public static function macro($method, callable $callback = null);
 
     /**
      * @return array|Field[]
