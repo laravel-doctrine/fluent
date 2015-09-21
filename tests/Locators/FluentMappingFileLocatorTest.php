@@ -27,4 +27,11 @@ class FluentMappingFileLocatorTest extends \PHPUnit_Framework_TestCase
 
         $locator->getAllClassNames();
     }
+
+    public function test_an_empty_response_when_no_paths_were_configured()
+    {
+        $locator = new FluentMappingFileLocator([]);
+
+        $this->assertEmpty($locator->getAllClassNames());
+    }
 }
