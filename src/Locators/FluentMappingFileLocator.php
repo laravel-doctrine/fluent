@@ -60,26 +60,28 @@ class FluentMappingFileLocator
     {
         $classes = [];
 
-        if (count($this->paths) > 0) {
-            foreach ($this->paths as $path) {
-                if (!is_dir($path)) {
-                    throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
+        if (empty($this->paths)) {
+            return $classes;
+        }
+
+        foreach ($this->paths as $path) {
+            if (!is_dir($path)) {
+                throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
+            }
+
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path),
+                RecursiveIteratorIterator::LEAVES_ONLY
+            );
+
+            foreach ($iterator as $file) {
+                $fileName = $file->getBasename($this->fileExtension);
+
+                if ($fileName == $file->getBasename() || $fileName == $globalBasename) {
+                    continue;
                 }
 
-                $iterator = new RecursiveIteratorIterator(
-                    new RecursiveDirectoryIterator($path),
-                    RecursiveIteratorIterator::LEAVES_ONLY
-                );
-
-                foreach ($iterator as $file) {
-                    $fileName = $file->getBasename($this->fileExtension);
-
-                    if ($fileName == $file->getBasename() || $fileName == $globalBasename) {
-                        continue;
-                    }
-
-                    $classes[] = $this->getClassName($file);
-                }
+                $classes[] = $this->getClassName($file);
             }
         }
 
@@ -87,11 +89,11 @@ class FluentMappingFileLocator
     }
 
     /**
-     * @param string $file
+     * @param \SplFileInfo $file
      *
      * @return string
      */
-    protected function getClassName($file)
+    protected function getClassName(\SplFileInfo $file)
     {
         $before = get_declared_classes();
         require_once($file->getPathName());
