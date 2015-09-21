@@ -25,7 +25,7 @@ abstract class AbstractBuilder
      */
     public function __construct(ClassMetadataBuilder $builder, NamingStrategy $namingStrategy = null)
     {
-        $this->builder = $builder;
+        $this->builder        = $builder;
         $this->namingStrategy = $namingStrategy ?: new DefaultNamingStrategy;
     }
 
