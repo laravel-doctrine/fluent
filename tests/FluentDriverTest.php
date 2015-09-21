@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
 use LaravelDoctrine\Fluent\Builders\Builder;
@@ -204,6 +206,21 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
             FakeEntity::class,
             new ClassMetadataInfo(FakeEntity::class)
         );
+    }
+
+    public function test_allow_other_fluent_implementations()
+    {
+        $driver = new FluentDriver();
+
+        $driver->setFluentFactory(function(ClassMetadata $metadata){
+            return new CustomBuilder(new ClassMetadataBuilder($metadata));
+        });
+
+        $mapping = $this->getMock(EntityMapping::class);
+        $mapping->expects($this->once())->method('map')->with($this->isInstanceOf(CustomBuilder::class));
+
+        $driver->getMappers()->addMapper('fake', new EntityMapper($mapping));
+        $driver->loadMetadataForClass('fake', new ClassMetadataInfo('fake'));
     }
 }
 
