@@ -11,7 +11,7 @@ trait Owning
      *
      * @return $this
      */
-    public function owning($relation)
+    public function owns($relation)
     {
         $this->getAssociation()->inversedBy($relation);
 

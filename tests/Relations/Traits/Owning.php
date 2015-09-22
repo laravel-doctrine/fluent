@@ -6,7 +6,7 @@ trait Owning
 {
     public function test_can_own_a_relation()
     {
-        $this->relation->owning('children');
+        $this->relation->owns('children');
 
         $this->relation->build();
 
