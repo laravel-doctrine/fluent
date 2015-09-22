@@ -28,7 +28,7 @@ class Builder extends AbstractBuilder implements Fluent
     /**
      * @var array
      */
-    protected $macros = [];
+    protected static $macros = [];
 
     /**
      * @param string|callable $name
@@ -604,6 +604,7 @@ class Builder extends AbstractBuilder implements Fluent
     {
         $embedded = new Embedded(
             $this->builder,
+            $this->namingStrategy,
             $field,
             $embeddable
         );
@@ -641,13 +642,13 @@ class Builder extends AbstractBuilder implements Fluent
      * @param string        $method
      * @param callable|null $callback
      */
-    public function macro($method, callable $callback = null)
+    public static function macro($method, callable $callback = null)
     {
         if (!is_callable($callback)) {
             throw new InvalidArgumentException('Fluent builder should be extended with a closure argument, none given');
         }
 
-        $this->macros[$method] = $callback;
+        self::$macros[$method] = $callback;
     }
 
     /**
@@ -663,12 +664,12 @@ class Builder extends AbstractBuilder implements Fluent
             return call_user_func_array([$this, 'setArray'], $params);
         }
 
-        if (isset($this->macros[$method])) {
+        if (isset(self::$macros[$method])) {
 
             // Add builder as first closure param, append the given params
             array_unshift($params, $this);
 
-            return call_user_func_array($this->macros[$method], $params);
+            return call_user_func_array(self::$macros[$method], $params);
         }
 
         throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
@@ -685,17 +686,5 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         $this->queue($buildable);
-    }
-
-    /**
-     * Reset queued fields/relations/embeddables
-     *
-     * @return $this
-     */
-    public function resetQueued()
-    {
-        $this->queued = [];
-
-        return $this;
     }
 }

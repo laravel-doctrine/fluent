@@ -4,9 +4,8 @@ namespace LaravelDoctrine\Fluent;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\ORM\Mapping\NamingStrategy;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Mappers\MapperSet;
@@ -19,29 +18,23 @@ class FluentDriver implements MappingDriver
     protected $mappers;
 
     /**
-     * @var Fluent
+     * @type callable
      */
-    protected $builder;
-
-    /**
-     * @var NamingStrategy
-     */
-    protected $namingStrategy;
+    protected $fluentFactory;
 
     /**
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param array          $mappings
-     * @param NamingStrategy $namingStrategy
-     * @param Fluent         $builder
+     * @param array $mappings
      */
-    public function __construct(array $mappings = [], NamingStrategy $namingStrategy = null, Fluent $builder = null)
+    public function __construct(array $mappings = [])
     {
-        $this->mappers        = new MapperSet();
-        $this->builder        = $builder ?: new Builder();
-        $this->namingStrategy = $namingStrategy ?: new DefaultNamingStrategy();
+        $this->fluentFactory = function (ClassMetadata $metadata) {
+            return new Builder(new ClassMetadataBuilder($metadata));
+        };
 
+        $this->mappers = new MapperSet();
         $this->addMappings($mappings);
     }
 
@@ -53,7 +46,9 @@ class FluentDriver implements MappingDriver
      */
     public function loadMetadataForClass($className, ClassMetadata $metadata)
     {
-        $this->mappers->getMapperFor($className)->map($metadata, $this->builder, $this->namingStrategy);
+        $this->mappers->getMapperFor($className)->map(
+            $this->getFluent($metadata)
+        );
     }
 
     /**
@@ -112,18 +107,31 @@ class FluentDriver implements MappingDriver
     }
 
     /**
-     * @return Fluent
-     */
-    public function getBuilder()
-    {
-        return $this->builder;
-    }
-
-    /**
      * @return MapperSet
      */
     public function getMappers()
     {
         return $this->mappers;
+    }
+
+    /**
+     * Override the default Fluent factory method with a custom one.
+     * Use this to implement your own Fluent builder.
+     * The method will recieve a ClassMetadata object as its only argument.
+     *
+     * @param callable $factory
+     */
+    public function setFluentFactory(callable $factory)
+    {
+        $this->fluentFactory = $factory;
+    }
+
+    /**
+     * @param  ClassMetadata $metadata
+     * @return Fluent
+     */
+    protected function getFluent(ClassMetadata $metadata)
+    {
+        return call_user_func($this->fluentFactory, $metadata);
     }
 }

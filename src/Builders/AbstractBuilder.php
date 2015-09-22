@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\NamingStrategy;
 
 abstract class AbstractBuilder
@@ -19,11 +20,13 @@ abstract class AbstractBuilder
     protected $namingStrategy;
 
     /**
-     * @param ClassMetadataBuilder|null $builder
+     * @param ClassMetadataBuilder $builder
+     * @param NamingStrategy       $namingStrategy
      */
-    public function __construct(ClassMetadataBuilder $builder = null)
+    public function __construct(ClassMetadataBuilder $builder, NamingStrategy $namingStrategy = null)
     {
-        $this->builder = $builder;
+        $this->builder        = $builder;
+        $this->namingStrategy = $namingStrategy ?: new DefaultNamingStrategy;
     }
 
     /**
@@ -32,22 +35,6 @@ abstract class AbstractBuilder
     public function getBuilder()
     {
         return $this->builder;
-    }
-
-    /**
-     * @param ClassMetadataBuilder $builder
-     */
-    public function setBuilder(ClassMetadataBuilder $builder)
-    {
-        $this->builder = $builder;
-    }
-
-    /**
-     * @param NamingStrategy $namingStrategy
-     */
-    public function setNamingStrategy(NamingStrategy $namingStrategy)
-    {
-        $this->namingStrategy = $namingStrategy;
     }
 
     /**

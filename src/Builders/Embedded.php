@@ -3,6 +3,7 @@
 namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Buildable;
 
 class Embedded extends AbstractBuilder implements Buildable
@@ -24,12 +25,14 @@ class Embedded extends AbstractBuilder implements Buildable
 
     /**
      * @param ClassMetadataBuilder $builder
+     * @param NamingStrategy       $namingStrategy
      * @param string               $relation
      * @param string               $embeddable
      */
-    public function __construct(ClassMetadataBuilder $builder, $relation, $embeddable)
+    public function __construct(ClassMetadataBuilder $builder, NamingStrategy $namingStrategy, $relation, $embeddable)
     {
-        $this->builder    = $builder;
+        parent::__construct($builder, $namingStrategy);
+
         $this->embeddable = $embeddable;
         $this->relation   = $relation;
     }

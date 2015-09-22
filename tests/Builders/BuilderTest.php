@@ -70,48 +70,36 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             FluentEntity::class
         ));
 
-        $this->fluent = new Builder();
-        $this->fluent->setBuilder($this->builder);
-        $this->fluent->setNamingStrategy(new DefaultNamingStrategy());
+        $this->fluent = new Builder($this->builder);
     }
 
     public function test_can_get_builder()
     {
-        $entity = new Builder();
-        $entity->setBuilder($this->builder);
+        $entity = new Builder($this->builder);
 
         $this->assertInstanceOf(ClassMetadataBuilder::class, $entity->getBuilder());
     }
 
     public function test_can_create_entity()
     {
-        $entity = new Builder();
-        $entity->setBuilder($this->builder);
-
-        $this->assertInstanceOf(Builder::class, $entity);
-        $this->assertFalse($entity->getClassMetadata()->isEmbeddedClass);
-        $this->assertFalse($entity->getClassMetadata()->isMappedSuperclass);
+        $this->assertInstanceOf(Builder::class, $this->fluent);
+        $this->assertFalse($this->fluent->getClassMetadata()->isEmbeddedClass);
+        $this->assertFalse($this->fluent->getClassMetadata()->isMappedSuperclass);
     }
 
     public function test_can_create_embeddable()
     {
-        $entity = new Builder();
         $this->builder->setEmbeddable();
-        $entity->setBuilder($this->builder);
 
-        $this->assertInstanceOf(Builder::class, $entity);
-        $this->assertTrue($entity->getClassMetadata()->isEmbeddedClass);
+        $this->assertTrue($this->fluent->getClassMetadata()->isEmbeddedClass);
     }
 
     public function test_can_create_superclass()
     {
-        $entity = new Builder();
         $this->builder->setMappedSuperClass();
-        $entity->setBuilder($this->builder);
 
-        $this->assertInstanceOf(Builder::class, $entity);
-        $this->assertFalse($entity->getClassMetadata()->isEmbeddedClass);
-        $this->assertTrue($entity->getClassMetadata()->isMappedSuperclass);
+        $this->assertFalse($this->fluent->getClassMetadata()->isEmbeddedClass);
+        $this->assertTrue($this->fluent->getClassMetadata()->isMappedSuperclass);
     }
 
     public function test_can_set_table_settings()
@@ -145,13 +133,10 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_cannot_use_table_settings_for_embeddable()
     {
-        $fluent = new Builder();
         $this->builder->setEmbeddable();
-        $fluent->setBuilder($this->builder);
-
         $this->setExpectedException(LogicException::class);
 
-        $fluent->table('users');
+        $this->fluent->table('users');
     }
 
     public function test_can_set_entity_settings()
@@ -198,13 +183,11 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_cannot_use_entity_settings_for_embeddable()
     {
-        $fluent = new Builder();
         $this->builder->setEmbeddable();
-        $fluent->setBuilder($this->builder);
 
         $this->setExpectedException(LogicException::class);
 
-        $fluent->entity();
+        $this->fluent->entity();
     }
 
     public function test_can_create_field()
@@ -271,35 +254,29 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_cannot_add_increments_to_embeddable()
     {
-        $fluent = new Builder();
         $this->builder->setEmbeddable();
-        $fluent->setBuilder($this->builder);
 
         $this->setExpectedException(LogicException::class);
 
-        $fluent->increments('id');
+        $this->fluent->increments('id');
     }
 
     public function test_cannot_add_small_increments_to_embeddable()
     {
-        $fluent = new Builder();
         $this->builder->setEmbeddable();
-        $fluent->setBuilder($this->builder);
 
         $this->setExpectedException(LogicException::class);
 
-        $fluent->smallIncrements('id');
+        $this->fluent->smallIncrements('id');
     }
 
     public function test_cannot_add_big_increments_to_embeddable()
     {
-        $fluent = new Builder();
         $this->builder->setEmbeddable();
-        $fluent->setBuilder($this->builder);
 
         $this->setExpectedException(LogicException::class);
 
-        $fluent->bigIncrements('id');
+        $this->fluent->bigIncrements('id');
     }
 
     public function test_can_add_all_fields()
@@ -532,7 +509,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_extend_fluent()
     {
-        $this->fluent->macro('timestamps', function (Fluent $builder) {
+        Builder::macro('timestamps', function (Fluent $builder) {
             $builder->string('createdAt');
         });
 
@@ -547,7 +524,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_extend_fluent_with_params()
     {
-        $this->fluent->macro('timestamps', function (Fluent $builder, $createdAt, $updatedAt) {
+        Builder::macro('timestamps', function (Fluent $builder, $createdAt, $updatedAt) {
             $builder->string($createdAt);
             $builder->string($updatedAt);
         });
@@ -580,6 +557,39 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->fluent->doesNotExist();
+    }
+
+    public function test_two_different_instances_of_fluent_contain_all_macros()
+    {
+        Builder::macro('aMacro', function(Fluent $builder){
+            $builder->string('aField');
+        });
+
+        $this->fluent->aMacro();
+
+        Builder::macro('anotherMacro', function(Fluent $builder){
+            $builder->string('anotherField');
+        });
+
+        $this->fluent->anotherMacro();
+
+        $fluent = new Builder(new ClassMetadataBuilder(new ClassMetadataInfo(FluentEntity::class)));
+
+        $fluent->aMacro();
+        $fluent->anotherMacro();
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        foreach ($fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        $this->assertContains('aField',       $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('anotherField', $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('aField',       $fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('anotherField', $fluent->getClassMetadata()->getFieldNames());
     }
 }
 

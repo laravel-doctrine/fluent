@@ -3,8 +3,6 @@
 namespace LaravelDoctrine\Fluent\Mappers;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Mapping;
 
@@ -24,25 +22,17 @@ abstract class AbstractMapper implements Mapper
     }
 
     /**
-     * @param ClassMetadataInfo $metadata
-     * @param Fluent            $builder
-     * @param NamingStrategy    $namingStrategy
+     * @param Fluent $builder
      */
-    public function map(ClassMetadataInfo $metadata, Fluent $builder, NamingStrategy $namingStrategy)
+    public function map(Fluent $builder)
     {
-        $cm = new ClassMetadataBuilder($metadata);
-
-        $this->setType($cm);
-        $builder->setBuilder($cm);
-        $builder->setNamingStrategy($namingStrategy);
+        $this->setType($builder->getBuilder());
 
         $this->mapping->map($builder);
 
         foreach ($builder->getQueued() as $buildable) {
             $buildable->build();
         }
-
-        $builder->resetQueued();
     }
 
     /**
