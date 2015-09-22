@@ -30,7 +30,7 @@ class FluentDriver implements MappingDriver
      */
     public function __construct(array $mappings = [])
     {
-        $this->fluentFactory = function(ClassMetadata $metadata) {
+        $this->fluentFactory = function (ClassMetadata $metadata) {
             return new Builder(new ClassMetadataBuilder($metadata));
         };
 
