@@ -10,6 +10,7 @@ use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Embedded;
 use LaravelDoctrine\Fluent\Builders\Field;
+use LaravelDoctrine\Fluent\Builders\Index;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\JoinedTableInheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\SingleTableInheritance;
@@ -188,6 +189,33 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(LogicException::class);
 
         $this->fluent->entity();
+    }
+
+    public function test_can_add_one_column_index()
+    {
+        $index = $this->fluent->index('name');
+
+        $this->assertInstanceOf(Index::class, $index);
+        $this->assertEquals(['name'], $index->getColumns());
+        $this->assertContains($index, $this->fluent->getQueued());
+    }
+
+    public function test_can_add_multiple_column_index_as_multiple_parameters()
+    {
+        $index = $this->fluent->index('name', 'address', 'email');
+
+        $this->assertInstanceOf(Index::class, $index);
+        $this->assertEquals(['name', 'address', 'email'], $index->getColumns());
+        $this->assertContains($index, $this->fluent->getQueued());
+    }
+
+    public function test_can_add_multiple_column_index_as_array()
+    {
+        $index = $this->fluent->index(['name', 'address', 'email']);
+
+        $this->assertInstanceOf(Index::class, $index);
+        $this->assertEquals(['name', 'address', 'email'], $index->getColumns());
+        $this->assertContains($index, $this->fluent->getQueued());
     }
 
     public function test_can_create_field()
@@ -561,13 +589,13 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_two_different_instances_of_fluent_contain_all_macros()
     {
-        Builder::macro('aMacro', function(Fluent $builder){
+        Builder::macro('aMacro', function (Fluent $builder) {
             $builder->string('aField');
         });
 
         $this->fluent->aMacro();
 
-        Builder::macro('anotherMacro', function(Fluent $builder){
+        Builder::macro('anotherMacro', function (Fluent $builder) {
             $builder->string('anotherField');
         });
 
@@ -586,9 +614,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             $field->build();
         }
 
-        $this->assertContains('aField',       $this->fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('aField', $this->fluent->getClassMetadata()->getFieldNames());
         $this->assertContains('anotherField', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertContains('aField',       $fluent->getClassMetadata()->getFieldNames());
+        $this->assertContains('aField', $fluent->getClassMetadata()->getFieldNames());
         $this->assertContains('anotherField', $fluent->getClassMetadata()->getFieldNames());
     }
 }

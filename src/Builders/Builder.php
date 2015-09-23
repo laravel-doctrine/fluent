@@ -115,6 +115,25 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param array|string $columns
+     *
+     * @return Index
+     */
+    public function index($columns)
+    {
+        $columns = is_array($columns) ? $columns : func_get_args();
+
+        $index = new Index(
+            $this->builder,
+            $columns
+        );
+
+        $this->queue($index);
+
+        return $index;
+    }
+
+    /**
      * @param          $type
      * @param          $name
      * @param callable $callback
