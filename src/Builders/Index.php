@@ -8,14 +8,16 @@ use LaravelDoctrine\Fluent\Buildable;
 class Index implements Buildable
 {
     /**
-     * @const
+     * @var string
      */
-    const SEPARATOR = '_';
+    protected $separator = '_';
 
     /**
-     * @const
+     * Suffix to be added to the index key name
+     *
+     * @var string
      */
-    const SUFFIX = 'index';
+    protected $suffix = 'index';
 
     /**
      * @var ClassMetadataBuilder
@@ -88,6 +90,6 @@ class Index implements Buildable
     {
         $table = $this->builder->getClassMetadata()->getTableName();
 
-        return $table . self::SEPARATOR . implode(self::SEPARATOR, $this->getColumns()) . self::SEPARATOR . self::SUFFIX;
+        return $table . $this->separator . implode($this->separator, $this->getColumns()) . $this->separator . $this->suffix;
     }
 }
