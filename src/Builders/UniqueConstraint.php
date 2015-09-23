@@ -2,7 +2,6 @@
 
 namespace LaravelDoctrine\Fluent\Builders;
 
-use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use LaravelDoctrine\Fluent\Buildable;
 
 class UniqueConstraint extends Index implements Buildable
