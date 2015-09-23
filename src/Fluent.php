@@ -33,6 +33,20 @@ interface Fluent
     public function entity(callable $callback = null);
 
     /**
+     * @param array|string $columns
+     *
+     * @return \LaravelDoctrine\Fluent\Builders\Index
+     */
+    public function index($columns);
+
+    /**
+     * @param array|string $columns
+     *
+     * @return \LaravelDoctrine\Fluent\Builders\UniqueConstraint
+     */
+    public function unique($columns);
+
+    /**
      * @param          $type
      * @param          $name
      * @param callable $callback

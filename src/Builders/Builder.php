@@ -136,7 +136,7 @@ class Builder extends AbstractBuilder implements Fluent
     /**
      * @param array|string $columns
      *
-     * @return Index
+     * @return UniqueConstraint
      */
     public function unique($columns)
     {
