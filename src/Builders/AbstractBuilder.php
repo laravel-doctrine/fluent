@@ -44,4 +44,12 @@ abstract class AbstractBuilder
     {
         return $this->builder->getClassMetadata();
     }
+
+    /**
+     * @return NamingStrategy
+     */
+    public function getNamingStrategy()
+    {
+        return $this->namingStrategy;
+    }
 }

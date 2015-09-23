@@ -2,6 +2,8 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
@@ -33,8 +35,8 @@ trait Relations
     {
         return $this->addRelation(
             new OneToOne(
-                $this->builder,
-                $this->namingStrategy,
+                $this->getBuilder(),
+                $this->getNamingStrategy(),
                 $field,
                 $entity
             ),
@@ -65,8 +67,8 @@ trait Relations
     {
         return $this->addRelation(
             new ManyToOne(
-                $this->builder,
-                $this->namingStrategy,
+                $this->getBuilder(),
+                $this->getNamingStrategy(),
                 $field,
                 $entity
             ),
@@ -97,8 +99,8 @@ trait Relations
     {
         return $this->addRelation(
             new OneToMany(
-                $this->builder,
-                $this->namingStrategy,
+                $this->getBuilder(),
+                $this->getNamingStrategy(),
                 $field,
                 $entity
             ),
@@ -129,8 +131,8 @@ trait Relations
     {
         return $this->addRelation(
             new ManyToMany(
-                $this->builder,
-                $this->namingStrategy,
+                $this->getBuilder(),
+                $this->getNamingStrategy(),
                 $field,
                 $entity
             ),
@@ -152,4 +154,20 @@ trait Relations
 
         return $relation;
     }
+
+    /**
+     * @return ClassMetadataBuilder
+     */
+    abstract public function getBuilder();
+
+    /**
+     * @param Buildable     $buildable
+     * @param callable|null $callback
+     */
+    abstract protected function callbackAndQueue(Buildable $buildable, callable $callback = null);
+
+    /**
+     * @return NamingStrategy
+     */
+    abstract public function getNamingStrategy();
 }

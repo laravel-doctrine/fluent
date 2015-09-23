@@ -3,21 +3,22 @@
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
 use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LogicException;
 
 trait Fields
 {
     /**
-     * @param          $type
-     * @param          $name
+     * @param string   $type
+     * @param string   $name
      * @param callable $callback
      *
      * @return Field
      */
     public function field($type, $name, callable $callback = null)
     {
-        $field = Field::make($this->builder, $type, $name);
+        $field = Field::make($this->getBuilder(), $type, $name);
 
         $this->callbackAndQueue($field, $callback);
 
@@ -343,4 +344,20 @@ trait Fields
     {
         return $this->string($name, $callback)->nullable()->length(100);
     }
+
+    /**
+     * @return ClassMetadataBuilder
+     */
+    abstract public function getBuilder();
+
+    /**
+     * @param Buildable     $buildable
+     * @param callable|null $callback
+     */
+    abstract protected function callbackAndQueue(Buildable $buildable, callable $callback = null);
+
+    /**
+     * @return bool
+     */
+    abstract public function isEmbeddedClass();
 }
