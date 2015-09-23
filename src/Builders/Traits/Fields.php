@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent\Builders\Traits;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LogicException;
 
