@@ -5,7 +5,7 @@ namespace LaravelDoctrine\Fluent\Builders;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use LaravelDoctrine\Fluent\Buildable;
 
-class Index implements Buildable
+class UniqueConstraint implements Buildable
 {
     /**
      * @const
@@ -15,7 +15,7 @@ class Index implements Buildable
     /**
      * @const
      */
-    const SUFFIX = 'index';
+    const SUFFIX = 'unique';
 
     /**
      * @var ClassMetadataBuilder
@@ -47,7 +47,7 @@ class Index implements Buildable
      */
     public function build()
     {
-        $this->builder->addIndex(
+        $this->builder->addUniqueConstraint(
             $this->getColumns(),
             $this->getName()
         );

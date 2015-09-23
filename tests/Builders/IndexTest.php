@@ -20,7 +20,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase
         $this->builder->setTable('stub_entities');
     }
 
-    public function test_can_a_index_for_one_column_with_passing_a_index_name()
+    public function test_can_add_index_for_one_column_without_passing_a_index_name()
     {
         $index = new Index(
             $this->builder,
@@ -39,7 +39,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('name', $indexes['stub_entities_name_index']['columns']);
     }
 
-    public function test_can_a_index_for_multiple_column_with_passing_a_index_name()
+    public function test_can_add_index_for_multiple_column_without_passing_a_index_name()
     {
         $index = new Index(
             $this->builder,

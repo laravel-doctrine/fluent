@@ -15,6 +15,7 @@ use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\JoinedTableInheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\SingleTableInheritance;
 use LaravelDoctrine\Fluent\Builders\Table;
+use LaravelDoctrine\Fluent\Builders\UniqueConstraint;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -216,6 +217,33 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Index::class, $index);
         $this->assertEquals(['name', 'address', 'email'], $index->getColumns());
         $this->assertContains($index, $this->fluent->getQueued());
+    }
+
+    public function test_can_add_unique_constraint_for_one_column()
+    {
+        $unique = $this->fluent->unique('name');
+
+        $this->assertInstanceOf(UniqueConstraint::class, $unique);
+        $this->assertEquals(['name'], $unique->getColumns());
+        $this->assertContains($unique, $this->fluent->getQueued());
+    }
+
+    public function test_can_add_unique_constraint_for_multiple_columns_as_multiple_parameters()
+    {
+        $unique = $this->fluent->unique('name', 'address', 'email');
+
+        $this->assertInstanceOf(UniqueConstraint::class, $unique);
+        $this->assertEquals(['name', 'address', 'email'], $unique->getColumns());
+        $this->assertContains($unique, $this->fluent->getQueued());
+    }
+
+    public function test_can_add_unique_constraint_for_multiple_column_as_array()
+    {
+        $unique = $this->fluent->unique(['name', 'address', 'email']);
+
+        $this->assertInstanceOf(UniqueConstraint::class, $unique);
+        $this->assertEquals(['name', 'address', 'email'], $unique->getColumns());
+        $this->assertContains($unique, $this->fluent->getQueued());
     }
 
     public function test_can_create_field()

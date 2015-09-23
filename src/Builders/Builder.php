@@ -134,6 +134,25 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param array|string $columns
+     *
+     * @return Index
+     */
+    public function unique($columns)
+    {
+        $columns = is_array($columns) ? $columns : func_get_args();
+
+        $unique = new UniqueConstraint(
+            $this->builder,
+            $columns
+        );
+
+        $this->queue($unique);
+
+        return $unique;
+    }
+
+    /**
      * @param          $type
      * @param          $name
      * @param callable $callback
