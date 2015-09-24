@@ -7,7 +7,7 @@ use InvalidArgumentException;
 trait Macroable
 {
     /**
-     * @var array
+     * @var callable[]
      */
     protected static $macros = [];
 
@@ -37,7 +37,7 @@ trait Macroable
     /**
      * @param string $method
      *
-     * @return mixed
+     * @return callable
      */
     public function getMacro($method)
     {
@@ -45,8 +45,8 @@ trait Macroable
     }
 
     /**
-     * @param       $method
-     * @param array $params
+     * @param string $method
+     * @param array  $params
      *
      * @return mixed
      */

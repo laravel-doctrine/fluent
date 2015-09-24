@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder;
 trait Orderable
 {
     /**
-     * @param        $name
+     * @param string $name
      * @param string $order
      *
      * @return $this

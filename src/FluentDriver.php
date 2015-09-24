@@ -26,7 +26,7 @@ class FluentDriver implements MappingDriver
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param array $mappings
+     * @param string[] $mappings
      */
     public function __construct(array $mappings = [])
     {
@@ -55,7 +55,7 @@ class FluentDriver implements MappingDriver
      * Gets the names of all mapped classes known to this driver.
      *
      * @throws MappingException
-     * @return array            The names of all mapped classes known to this driver.
+     * @return string[]         The names of all mapped classes known to this driver.
      */
     public function getAllClassNames()
     {
@@ -76,7 +76,7 @@ class FluentDriver implements MappingDriver
     }
 
     /**
-     * @param array $mappings
+     * @param string[] $mappings
      */
     public function addMappings(array $mappings = [])
     {

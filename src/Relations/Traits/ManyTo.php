@@ -9,7 +9,7 @@ use LaravelDoctrine\Fluent\Relations\JoinColumn;
 trait ManyTo
 {
     /**
-     * @var array
+     * @var JoinColumn[]
      */
     protected $joinColumns = [];
 
@@ -73,7 +73,7 @@ trait ManyTo
     }
 
     /**
-     * @return array|JoinColumn[]
+     * @return JoinColumn[]
      */
     public function getJoinColumns()
     {

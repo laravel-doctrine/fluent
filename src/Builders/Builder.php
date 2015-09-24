@@ -20,7 +20,7 @@ class Builder extends AbstractBuilder implements Fluent
     use Fields, Relations, Macroable;
 
     /**
-     * @var array|Buildable[]
+     * @var Buildable[]
      */
     protected $queued = [];
 
@@ -176,7 +176,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @return array|Buildable[]
+     * @return Buildable[]
      */
     public function getQueued()
     {
@@ -192,8 +192,8 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param $method
-     * @param $params
+     * @param string $method
+     * @param array  $params
      *
      * @return mixed
      */

@@ -73,7 +73,7 @@ abstract class AbstractRelation implements Relation
     abstract protected function createAssociation(ClassMetadataBuilder $builder, $relation, $entity);
 
     /**
-     * @param array $cascade
+     * @param string[] $cascade
      * @Enum({"persist", "remove", "merge", "detach", "refresh", "ALL"})
      *
      * @return $this
@@ -94,7 +94,7 @@ abstract class AbstractRelation implements Relation
     }
 
     /**
-     * @param $strategy
+     * @param string $strategy
      * @Enum({"LAZY", "EAGER", "EXTRA_LAZY"})
      *
      * @return $this

@@ -9,7 +9,7 @@ use LaravelDoctrine\Fluent\Buildable;
 interface Relation extends Buildable
 {
     /**
-     * @param array $cascade
+     * @param string[] $cascade
      * @Enum({"persist", "remove", "merge", "detach", "refresh", "ALL"})
      *
      * @return $this
@@ -17,7 +17,7 @@ interface Relation extends Buildable
     public function cascade(array $cascade);
 
     /**
-     * @param $strategy
+     * @param string $strategy
      * @Enum({"LAZY", "EAGER", "EXTRA_LAZY"})
      *
      * @return $this

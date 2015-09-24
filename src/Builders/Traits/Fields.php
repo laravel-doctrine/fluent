@@ -11,9 +11,9 @@ use LogicException;
 trait Fields
 {
     /**
-     * @param string   $type
-     * @param string   $name
-     * @param callable $callback
+     * @param string        $type
+     * @param string        $name
+     * @param callable|null $callback
      *
      * @return Field
      */
@@ -72,8 +72,8 @@ trait Fields
     }
 
     /**
-     * @param string   $name
-     * @param callable $callback
+     * @param string        $name
+     * @param callable|null $callback
      *
      * @return Field
      */

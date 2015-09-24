@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 class Entity extends AbstractBuilder
 {
     /**
-     * @param $class
+     * @param string $class
      *
      * @return Entity
      */

@@ -51,7 +51,7 @@ class ManyToOne extends AbstractRelation
     }
 
     /**
-     * @param callable $callback
+     * @param callable|null $callback
      *
      * @return JoinColumn
      */
@@ -72,7 +72,7 @@ class ManyToOne extends AbstractRelation
      * @param string $method
      * @param array  $args
      *
-     * @throws BadMethodCallException
+     * @throws \BadMethodCallException
      * @return $this
      */
     public function __call($method, $args)
