@@ -47,16 +47,16 @@ interface Fluent
     public function unique($columns);
 
     /**
-     * @param          $type
-     * @param          $name
-     * @param callable $callback
+     * @param string        $type
+     * @param string        $name
+     * @param callable|null $callback
      *
      * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function field($type, $name, callable $callback = null);
 
     /**
-     * @param               $name
+     * @param string        $name
      * @param callable|null $callback
      *
      * @return \LaravelDoctrine\Fluent\Builders\Field
@@ -80,8 +80,8 @@ interface Fluent
     public function bigIncrements($name, callable $callback = null);
 
     /**
-     * @param          $name
-     * @param callable $callback
+     * @param string        $name
+     * @param callable|null $callback
      *
      * @return \LaravelDoctrine\Fluent\Builders\Field
      */
@@ -258,8 +258,8 @@ interface Fluent
     public function oneToOne($field, $entity, callable $callback = null);
 
     /**
-     * @param               $field
-     * @param               $entity
+     * @param string        $field
+     * @param string        $entity
      * @param callable|null $callback
      *
      * @return ManyToOne
@@ -267,17 +267,17 @@ interface Fluent
     public function belongsTo($field, $entity, callable $callback = null);
 
     /**
-     * @param string   $field
-     * @param string   $entity
-     * @param callable $callback
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
      *
      * @return ManyToOne
      */
     public function manyToOne($field, $entity, callable $callback = null);
 
     /**
-     * @param               $field
-     * @param               $entity
+     * @param string        $field
+     * @param string        $entity
      * @param callable|null $callback
      *
      * @return OneToMany
@@ -285,17 +285,17 @@ interface Fluent
     public function hasMany($field, $entity, callable $callback = null);
 
     /**
-     * @param string   $field
-     * @param string   $entity
-     * @param callable $callback
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
      *
      * @return OneToMany
      */
     public function oneToMany($field, $entity, callable $callback = null);
 
     /**
-     * @param               $field
-     * @param               $entity
+     * @param string        $field
+     * @param string        $entity
      * @param callable|null $callback
      *
      * @return ManyToMany
@@ -303,9 +303,9 @@ interface Fluent
     public function belongsToMany($field, $entity, callable $callback = null);
 
     /**
-     * @param string   $field
-     * @param string   $entity
-     * @param callable $callback
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
      *
      * @return ManyToMany
      */
@@ -314,8 +314,8 @@ interface Fluent
     /**
      * Adds a custom relation to the entity.
      *
-     * @param \LaravelDoctrine\Fluent\Relations\Relation $relation
-     * @param callable|null                              $callback
+     * @param Relation      $relation
+     * @param callable|null $callback
      *
      * @return Relation
      */
@@ -338,7 +338,7 @@ interface Fluent
     public static function macro($method, callable $callback = null);
 
     /**
-     * @return array|Field[]
+     * @return Buildable[]
      */
     public function getQueued();
 

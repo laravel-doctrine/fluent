@@ -46,8 +46,8 @@ trait Relations
     }
 
     /**
-     * @param               $field
-     * @param               $entity
+     * @param string        $field
+     * @param string        $entity
      * @param callable|null $callback
      *
      * @return ManyToOne
@@ -58,9 +58,9 @@ trait Relations
     }
 
     /**
-     * @param string   $field
-     * @param string   $entity
-     * @param callable $callback
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
      *
      * @return ManyToOne
      */
@@ -78,8 +78,8 @@ trait Relations
     }
 
     /**
-     * @param               $field
-     * @param               $entity
+     * @param string        $field
+     * @param string        $entity
      * @param callable|null $callback
      *
      * @return OneToMany
@@ -90,9 +90,9 @@ trait Relations
     }
 
     /**
-     * @param string   $field
-     * @param string   $entity
-     * @param callable $callback
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
      *
      * @return OneToMany
      */
@@ -110,8 +110,8 @@ trait Relations
     }
 
     /**
-     * @param               $field
-     * @param               $entity
+     * @param string        $field
+     * @param string        $entity
      * @param callable|null $callback
      *
      * @return ManyToMany
@@ -122,9 +122,9 @@ trait Relations
     }
 
     /**
-     * @param string   $field
-     * @param string   $entity
-     * @param callable $callback
+     * @param string        $field
+     * @param string        $entity
+     * @param callable|null $callback
      *
      * @return ManyToMany
      */
@@ -144,8 +144,8 @@ trait Relations
     /**
      * Adds a custom relation to the entity.
      *
-     * @param \LaravelDoctrine\Fluent\Relations\Relation $relation
-     * @param callable|null                              $callback
+     * @param Relation      $relation
+     * @param callable|null $callback
      *
      * @return Relation
      */

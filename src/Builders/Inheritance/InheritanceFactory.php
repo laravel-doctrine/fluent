@@ -18,7 +18,7 @@ class InheritanceFactory
     ];
 
     /**
-     * @param                      $type
+     * @param string               $type
      * @param ClassMetadataBuilder $builder
      *
      * @return Inheritance

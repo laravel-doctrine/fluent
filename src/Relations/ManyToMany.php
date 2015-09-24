@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent\Relations;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\ManyToManyAssociationBuilder;
+use Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder;
 use LaravelDoctrine\Fluent\Relations\Traits\Indexable;
 use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
 use LaravelDoctrine\Fluent\Relations\Traits\Orderable;

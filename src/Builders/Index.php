@@ -36,7 +36,7 @@ class Index implements Buildable
 
     /**
      * @param ClassMetadataBuilder $builder
-     * @param array                $columns
+     * @param string[]             $columns
      */
     public function __construct(ClassMetadataBuilder $builder, array $columns)
     {
@@ -68,7 +68,7 @@ class Index implements Buildable
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getColumns()
     {

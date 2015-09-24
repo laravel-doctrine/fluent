@@ -26,7 +26,7 @@ class MapperSet
     }
 
     /**
-     * @param $className
+     * @param string $className
      *
      * @throws MappingException
      * @return Mapper
@@ -47,7 +47,7 @@ class MapperSet
     }
 
     /**
-     * @param $className
+     * @param string $className
      *
      * @return bool
      */
@@ -73,7 +73,7 @@ class MapperSet
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getClassNames()
     {
