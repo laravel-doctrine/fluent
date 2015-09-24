@@ -94,6 +94,13 @@ class LifecycleEventsTest extends \PHPUnit_Framework_TestCase
         $this->doEventTest(Events::onClear);
     }
 
+    public function test_fluent_builder_method_should_exist()
+    {
+        $this->setExpectedException(\InvalidArgumentException::class);
+        
+        $this->builder->onFlagerbert('breakStuff');
+    }
+
     private function doEventTest($event)
     {
         $this->assertFalse(
