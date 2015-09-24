@@ -2,8 +2,6 @@
 
 namespace LaravelDoctrine\Fluent\Relations\Traits;
 
-use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
-
 trait Ownable
 {
     /**
@@ -19,7 +17,7 @@ trait Ownable
     }
 
     /**
-     * @return AssociationBuilder
+     * @return \Doctrine\ORM\Mapping\Builder\AssociationBuilder
      */
     abstract public function getAssociation();
 }

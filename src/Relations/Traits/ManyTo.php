@@ -2,8 +2,6 @@
 
 namespace LaravelDoctrine\Fluent\Relations\Traits;
 
-use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
-use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Relations\JoinColumn;
 
 trait ManyTo
@@ -81,12 +79,12 @@ trait ManyTo
     }
 
     /**
-     * @return AssociationBuilder
+     * @return \Doctrine\ORM\Mapping\Builder\AssociationBuilder
      */
     abstract public function getAssociation();
 
     /**
-     * @return NamingStrategy
+     * @return \Doctrine\ORM\Mapping\NamingStrategy
      */
     abstract public function getNamingStrategy();
 }

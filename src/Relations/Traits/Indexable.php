@@ -2,8 +2,6 @@
 
 namespace LaravelDoctrine\Fluent\Relations\Traits;
 
-use Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder;
-
 trait Indexable
 {
     /**
@@ -19,7 +17,7 @@ trait Indexable
     }
 
     /**
-     * @return OneToManyAssociationBuilder
+     * @return \Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder
      */
     abstract public function getAssociation();
 }

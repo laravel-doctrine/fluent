@@ -2,8 +2,6 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
-use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -157,7 +155,7 @@ trait Relations
     }
 
     /**
-     * @return ClassMetadataBuilder
+     * @return \Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder
      */
     abstract public function getBuilder();
 
@@ -168,7 +166,7 @@ trait Relations
     abstract protected function callbackAndQueue(Buildable $buildable, callable $callback = null);
 
     /**
-     * @return NamingStrategy
+     * @return \Doctrine\ORM\Mapping\NamingStrategy
      */
     abstract public function getNamingStrategy();
 }

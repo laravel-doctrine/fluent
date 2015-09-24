@@ -2,8 +2,6 @@
 
 namespace LaravelDoctrine\Fluent\Relations\Traits;
 
-use Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder;
-
 trait Orderable
 {
     /**
@@ -22,7 +20,7 @@ trait Orderable
     }
 
     /**
-     * @return OneToManyAssociationBuilder
+     * @return \Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder
      */
     abstract public function getAssociation();
 }
