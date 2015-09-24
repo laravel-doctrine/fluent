@@ -656,6 +656,26 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(LifecycleEvents::class, $lifecycleEvents);
         $this->assertContains($lifecycleEvents, $this->fluent->getQueued());
     }
+
+    public function test_events_can_be_configured_through_a_callable()
+    {
+        $this->fluent->events(function(LifecycleEvents $events){
+            $events->onClear('swipeFloor');
+            $events->onFlush('cleanToilet');
+        });
+
+        foreach ($this->fluent->getQueued() as $buildable) {
+            $buildable->build();
+        }
+
+        $this->assertTrue(
+            $this->fluent->getClassMetadata()->hasLifecycleCallbacks('onClear')
+        );
+
+        $this->assertTrue(
+            $this->fluent->getClassMetadata()->hasLifecycleCallbacks('onFlush')
+        );
+    }
 }
 
 class FluentEntity

@@ -225,13 +225,15 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param callable|null $callback
+     *
      * @return LifecycleEvents
      */
-    public function events()
+    public function events(callable $callback = null)
     {
         $events = new LifecycleEvents($this->builder);
 
-        $this->queue($events);
+        $this->callbackAndQueue($events, $callback);
 
         return $events;
     }
