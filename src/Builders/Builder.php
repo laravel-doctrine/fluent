@@ -33,7 +33,7 @@ class Builder extends AbstractBuilder implements Fluent
     public function table($name, callable $callback = null)
     {
         if ($this->isEmbeddedClass()) {
-            throw new LogicException;
+            throw new LogicException();
         }
 
         $table = new Table($this->builder);
@@ -59,7 +59,7 @@ class Builder extends AbstractBuilder implements Fluent
     public function entity(callable $callback = null)
     {
         if ($this->isEmbeddedClass()) {
-            throw new LogicException;
+            throw new LogicException();
         }
 
         $entity = new Entity($this->builder);
@@ -222,5 +222,17 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         $this->queue($buildable);
+    }
+
+    /**
+     * @return LifecycleEvents
+     */
+    public function events()
+    {
+        $events = new LifecycleEvents($this->builder);
+
+        $this->queue($events);
+
+        return $events;
     }
 }

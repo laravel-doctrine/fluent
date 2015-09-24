@@ -14,6 +14,7 @@ use LaravelDoctrine\Fluent\Builders\Index;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\JoinedTableInheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\SingleTableInheritance;
+use LaravelDoctrine\Fluent\Builders\LifecycleEvents;
 use LaravelDoctrine\Fluent\Builders\Table;
 use LaravelDoctrine\Fluent\Builders\UniqueConstraint;
 use LaravelDoctrine\Fluent\Fluent;
@@ -42,28 +43,28 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $types = [
-        'string'       => Type::STRING,
-        'text'         => Type::TEXT,
-        'integer'      => Type::INTEGER,
+        'string' => Type::STRING,
+        'text' => Type::TEXT,
+        'integer' => Type::INTEGER,
         'smallInteger' => Type::SMALLINT,
-        'bigInteger'   => Type::BIGINT,
-        'float'        => Type::FLOAT,
-        'decimal'      => Type::DECIMAL,
-        'object'       => Type::OBJECT,
-        'boolean'      => Type::BOOLEAN,
-        'jsonArray'    => Type::JSON_ARRAY,
-        'date'         => Type::DATE,
-        'dateTime'     => Type::DATETIME,
-        'dateTimeTz'   => Type::DATETIMETZ,
-        'time'         => Type::TIME,
-        'timestamp'    => Type::DATETIME,
-        'timestampTz'  => Type::DATETIMETZ,
-        'binary'       => Type::BINARY,
-        'guid'         => Type::GUID,
-        'blob'         => Type::BLOB,
-        'array'        => Type::TARRAY,
-        'setArray'     => Type::TARRAY,
-        'simpleArray'  => Type::SIMPLE_ARRAY
+        'bigInteger' => Type::BIGINT,
+        'float' => Type::FLOAT,
+        'decimal' => Type::DECIMAL,
+        'object' => Type::OBJECT,
+        'boolean' => Type::BOOLEAN,
+        'jsonArray' => Type::JSON_ARRAY,
+        'date' => Type::DATE,
+        'dateTime' => Type::DATETIME,
+        'dateTimeTz' => Type::DATETIMETZ,
+        'time' => Type::TIME,
+        'timestamp' => Type::DATETIME,
+        'timestampTz' => Type::DATETIMETZ,
+        'binary' => Type::BINARY,
+        'guid' => Type::GUID,
+        'blob' => Type::BLOB,
+        'array' => Type::TARRAY,
+        'setArray' => Type::TARRAY,
+        'simpleArray' => Type::SIMPLE_ARRAY,
     ];
 
     protected function setUp()
@@ -646,6 +647,14 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('anotherField', $this->fluent->getClassMetadata()->getFieldNames());
         $this->assertContains('aField', $fluent->getClassMetadata()->getFieldNames());
         $this->assertContains('anotherField', $fluent->getClassMetadata()->getFieldNames());
+    }
+
+    public function test_events_can_be_associated_to_the_entity()
+    {
+        $lifecycleEvents = $this->fluent->events();
+
+        $this->assertInstanceOf(LifecycleEvents::class, $lifecycleEvents);
+        $this->assertContains($lifecycleEvents, $this->fluent->getQueued());
     }
 }
 
