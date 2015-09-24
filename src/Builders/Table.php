@@ -15,4 +15,16 @@ class Table extends AbstractBuilder
 
         return $this;
     }
+
+    /**
+     * @param string $schema
+     *
+     * @return $this
+     */
+    public function schema($schema)
+    {
+        $this->builder->getClassMetadata()->setPrimaryTable(['schema' => $schema]);
+
+        return $this;
+    }
 }
