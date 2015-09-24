@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
 use LaravelDoctrine\Fluent\Builders\Field;
+use LaravelDoctrine\Fluent\Builders\GeneratedValue;
 use Tests\Stubs\Entities\StubEntity;
 
 class FieldTest extends \PHPUnit_Framework_TestCase
@@ -77,6 +78,44 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->field->build();
 
         $this->assertTrue($this->builder->getClassMetadata()->isIdentifierUuid());
+    }
+
+    public function test_can_enrich_generated_value_with_a_closure()
+    {
+        $field = Field::make($this->builder, 'integer', 'gen');
+
+        $field->generatedValue('SEQUENCE', function(GeneratedValue $builder){
+            $builder->name('sequence_name');
+            $builder->initialValue(4);
+            $builder->allocationSize(15);
+        });
+
+        $field->build();
+
+        $this->assertEquals([
+            'sequenceName' => 'sequence_name',
+            'initialValue' => 4,
+            'allocationSize' => 15,
+        ], $this->builder->getClassMetadata()->sequenceGeneratorDefinition);
+    }
+
+    public function test_can_use_a_single_parameter_on_generated_values()
+    {
+        $field = Field::make($this->builder, 'integer', 'gen');
+
+        $field->generatedValue(function(GeneratedValue $builder){
+            $builder->strategy('IDENTITY')->name('a_seq_name');
+        });
+
+        $field->build();
+
+        $this->assertTrue($this->builder->getClassMetadata()->isIdGeneratorIdentity());
+
+        $this->assertEquals([
+            'sequenceName' => 'a_seq_name',
+            'initialValue' => 1,
+            'allocationSize' => 10,
+        ], $this->builder->getClassMetadata()->sequenceGeneratorDefinition);
     }
 
     public function test_can_make_field_unsigned()

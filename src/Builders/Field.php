@@ -98,13 +98,25 @@ class Field implements Buildable
     }
 
     /**
-     * @param string $strategy
+     * @param string|callable $strategy
+     * @param callable|null   $callback
      *
      * @return Field
      */
-    public function generatedValue($strategy)
+    public function generatedValue($strategy, callable $callback = null)
     {
-        $this->builder->generatedValue($strategy);
+        if (is_callable($strategy)) {
+            $callback = $strategy;
+            $strategy = 'AUTO';
+        }
+
+        $generatedValue = new GeneratedValue($this->builder, $strategy);
+
+        if ($callback) {
+            $callback($generatedValue);
+        }
+
+        $generatedValue->build();
 
         return $this;
     }
