@@ -159,6 +159,16 @@ class Field implements Buildable
     /**
      * @return Field
      */
+    public function useForVersioning()
+    {
+        $this->builder->isVersionField();
+
+        return $this;
+    }
+
+    /**
+     * @return Field
+     */
     public function build()
     {
         $this->builder->build();
