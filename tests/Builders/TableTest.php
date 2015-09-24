@@ -31,4 +31,18 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('users', $this->builder->getClassMetadata()->getTableName());
     }
+
+    public function test_detects_schema_from_names()
+    {
+        $this->table->setName('some_schema.users');
+
+        $this->assertEquals('some_schema', $this->builder->getClassMetadata()->getSchemaName());
+    }
+
+    public function test_can_change_only_the_schema()
+    {
+        $this->table->schema('a_schema');
+
+        $this->assertEquals('a_schema', $this->builder->getClassMetadata()->getSchemaName());
+    }
 }
