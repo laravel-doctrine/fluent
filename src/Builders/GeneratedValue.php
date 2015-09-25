@@ -98,7 +98,7 @@ class GeneratedValue implements Buildable
         $this->builder->generatedValue($this->strategy);
 
         $this->builder->setSequenceGenerator(
-            $this->name ?: uniqid(),
+            $this->name ?: uniqid('seq_'),
             $this->size,
             $this->initial
         );

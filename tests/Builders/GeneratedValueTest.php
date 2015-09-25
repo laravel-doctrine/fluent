@@ -103,5 +103,13 @@ class GeneratedValueTest extends \PHPUnit_Framework_TestCase
             ->build();
     }
 
+    public function test_the_random_name_cannot_start_with_a_number()
+    {
+        $this->field->expects($this->once())->method('generatedValue')->with('AUTO');
+        $this->field->expects($this->once())->method('setSequenceGenerator')->with(
+            $this->matchesRegularExpression('/^[^0-9]/'), 10, 1
+        );
 
+        $this->fluent->build();
+    }
 }
