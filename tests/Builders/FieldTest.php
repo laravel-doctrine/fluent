@@ -83,7 +83,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     {
         $field = Field::make($this->builder, 'integer', 'gen');
 
-        $field->generatedValue(function(GeneratedValue $builder){
+        $field->generatedValue(function (GeneratedValue $builder) {
             $builder->sequence('sequence_name', 4, 15);
         });
 
@@ -100,7 +100,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     {
         $field = Field::make($this->builder, 'integer', 'gen');
 
-        $field->generatedValue(function(GeneratedValue $builder){
+        $field->generatedValue(function (GeneratedValue $builder) {
             $builder->identity();
         });
 
