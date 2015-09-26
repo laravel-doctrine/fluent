@@ -72,21 +72,19 @@ class FieldTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_set_generated_value_strategy()
     {
-        $this->field->generatedValue('UUID');
+        $this->field->generatedValue();
 
         $this->field->build();
 
-        $this->assertTrue($this->builder->getClassMetadata()->isIdentifierUuid());
+        $this->assertTrue($this->builder->getClassMetadata()->generatorType == ClassMetadataInfo::GENERATOR_TYPE_AUTO);
     }
 
     public function test_can_enrich_generated_value_with_a_closure()
     {
         $field = Field::make($this->builder, 'integer', 'gen');
 
-        $field->generatedValue('SEQUENCE', function (GeneratedValue $builder) {
-            $builder->name('sequence_name');
-            $builder->initialValue(4);
-            $builder->allocationSize(15);
+        $field->generatedValue(function(GeneratedValue $builder){
+            $builder->sequence('sequence_name', 4, 15);
         });
 
         $field->build();
@@ -102,19 +100,15 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     {
         $field = Field::make($this->builder, 'integer', 'gen');
 
-        $field->generatedValue(function (GeneratedValue $builder) {
-            $builder->strategy('IDENTITY')->name('a_seq_name');
+        $field->generatedValue(function(GeneratedValue $builder){
+            $builder->identity();
         });
 
         $field->build();
 
         $this->assertTrue($this->builder->getClassMetadata()->isIdGeneratorIdentity());
 
-        $this->assertEquals([
-            'sequenceName'   => 'a_seq_name',
-            'initialValue'   => 1,
-            'allocationSize' => 10,
-        ], $this->builder->getClassMetadata()->sequenceGeneratorDefinition);
+        $this->assertNull($this->builder->getClassMetadata()->sequenceGeneratorDefinition);
     }
 
     public function test_can_make_field_unsigned()

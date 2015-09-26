@@ -6,6 +6,7 @@ use BadMethodCallException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\FieldBuilder;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Buildable;
 
 /**
@@ -39,11 +40,20 @@ class Field implements Buildable
     protected $builder;
 
     /**
-     * @param FieldBuilder $builder
+     * @var ClassMetadataInfo
      */
-    public function __construct(FieldBuilder $builder)
+    protected $classMetadata;
+
+    /**
+     * Protected constructor to force usage of factory method
+     *
+     * @param FieldBuilder      $builder
+     * @param ClassMetadataInfo $classMetadata
+     */
+    protected function __construct(FieldBuilder $builder, ClassMetadataInfo $classMetadata)
     {
-        $this->builder = $builder;
+        $this->builder       = $builder;
+        $this->classMetadata = $classMetadata;
     }
 
     /**
@@ -60,9 +70,7 @@ class Field implements Buildable
 
         $field = $builder->createField($name, $type->getName());
 
-        return new static(
-            $field
-        );
+        return new static($field, $builder->getClassMetadata());
     }
 
     /**
@@ -85,25 +93,19 @@ class Field implements Buildable
      */
     public function autoIncrement()
     {
-        $this->generatedValue('AUTO');
+        $this->generatedValue();
 
         return $this;
     }
 
     /**
-     * @param string|callable $strategy
-     * @param callable|null   $callback
+     * @param callable|null $callback
      *
      * @return Field
      */
-    public function generatedValue($strategy, callable $callback = null)
+    public function generatedValue(callable $callback = null)
     {
-        if (is_callable($strategy)) {
-            $callback = $strategy;
-            $strategy = 'AUTO';
-        }
-
-        $generatedValue = new GeneratedValue($this->builder, $strategy);
+        $generatedValue = new GeneratedValue($this->builder, $this->classMetadata);
 
         if ($callback) {
             $callback($generatedValue);
