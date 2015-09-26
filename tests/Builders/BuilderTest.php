@@ -676,6 +676,54 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             $this->fluent->getClassMetadata()->hasLifecycleCallbacks('onFlush')
         );
     }
+
+    public function test_can_override_an_attribute()
+    {
+        $this->fluent->string('name');
+
+        $this->fluent->override('name', function ($field) {
+            return $field->name('other_name')->nullable();
+        });
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        $this->assertEquals('other_name', $this->fluent->getClassMetadata()->getFieldMapping('name')['columnName']);
+        $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('name')['nullable']);
+    }
+
+    public function test_can_override_many_to_one_association()
+    {
+        $this->fluent->manyToOne('manyToOne', FluentEntity::class);
+
+        $this->fluent->override('manyToOne', function ($relation) {
+            return $relation->source('source_id')->target('target_id');
+        });
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        $this->assertEquals('target_id', $this->fluent->getClassMetadata()->getAssociationMapping('manyToOne')['joinColumns'][0]['name']);
+        $this->assertEquals('source_id', $this->fluent->getClassMetadata()->getAssociationMapping('manyToOne')['joinColumns'][0]['referencedColumnName']);
+    }
+
+    public function test_can_override_many_to_many_association()
+    {
+        $this->fluent->manyToMany('manyToMany', FluentEntity::class);
+
+        $this->fluent->override('manyToMany', function ($relation) {
+            return $relation->joinTable('custom_table_name')->source('source_id');
+        });
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        $this->assertEquals('custom_table_name', $this->fluent->getClassMetadata()->getAssociationMapping('manyToMany')['joinTable']['name']);
+        $this->assertEquals('source_id', $this->fluent->getClassMetadata()->getAssociationMapping('manyToMany')['joinTable']['joinColumns'][0]['name']);
+    }
 }
 
 class FluentEntity
