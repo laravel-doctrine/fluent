@@ -2,8 +2,8 @@
 
 namespace Tests\Builders\Inheritance;
 
-use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use Tests\Stubs\Entities\StubEntity;
 use Tests\Stubs\Entities\StubEntity2;
 use Tests\Stubs\Entities\StubEntity3;
@@ -68,8 +68,8 @@ class InheritanceTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->inheritance->map([
             'stub1'  => StubEntity::class,
-            'stub2' => StubEntity2::class,
-            'stub3' => StubEntity3::class
+            'stub2'  => StubEntity2::class,
+            'stub3'  => StubEntity3::class
         ]);
 
         $map = $this->builder->getClassMetadata()->discriminatorMap;

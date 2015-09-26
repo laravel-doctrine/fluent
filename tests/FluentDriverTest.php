@@ -212,7 +212,7 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
     {
         $driver = new FluentDriver();
 
-        $driver->setFluentFactory(function(ClassMetadata $metadata){
+        $driver->setFluentFactory(function (ClassMetadata $metadata) {
             return new CustomBuilder(new ClassMetadataBuilder($metadata));
         });
 

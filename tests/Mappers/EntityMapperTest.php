@@ -4,10 +4,12 @@ namespace Tests\Mappers;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
+use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Mappers\EntityMapper;
 use LaravelDoctrine\Fluent\Mappers\Mapper;
+use Mockery as m;
 use Tests\Stubs\Entities\StubEntity;
 use Tests\Stubs\Mappings\StubEntityMapping;
 
@@ -45,5 +47,61 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('name', $metadata->fieldNames);
         $this->assertContains(StubEntity::class, $metadata->associationMappings['parent']['targetEntity']);
         $this->assertContains(StubEntity::class, $metadata->associationMappings['children']['targetEntity']);
+    }
+
+    public function test_it_should_build_the_queued_buildables()
+    {
+        $meta    = m::mock(ClassMetadataBuilder::class);
+        $builder = $this->mockBuilder($meta);
+
+        $builder->shouldReceive('getQueued')->andReturn([
+            $buildable1 = m::mock(Buildable::class),
+            $buildable2 = m::mock(Buildable::class)
+        ]);
+
+        $buildable1->shouldReceive('build')->once();
+        $buildable2->shouldReceive('build')->once();
+
+        $this->mapper->map($builder);
+    }
+
+    public function test_it_should_build_the_delayed_queued_buildables()
+    {
+        $meta    = m::mock(ClassMetadataBuilder::class);
+        $builder = $this->mockBuilder($meta);
+
+        $builder->shouldReceive('getQueued')->andReturn([
+            $delayed = m::mock(Delay::class),
+            $buildable2 = m::mock(Buildable::class)
+        ]);
+
+        $delayed->shouldReceive('build')->once();
+        $buildable2->shouldReceive('build')->once();
+
+        $this->mapper->map($builder);
+    }
+
+    protected function tearDown()
+    {
+        m::close();
+    }
+
+    /**
+     * @param $meta
+     *
+     * @return m\MockInterface
+     */
+    protected function mockBuilder($meta)
+    {
+        $builder = m::mock(Builder::class);
+        $builder->shouldReceive('getBuilder')->once()->andReturn($meta);
+        $builder->shouldReceive('increments')->once();
+        $builder->shouldReceive('string')->once();
+        $builder->shouldReceive('belongsTo')->once()->andReturn(m::self());
+        $builder->shouldReceive('hasMany')->once()->andReturn(m::self());
+        $builder->shouldReceive('inversedBy')->once();
+        $builder->shouldReceive('mappedBy')->once();
+
+        return $builder;
     }
 }

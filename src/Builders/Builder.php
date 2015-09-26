@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\InheritanceFactory;
+use LaravelDoctrine\Fluent\Builders\Overrides\Override;
 use LaravelDoctrine\Fluent\Builders\Traits\Fields;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\Relations;
@@ -165,6 +166,26 @@ class Builder extends AbstractBuilder implements Fluent
         $this->callbackAndQueue($embedded, $callback);
 
         return $embedded;
+    }
+
+    /**
+     * @param string   $name
+     * @param callable $callback
+     *
+     * @return Override
+     */
+    public function override($name, callable $callback)
+    {
+        $override = new Override(
+            $this->getBuilder(),
+            $this->getNamingStrategy(),
+            $name,
+            $callback
+        );
+
+        $this->queue($override);
+
+        return $override;
     }
 
     /**

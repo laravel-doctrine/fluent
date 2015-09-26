@@ -81,6 +81,16 @@ class JoinColumn
     }
 
     /**
+     * @param string $foreignKey
+     *
+     * @return $this
+     */
+    public function target($foreignKey)
+    {
+        return $this->foreignKey($foreignKey);
+    }
+
+    /**
      * @param string $localKey
      *
      * @return $this
@@ -90,6 +100,16 @@ class JoinColumn
         $this->referenceColumn = $localKey;
 
         return $this;
+    }
+
+    /**
+     * @param string $localKey
+     *
+     * @return $this
+     */
+    public function source($localKey)
+    {
+        return $this->localKey($localKey);
     }
 
     /**

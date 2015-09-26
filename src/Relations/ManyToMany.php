@@ -74,6 +74,17 @@ class ManyToMany extends AbstractRelation
     }
 
     /**
+     * @param string $foreignKey
+     * @param string $references
+     *
+     * @return $this
+     */
+    public function source($foreignKey, $references = 'id')
+    {
+        return $this->joinColumn($foreignKey, $references);
+    }
+
+    /**
      * @param string $inverseKey
      * @param string $references
      *
@@ -84,5 +95,16 @@ class ManyToMany extends AbstractRelation
         $this->association->addInverseJoinColumn($inverseKey, $references, false);
 
         return $this;
+    }
+
+    /**
+     * @param string $inverseKey
+     * @param string $references
+     *
+     * @return $this
+     */
+    public function target($inverseKey, $references = 'id')
+    {
+        return $this->inverseKey($inverseKey, $references);
     }
 }

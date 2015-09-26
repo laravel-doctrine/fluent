@@ -11,30 +11,25 @@ use LaravelDoctrine\Fluent\Buildable;
 /**
  * @method $this unique(boolean $flag = true)   Boolean value to determine if the value of the column should be unique
  *                                              across all rows of the underlying entities table.
- *
  * @method $this nullable(boolean $flag = true) Determines if NULL values are allowed for this column.
- *
  * @method $this length(int $length)            Used by the “string” type to determine its maximum length in the
  *                                              database. Doctrine does not validate the length of string values
  *                                              for you.
- *
  * @method $this columnName(string $column)     By default the property name is used for the database column name also,
  *                                              however the ‘name’ attribute allows you to determine the column name.
- *
  * @method $this precision(int $precision)      The precision for a decimal (exact numeric) column (applies only for
  *                                              decimal column), which is the maximum number of digits that are stored
  *                                              for the values.
- *
  * @method $this scale(int $scale)              The scale for a decimal (exact numeric) column (applies only for
  *                                              decimal column), which represents the number of digits to the right of
  *                                              the decimal point and must not be greater than precision.
- *
  * @method $this default(string $default)       The default value to set for the column if no value is supplied.
  * @method $this columnDefinition(string $def)  DDL SQL snippet that starts after the column name and specifies the
  *                                              complete (non-portable!) column definition. This attribute allows to
  *                                              make use of advanced RMDBS features. However you should make careful
  *                                              use of this feature and the consequences. SchemaTool will not detect
  *                                              changes on the column correctly anymore if you use “columnDefinition”.
+ * @method $this option($name, $value)          Set custom options
  */
 class Field implements Buildable
 {
@@ -44,11 +39,9 @@ class Field implements Buildable
     protected $builder;
 
     /**
-     * Protected constructor to force usage of factory method
-     *
      * @param FieldBuilder $builder
      */
-    protected function __construct(FieldBuilder $builder)
+    public function __construct(FieldBuilder $builder)
     {
         $this->builder = $builder;
     }

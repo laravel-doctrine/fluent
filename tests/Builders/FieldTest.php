@@ -3,7 +3,6 @@
 namespace Tests\Builders;
 
 use BadMethodCallException;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
@@ -84,7 +83,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     {
         $field = Field::make($this->builder, 'integer', 'gen');
 
-        $field->generatedValue('SEQUENCE', function(GeneratedValue $builder){
+        $field->generatedValue('SEQUENCE', function (GeneratedValue $builder) {
             $builder->name('sequence_name');
             $builder->initialValue(4);
             $builder->allocationSize(15);
@@ -93,8 +92,8 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $field->build();
 
         $this->assertEquals([
-            'sequenceName' => 'sequence_name',
-            'initialValue' => 4,
+            'sequenceName'   => 'sequence_name',
+            'initialValue'   => 4,
             'allocationSize' => 15,
         ], $this->builder->getClassMetadata()->sequenceGeneratorDefinition);
     }
@@ -103,7 +102,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     {
         $field = Field::make($this->builder, 'integer', 'gen');
 
-        $field->generatedValue(function(GeneratedValue $builder){
+        $field->generatedValue(function (GeneratedValue $builder) {
             $builder->strategy('IDENTITY')->name('a_seq_name');
         });
 
@@ -112,8 +111,8 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->builder->getClassMetadata()->isIdGeneratorIdentity());
 
         $this->assertEquals([
-            'sequenceName' => 'a_seq_name',
-            'initialValue' => 1,
+            'sequenceName'   => 'a_seq_name',
+            'initialValue'   => 1,
             'allocationSize' => 10,
         ], $this->builder->getClassMetadata()->sequenceGeneratorDefinition);
     }
@@ -308,7 +307,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     private function doTestValidTypeForVersioning($type)
     {
         $builder = new ClassMetadataBuilder(new ClassMetadataInfo(StubEntity::class));
-        $field = Field::make($builder, $type, "{$type}Field");
+        $field   = Field::make($builder, $type, "{$type}Field");
 
         $field->useForVersioning()->build();
 
@@ -320,7 +319,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     private function doTestInvalidTypeForVersioning($type)
     {
         $builder = new ClassMetadataBuilder(new ClassMetadataInfo(StubEntity::class));
-        $field = Field::make($builder, $type, "aField");
+        $field   = Field::make($builder, $type, "aField");
 
         $this->setExpectedException(MappingException::class);
         $field->useForVersioning()->build();

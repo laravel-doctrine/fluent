@@ -12,6 +12,8 @@ use LaravelDoctrine\Fluent\Relations\Traits\Owning;
  * @method $this inversedBy($fieldName)
  * @method $this foreignKey($foreignKey)
  * @method $this localKey($localKey)
+ * @method $this target($foreignKey)
+ * @method $this source($localKey)
  * @method $this setJoinColumn($joinColumn)
  * @method $this setReferenceColumn($referenceColumn)
  * @method $this nullable()
@@ -53,7 +55,7 @@ class ManyToOne extends AbstractRelation
     /**
      * @param callable|null $callback
      *
-     * @return JoinColumn
+     * @return JoinColumn|false
      */
     public function getJoinColumn(callable $callback = null)
     {

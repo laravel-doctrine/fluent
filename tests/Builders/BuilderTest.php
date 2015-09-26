@@ -43,28 +43,28 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $types = [
-        'string' => Type::STRING,
-        'text' => Type::TEXT,
-        'integer' => Type::INTEGER,
+        'string'       => Type::STRING,
+        'text'         => Type::TEXT,
+        'integer'      => Type::INTEGER,
         'smallInteger' => Type::SMALLINT,
-        'bigInteger' => Type::BIGINT,
-        'float' => Type::FLOAT,
-        'decimal' => Type::DECIMAL,
-        'object' => Type::OBJECT,
-        'boolean' => Type::BOOLEAN,
-        'jsonArray' => Type::JSON_ARRAY,
-        'date' => Type::DATE,
-        'dateTime' => Type::DATETIME,
-        'dateTimeTz' => Type::DATETIMETZ,
-        'time' => Type::TIME,
-        'timestamp' => Type::DATETIME,
-        'timestampTz' => Type::DATETIMETZ,
-        'binary' => Type::BINARY,
-        'guid' => Type::GUID,
-        'blob' => Type::BLOB,
-        'array' => Type::TARRAY,
-        'setArray' => Type::TARRAY,
-        'simpleArray' => Type::SIMPLE_ARRAY,
+        'bigInteger'   => Type::BIGINT,
+        'float'        => Type::FLOAT,
+        'decimal'      => Type::DECIMAL,
+        'object'       => Type::OBJECT,
+        'boolean'      => Type::BOOLEAN,
+        'jsonArray'    => Type::JSON_ARRAY,
+        'date'         => Type::DATE,
+        'dateTime'     => Type::DATETIME,
+        'dateTimeTz'   => Type::DATETIMETZ,
+        'time'         => Type::TIME,
+        'timestamp'    => Type::DATETIME,
+        'timestampTz'  => Type::DATETIMETZ,
+        'binary'       => Type::BINARY,
+        'guid'         => Type::GUID,
+        'blob'         => Type::BLOB,
+        'array'        => Type::TARRAY,
+        'setArray'     => Type::TARRAY,
+        'simpleArray'  => Type::SIMPLE_ARRAY,
     ];
 
     protected function setUp()
@@ -659,7 +659,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_events_can_be_configured_through_a_callable()
     {
-        $this->fluent->events(function(LifecycleEvents $events){
+        $this->fluent->events(function (LifecycleEvents $events) {
             $events->onClear('swipeFloor');
             $events->onFlush('cleanToilet');
         });

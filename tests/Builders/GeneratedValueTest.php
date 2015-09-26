@@ -19,7 +19,7 @@ class GeneratedValueTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->field = $this->getMockBuilder(FieldBuilder::class)->disableOriginalConstructor()->getMock();
+        $this->field  = $this->getMockBuilder(FieldBuilder::class)->disableOriginalConstructor()->getMock();
         $this->fluent = new GeneratedValue($this->field);
     }
     public function test_has_an_optional_strategy_that_defaults_to_auto()
@@ -102,6 +102,4 @@ class GeneratedValueTest extends \PHPUnit_Framework_TestCase
             ->initialValue(23)
             ->build();
     }
-
-
 }

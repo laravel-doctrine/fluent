@@ -4,7 +4,6 @@ namespace Tests\Mappers;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Mappers\MappedSuperClassMapper;
 use LaravelDoctrine\Fluent\Mappers\Mapper;

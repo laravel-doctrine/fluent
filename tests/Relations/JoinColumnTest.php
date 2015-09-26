@@ -38,11 +38,25 @@ class JoinColumnTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foreign_id', $this->column->getJoinColumn());
     }
 
+    public function test_can_set_target()
+    {
+        $this->column->target('target');
+
+        $this->assertEquals('target', $this->column->getJoinColumn());
+    }
+
     public function test_can_set_local_key()
     {
         $this->column->localKey('local_id');
 
         $this->assertEquals('local_id', $this->column->getReferenceColumn());
+    }
+
+    public function test_can_set_source()
+    {
+        $this->column->source('source');
+
+        $this->assertEquals('source', $this->column->getReferenceColumn());
     }
 
     public function test_can_set_join_column()

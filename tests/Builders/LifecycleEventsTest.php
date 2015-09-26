@@ -97,7 +97,7 @@ class LifecycleEventsTest extends \PHPUnit_Framework_TestCase
     public function test_fluent_builder_method_should_exist()
     {
         $this->setExpectedException(\InvalidArgumentException::class);
-        
+
         $this->builder->onFlagerbert('breakStuff');
     }
 
@@ -121,7 +121,7 @@ class LifecycleEventsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(
             $max, $actual = $this->fluent->getClassMetadata()->getLifecycleCallbacks($event),
-            "Expected [$max] events associated for [$event], got ".count($actual)
+            "Expected [$max] events associated for [$event], got " . count($actual)
         );
     }
 }
