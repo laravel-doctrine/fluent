@@ -246,7 +246,7 @@ interface Fluent
      *
      * @return OneToOne
      */
-    public function hasOne($entity, $field, callable $callback = null);
+    public function hasOne($entity, $field = null, callable $callback = null);
 
     /**
      * @param string        $entity
@@ -255,7 +255,7 @@ interface Fluent
      *
      * @return OneToOne
      */
-    public function oneToOne($entity, $field, callable $callback = null);
+    public function oneToOne($entity, $field = null, callable $callback = null);
 
     /**
      * @param string        $entity
@@ -264,7 +264,7 @@ interface Fluent
      *
      * @return ManyToOne
      */
-    public function belongsTo($entity, $field, callable $callback = null);
+    public function belongsTo($entity, $field = null, callable $callback = null);
 
     /**
      * @param string        $entity
@@ -273,7 +273,7 @@ interface Fluent
      *
      * @return ManyToOne
      */
-    public function manyToOne($entity, $field, callable $callback = null);
+    public function manyToOne($entity, $field = null, callable $callback = null);
 
     /**
      * @param string        $entity
@@ -282,7 +282,7 @@ interface Fluent
      *
      * @return OneToMany
      */
-    public function hasMany($entity, $field, callable $callback = null);
+    public function hasMany($entity, $field = null, callable $callback = null);
 
     /**
      * @param string        $entity
@@ -291,7 +291,7 @@ interface Fluent
      *
      * @return OneToMany
      */
-    public function oneToMany($entity, $field, callable $callback = null);
+    public function oneToMany($entity, $field = null, callable $callback = null);
 
     /**
      * @param string        $entity
@@ -300,7 +300,7 @@ interface Fluent
      *
      * @return ManyToMany
      */
-    public function belongsToMany($entity, $field, callable $callback = null);
+    public function belongsToMany($entity, $field = null, callable $callback = null);
 
     /**
      * @param string        $entity
@@ -384,12 +384,12 @@ interface Fluent
 
     /**
      * @param string        $embeddable
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return Embedded
      */
-    public function embed($embeddable, $field, callable $callback = null);
+    public function embed($embeddable, $field = null, callable $callback = null);
 
     /**
      * @param string        $type

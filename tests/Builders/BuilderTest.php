@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use Doctrine\ORM\Mapping\MappingException;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Embedded;
@@ -724,9 +725,128 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('custom_table_name', $this->fluent->getClassMetadata()->getAssociationMapping('manyToMany')['joinTable']['name']);
         $this->assertEquals('source_id', $this->fluent->getClassMetadata()->getAssociationMapping('manyToMany')['joinTable']['joinColumns'][0]['name']);
     }
+
+    public function test_can_guess_a_one_to_one_relation_name()
+    {
+        $this->fluent->oneToOne(FluentEntity::class);
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        try {
+            $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntity');
+        } catch (MappingException $e) {
+            $this->fail("Could not find default name for the oneToOne relation. " . $e->getMessage());
+        }
+    }
+
+    public function test_can_guess_a_has_one_relation_name()
+    {
+        $this->fluent->hasOne(FluentEntity::class);
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        try {
+            $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntity');
+        } catch (MappingException $e) {
+            $this->fail("Could not find default name for the hasOne relation. " . $e->getMessage());
+        }
+    }
+
+    public function test_can_guess_a_belongs_to_relation_name()
+    {
+        $this->fluent->belongsTo(FluentEntity::class);
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        try {
+            $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntity');
+        } catch (MappingException $e) {
+            $this->fail("Could not find default name for the belongsTo relation. " . $e->getMessage());
+        }
+    }
+
+    public function test_can_guess_a_one_to_many_relation_name()
+    {
+        $this->fluent->oneToMany(FluentEntity::class)->mappedBy('fluentEntity');
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        try {
+            $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntities');
+        } catch (MappingException $e) {
+            $this->fail("Could not find default name for the oneToMany relation. " . $e->getMessage());
+        }
+    }
+
+    public function test_can_guess_a_has_many_relation_name()
+    {
+        $this->fluent->hasMany(FluentEntity::class)->mappedBy('fluentEntity');
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        try {
+            $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntities');
+        } catch (MappingException $e) {
+            $this->fail("Could not find default name for the hasMany relation. " . $e->getMessage());
+        }
+    }
+
+    public function test_can_guess_a_many_to_many_relation_name()
+    {
+        $this->fluent->manyToMany(FluentEntity::class);
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        try {
+            $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntities');
+        } catch (MappingException $e) {
+            $this->fail("Could not find default name for the manyToMany relation. " . $e->getMessage());
+        }
+    }
+
+    public function test_can_guess_a_belongs_to_many_relation_name()
+    {
+        $this->fluent->belongsToMany(FluentEntity::class);
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        try {
+            $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntities');
+        } catch (MappingException $e) {
+            $this->fail("Could not find default name for the belongsToMany relation. " . $e->getMessage());
+        }
+    }
+
+    public function test_can_guess_an_embeded_field_name()
+    {
+        $this->fluent->embed(StubEmbeddable::class);
+
+        foreach ($this->fluent->getQueued() as $field) {
+            $field->build();
+        }
+
+        $this->assertArrayHasKey(
+            'stubEmbeddable',
+            $this->fluent->getClassMetadata()->embeddedClasses
+        );
+    }
 }
 
 class FluentEntity
 {
-    protected $id, $name;
+    protected $id, $name, $fluentEntity, $fluentEntities;
 }

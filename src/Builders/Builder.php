@@ -149,17 +149,17 @@ class Builder extends AbstractBuilder implements Fluent
 
     /**
      * @param string        $embeddable
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return Embedded
      */
-    public function embed($embeddable, $field, callable $callback = null)
+    public function embed($embeddable, $field = null, callable $callback = null)
     {
         $embedded = new Embedded(
             $this->builder,
             $this->namingStrategy,
-            $field,
+            $this->guessSingularField($embeddable, $field),
             $embeddable
         );
 
