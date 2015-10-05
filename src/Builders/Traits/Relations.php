@@ -2,6 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
+use Illuminate\Support\Str;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -13,30 +14,30 @@ trait Relations
 {
     /**
      * @param string        $entity
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return OneToOne
      */
-    public function hasOne($entity, $field, callable $callback = null)
+    public function hasOne($entity, $field = null, callable $callback = null)
     {
         return $this->oneToOne($entity, $field, $callback);
     }
 
     /**
      * @param string        $entity
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return OneToOne
      */
-    public function oneToOne($entity, $field, callable $callback = null)
+    public function oneToOne($entity, $field = null, callable $callback = null)
     {
         return $this->addRelation(
             new OneToOne(
                 $this->getBuilder(),
                 $this->getNamingStrategy(),
-                $field,
+                $this->guessSingularField($entity, $field),
                 $entity
             ),
             $callback
@@ -45,30 +46,30 @@ trait Relations
 
     /**
      * @param string        $entity
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return ManyToOne
      */
-    public function belongsTo($entity, $field, callable $callback = null)
+    public function belongsTo($entity, $field = null, callable $callback = null)
     {
         return $this->manyToOne($entity, $field, $callback);
     }
 
     /**
      * @param string        $entity
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return ManyToOne
      */
-    public function manyToOne($entity, $field, callable $callback = null)
+    public function manyToOne($entity, $field = null, callable $callback = null)
     {
         return $this->addRelation(
             new ManyToOne(
                 $this->getBuilder(),
                 $this->getNamingStrategy(),
-                $field,
+                $this->guessSingularField($entity, $field),
                 $entity
             ),
             $callback
@@ -77,30 +78,30 @@ trait Relations
 
     /**
      * @param string        $entity
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return OneToMany
      */
-    public function hasMany($entity, $field, callable $callback = null)
+    public function hasMany($entity, $field = null, callable $callback = null)
     {
         return $this->oneToMany($entity, $field, $callback);
     }
 
     /**
      * @param string        $entity
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return OneToMany
      */
-    public function oneToMany($entity, $field, callable $callback = null)
+    public function oneToMany($entity, $field = null, callable $callback = null)
     {
         return $this->addRelation(
             new OneToMany(
                 $this->getBuilder(),
                 $this->getNamingStrategy(),
-                $field,
+                $this->guessPluralField($entity, $field),
                 $entity
             ),
             $callback
@@ -109,30 +110,30 @@ trait Relations
 
     /**
      * @param string        $entity
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return ManyToMany
      */
-    public function belongsToMany($entity, $field, callable $callback = null)
+    public function belongsToMany($entity, $field = null, callable $callback = null)
     {
         return $this->manyToMany($entity, $field, $callback);
     }
 
     /**
      * @param string        $entity
-     * @param string        $field
+     * @param string|null   $field
      * @param callable|null $callback
      *
      * @return ManyToMany
      */
-    public function manyToMany($entity, $field, callable $callback = null)
+    public function manyToMany($entity, $field = null, callable $callback = null)
     {
         return $this->addRelation(
             new ManyToMany(
                 $this->getBuilder(),
                 $this->getNamingStrategy(),
-                $field,
+                $this->guessPluralField($entity, $field),
                 $entity
             ),
             $callback
@@ -152,6 +153,28 @@ trait Relations
         $this->callbackAndQueue($relation, $callback);
 
         return $relation;
+    }
+
+    /**
+     * @param string      $entity
+     * @param string|null $field
+     *
+     * @return string
+     */
+    protected function guessSingularField($entity, $field = null)
+    {
+        return $field ?: Str::camel(class_basename($entity));
+    }
+
+    /**
+     * @param string      $entity
+     * @param string|null $field
+     *
+     * @return string
+     */
+    protected function guessPluralField($entity, $field = null)
+    {
+        return $field ?: Str::plural($this->guessSingularField($entity));
     }
 
     /**
