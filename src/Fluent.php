@@ -240,76 +240,76 @@ interface Fluent
     public function rememberToken($name = 'rememberToken', callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return OneToOne
      */
-    public function hasOne($field, $entity, callable $callback = null);
+    public function hasOne($entity, $field, callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return OneToOne
      */
-    public function oneToOne($field, $entity, callable $callback = null);
+    public function oneToOne($entity, $field, callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return ManyToOne
      */
-    public function belongsTo($field, $entity, callable $callback = null);
+    public function belongsTo($entity, $field, callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return ManyToOne
      */
-    public function manyToOne($field, $entity, callable $callback = null);
+    public function manyToOne($entity, $field, callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return OneToMany
      */
-    public function hasMany($field, $entity, callable $callback = null);
+    public function hasMany($entity, $field, callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return OneToMany
      */
-    public function oneToMany($field, $entity, callable $callback = null);
+    public function oneToMany($entity, $field, callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return ManyToMany
      */
-    public function belongsToMany($field, $entity, callable $callback = null);
+    public function belongsToMany($entity, $field, callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return ManyToMany
      */
-    public function manyToMany($field, $entity, callable $callback = null);
+    public function manyToMany($entity, $field, callable $callback = null);
 
     /**
      * Adds a custom relation to the entity.
@@ -383,13 +383,13 @@ interface Fluent
     public function simpleArray($name, callable $callback = null);
 
     /**
-     * @param string        $field
      * @param string        $embeddable
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return Embedded
      */
-    public function embed($field, $embeddable, callable $callback = null);
+    public function embed($embeddable, $field, callable $callback = null);
 
     /**
      * @param string        $type

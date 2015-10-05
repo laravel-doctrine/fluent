@@ -12,25 +12,25 @@ use LaravelDoctrine\Fluent\Relations\Relation;
 trait Relations
 {
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return OneToOne
      */
-    public function hasOne($field, $entity, callable $callback = null)
+    public function hasOne($entity, $field, callable $callback = null)
     {
-        return $this->oneToOne($field, $entity, $callback);
+        return $this->oneToOne($entity, $field, $callback);
     }
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return OneToOne
      */
-    public function oneToOne($field, $entity, callable $callback = null)
+    public function oneToOne($entity, $field, callable $callback = null)
     {
         return $this->addRelation(
             new OneToOne(
@@ -44,25 +44,25 @@ trait Relations
     }
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return ManyToOne
      */
-    public function belongsTo($field, $entity, callable $callback = null)
+    public function belongsTo($entity, $field, callable $callback = null)
     {
-        return $this->manyToOne($field, $entity, $callback);
+        return $this->manyToOne($entity, $field, $callback);
     }
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return ManyToOne
      */
-    public function manyToOne($field, $entity, callable $callback = null)
+    public function manyToOne($entity, $field, callable $callback = null)
     {
         return $this->addRelation(
             new ManyToOne(
@@ -76,25 +76,25 @@ trait Relations
     }
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return OneToMany
      */
-    public function hasMany($field, $entity, callable $callback = null)
+    public function hasMany($entity, $field, callable $callback = null)
     {
-        return $this->oneToMany($field, $entity, $callback);
+        return $this->oneToMany($entity, $field, $callback);
     }
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return OneToMany
      */
-    public function oneToMany($field, $entity, callable $callback = null)
+    public function oneToMany($entity, $field, callable $callback = null)
     {
         return $this->addRelation(
             new OneToMany(
@@ -108,25 +108,25 @@ trait Relations
     }
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return ManyToMany
      */
-    public function belongsToMany($field, $entity, callable $callback = null)
+    public function belongsToMany($entity, $field, callable $callback = null)
     {
-        return $this->manyToMany($field, $entity, $callback);
+        return $this->manyToMany($entity, $field, $callback);
     }
 
     /**
-     * @param string        $field
      * @param string        $entity
+     * @param string        $field
      * @param callable|null $callback
      *
      * @return ManyToMany
      */
-    public function manyToMany($field, $entity, callable $callback = null)
+    public function manyToMany($entity, $field, callable $callback = null)
     {
         return $this->addRelation(
             new ManyToMany(
