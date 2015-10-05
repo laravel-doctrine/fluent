@@ -468,7 +468,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_has_one()
     {
-        $relation = $this->fluent->hasOne('one', FakeEntity::class, function ($relation) {
+        $relation = $this->fluent->hasOne(FakeEntity::class, 'one', function ($relation) {
             $this->assertInstanceOf(Relation::class, $relation);
             $this->assertInstanceOf(OneToOne::class, $relation);
         });
@@ -479,7 +479,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_one_to_one()
     {
-        $relation = $this->fluent->oneToOne('one', FakeEntity::class, function ($relation) {
+        $relation = $this->fluent->oneToOne(FakeEntity::class, 'one', function ($relation) {
             $this->assertInstanceOf(Relation::class, $relation);
             $this->assertInstanceOf(OneToOne::class, $relation);
         });
@@ -490,7 +490,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_belongs_to()
     {
-        $relation = $this->fluent->belongsTo('parent', FakeEntity::class, function ($relation) {
+        $relation = $this->fluent->belongsTo(FakeEntity::class, 'parent', function ($relation) {
             $this->assertInstanceOf(Relation::class, $relation);
             $this->assertInstanceOf(ManyToOne::class, $relation);
         });
@@ -501,7 +501,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_many_to_one()
     {
-        $relation = $this->fluent->manyToOne('parent', FakeEntity::class, function ($relation) {
+        $relation = $this->fluent->manyToOne(FakeEntity::class, 'parent', function ($relation) {
             $this->assertInstanceOf(Relation::class, $relation);
             $this->assertInstanceOf(ManyToOne::class, $relation);
         });
@@ -512,7 +512,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_has_many()
     {
-        $relation = $this->fluent->hasMany('children', FakeEntity::class, function ($relation) {
+        $relation = $this->fluent->hasMany(FakeEntity::class, 'children', function ($relation) {
             $this->assertInstanceOf(Relation::class, $relation);
             $this->assertInstanceOf(OneToMany::class, $relation);
         });
@@ -523,7 +523,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_one_to_many()
     {
-        $relation = $this->fluent->oneToMany('children', FakeEntity::class, function ($relation) {
+        $relation = $this->fluent->oneToMany(FakeEntity::class, 'children', function ($relation) {
             $this->assertInstanceOf(Relation::class, $relation);
             $this->assertInstanceOf(OneToMany::class, $relation);
         });
@@ -534,7 +534,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_belongs_to_many()
     {
-        $relation = $this->fluent->belongsToMany('children', FakeEntity::class, function ($relation) {
+        $relation = $this->fluent->belongsToMany(FakeEntity::class, 'children', function ($relation) {
             $this->assertInstanceOf(Relation::class, $relation);
             $this->assertInstanceOf(ManyToMany::class, $relation);
         });
@@ -545,7 +545,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_many_to_many()
     {
-        $relation = $this->fluent->manyToMany('children', FakeEntity::class, function ($relation) {
+        $relation = $this->fluent->manyToMany(FakeEntity::class, 'children', function ($relation) {
             $this->assertInstanceOf(Relation::class, $relation);
             $this->assertInstanceOf(ManyToMany::class, $relation);
         });
@@ -556,7 +556,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_embed_embeddables()
     {
-        $embedded = $this->fluent->embed('embedded', StubEmbeddable::class, function ($embedded) {
+        $embedded = $this->fluent->embed(StubEmbeddable::class, 'embedded', function ($embedded) {
             $this->assertInstanceOf(Embedded::class, $embedded);
         });
 
@@ -695,7 +695,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_override_many_to_one_association()
     {
-        $this->fluent->manyToOne('manyToOne', FluentEntity::class);
+        $this->fluent->manyToOne(FluentEntity::class, 'manyToOne');
 
         $this->fluent->override('manyToOne', function ($relation) {
             return $relation->source('source_id')->target('target_id');
@@ -711,7 +711,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_override_many_to_many_association()
     {
-        $this->fluent->manyToMany('manyToMany', FluentEntity::class);
+        $this->fluent->manyToMany(FluentEntity::class, 'manyToMany');
 
         $this->fluent->override('manyToMany', function ($relation) {
             return $relation->joinTable('custom_table_name')->source('source_id');

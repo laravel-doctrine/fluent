@@ -12,8 +12,10 @@ class StubEntityMapping extends EntityMapping
     {
         $builder->increments('id');
         $builder->string('name');
-        $builder->belongsTo('parent', StubEntity::class)->inversedBy('parent');
-        $builder->hasMany('children', StubEntity::class)->mappedBy('parent');
+        $builder->belongsTo(StubEntity::class, 'parent')->inversedBy('parent');
+        $builder->hasMany(StubEntity::class, 'children')->mappedBy('parent');
+        $builder->hasOne(StubEntity::class, 'one')->ownedBy('theOther');
+        $builder->belongsToMany(StubEntity::class, 'many')->owns('theWorld');
     }
 
     public function mapFor()

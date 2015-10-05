@@ -47,6 +47,8 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('name', $metadata->fieldNames);
         $this->assertContains(StubEntity::class, $metadata->associationMappings['parent']['targetEntity']);
         $this->assertContains(StubEntity::class, $metadata->associationMappings['children']['targetEntity']);
+        $this->assertContains(StubEntity::class, $metadata->associationMappings['one']['targetEntity']);
+        $this->assertContains(StubEntity::class, $metadata->associationMappings['many']['targetEntity']);
     }
 
     public function test_it_should_build_the_queued_buildables()
@@ -99,8 +101,12 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
         $builder->shouldReceive('string')->once();
         $builder->shouldReceive('belongsTo')->once()->andReturn(m::self());
         $builder->shouldReceive('hasMany')->once()->andReturn(m::self());
+        $builder->shouldReceive('hasOne')->once()->andReturn(m::self());
+        $builder->shouldReceive('belongsToMany')->once()->andReturn(m::self());
         $builder->shouldReceive('inversedBy')->once();
         $builder->shouldReceive('mappedBy')->once();
+        $builder->shouldReceive('ownedBy')->once();
+        $builder->shouldReceive('owns')->once();
 
         return $builder;
     }
