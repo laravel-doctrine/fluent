@@ -16,6 +16,7 @@ use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\JoinedTableInheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\SingleTableInheritance;
 use LaravelDoctrine\Fluent\Builders\LifecycleEvents;
+use LaravelDoctrine\Fluent\Builders\Primary;
 use LaravelDoctrine\Fluent\Builders\Table;
 use LaravelDoctrine\Fluent\Builders\UniqueConstraint;
 use LaravelDoctrine\Fluent\Fluent;
@@ -219,6 +220,33 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Index::class, $index);
         $this->assertEquals(['name', 'address', 'email'], $index->getColumns());
         $this->assertContains($index, $this->fluent->getQueued());
+    }
+
+    public function test_can_add_one_primary_key()
+    {
+        $primary = $this->fluent->primary('id');
+
+        $this->assertInstanceOf(Primary::class, $primary);
+        $this->assertEquals(['id'], $primary->getFields());
+        $this->assertContains($primary, $this->fluent->getQueued());
+    }
+
+    public function test_can_add_multiple_primary_keys_as_multiple_parameters()
+    {
+        $primary = $this->fluent->primary('relation1', 'relation2');
+
+        $this->assertInstanceOf(Primary::class, $primary);
+        $this->assertEquals(['relation1', 'relation2'], $primary->getFields());
+        $this->assertContains($primary, $this->fluent->getQueued());
+    }
+
+    public function test_can_add_multiple_primary_keys_as_array()
+    {
+        $primary = $this->fluent->primary(['relation1', 'relation2']);
+
+        $this->assertInstanceOf(Primary::class, $primary);
+        $this->assertEquals(['relation1', 'relation2'], $primary->getFields());
+        $this->assertContains($primary, $this->fluent->getQueued());
     }
 
     public function test_can_add_unique_constraint_for_one_column()

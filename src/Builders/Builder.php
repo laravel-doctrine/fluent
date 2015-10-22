@@ -129,6 +129,25 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param array|string $fields
+     *
+     * @return Primary
+     */
+    public function primary($fields)
+    {
+        $fields = is_array($fields) ? $fields : func_get_args();
+
+        $primary = new Primary(
+            $this->builder,
+            $fields
+        );
+
+        $this->queue($primary);
+
+        return $primary;
+    }
+
+    /**
      * @param array|string $columns
      *
      * @return UniqueConstraint
