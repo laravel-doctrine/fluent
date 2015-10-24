@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use InvalidArgumentException;
+use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 
 /**
  * @method $this orphanRemoval()
@@ -22,6 +23,10 @@ use InvalidArgumentException;
  */
 abstract class AbstractRelation implements Relation
 {
+    use Queueable {
+        build as buildQueued;
+    }
+
     /**
      * @var string
      */
@@ -118,19 +123,41 @@ abstract class AbstractRelation implements Relation
     }
 
     /**
-     * Build the association
-     */
-    public function build()
-    {
-        $this->association->build();
-    }
-
-    /**
      * @return AssociationBuilder
      */
     public function getAssociation()
     {
         return $this->association;
+    }
+
+    /**
+     * @param string      $usage
+     * @param string|null $region
+     *
+     * @return AssociationBuilder
+     */
+    public function cache($usage = 'READ_ONLY', $region = null)
+    {
+        $cache = new AssociationCache(
+            $this->builder->getClassMetadata(),
+            $this->relation,
+            $usage,
+            $region
+        );
+
+        $this->queue($cache);
+
+        return $this;
+    }
+
+    /**
+     * Execute the build process for all queued buildables
+     */
+    public function build()
+    {
+        $this->getAssociation()->build();
+
+        $this->buildQueued();
     }
 
     /**

@@ -21,7 +21,7 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->relation->cascade(['persist']);
 
-        $this->relation->getAssociation()->build();
+        $this->relation->build();
 
         $this->assertContains('persist', $this->getAssocValue($this->field, 'cascade'));
     }
@@ -30,7 +30,7 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->relation->cascade(['persist', 'remove']);
 
-        $this->relation->getAssociation()->build();
+        $this->relation->build();
 
         $this->assertContains('persist', $this->getAssocValue($this->field, 'cascade'));
         $this->assertContains('remove', $this->getAssocValue($this->field, 'cascade'));
@@ -47,7 +47,7 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->relation->fetch('EXTRA_LAZY');
 
-        $this->relation->getAssociation()->build();
+        $this->relation->build();
 
         $this->assertEquals(ClassMetadata::FETCH_EXTRA_LAZY, $this->getAssocValue($this->field, 'fetch'));
     }
@@ -59,19 +59,64 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
         $this->relation->fetch('invalid');
     }
 
+    public function test_can_cache_the_association()
+    {
+        $this->relation->cache();
+
+        $this->relation->build();
+
+        $cache = $this->getAssocValue($this->field, 'cache');
+        $this->assertEquals(1, $cache['usage']);
+        $this->assertEquals('tests_relations_fluententity__' . $this->field, $cache['region']);
+    }
+
+    public function test_can_cache_the_association_with_usage()
+    {
+        $this->relation->cache(3);
+
+        $this->relation->build();
+
+        $cache = $this->getAssocValue($this->field, 'cache');
+        $this->assertEquals(3, $cache['usage']);
+        $this->assertEquals('tests_relations_fluententity__' . $this->field, $cache['region']);
+    }
+
+    public function test_valid_cache_usage_should_be_given()
+    {
+        $this->setExpectedException(
+            InvalidArgumentException::class,
+            '[invalid] is not a valid cache usage. Available: READ_ONLY, NONSTRICT_READ_WRITE, READ_WRITE'
+        );
+
+        $this->relation->cache('invalid');
+    }
+
+    public function test_can_cache_the_association_with_custom_region()
+    {
+        $this->relation->cache(1, 'custom_region');
+
+        $this->relation->build();
+
+        $cache = $this->getAssocValue($this->field, 'cache');
+        $this->assertEquals(1, $cache['usage']);
+        $this->assertEquals('custom_region', $cache['region']);
+    }
+
     public function test_can_call_association_builder_methods()
     {
         $this->relation->fetchEager();
 
-        $this->relation->getAssociation()->build();
+        $this->relation->build();
 
         $this->assertEquals(ClassMetadata::FETCH_EAGER, $this->getAssocValue($this->field, 'fetch'));
     }
 
     public function test_calling_non_existing_methods_will_throw_exception()
     {
-        $this->setExpectedException(BadMethodCallException::class,
-            'Relation method [doSomethingWrong] does not exist.');
+        $this->setExpectedException(
+            BadMethodCallException::class,
+            'Relation method [doSomethingWrong] does not exist.'
+        );
 
         $this->relation->doSomethingWrong();
     }

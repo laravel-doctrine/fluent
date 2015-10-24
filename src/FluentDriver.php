@@ -117,7 +117,7 @@ class FluentDriver implements MappingDriver
     /**
      * Override the default Fluent factory method with a custom one.
      * Use this to implement your own Fluent builder.
-     * The method will recieve a ClassMetadata object as its only argument.
+     * The method will receive a ClassMetadata object as its only argument.
      *
      * @param callable $factory
      */

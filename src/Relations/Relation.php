@@ -23,6 +23,14 @@ interface Relation extends Buildable
     public function fetch($strategy);
 
     /**
+     * @param string      $usage
+     * @param string|null $region
+     *
+     * @return AssociationBuilder
+     */
+    public function cache($usage = 'READ_ONLY', $region = null);
+
+    /**
      * @return ClassMetadataBuilder
      */
     public function getBuilder();

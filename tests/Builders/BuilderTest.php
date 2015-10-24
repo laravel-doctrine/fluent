@@ -601,9 +601,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->fluent->timestamps();
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         $this->assertContains('createdAt', $this->fluent->getClassMetadata()->getFieldNames());
     }
@@ -617,9 +615,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->fluent->timestamps('other_created_field', 'other_updated_field');
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         $this->assertContains('other_created_field', $this->fluent->getClassMetadata()->getFieldNames());
         $this->assertContains('other_updated_field', $this->fluent->getClassMetadata()->getFieldNames());
@@ -664,9 +660,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $fluent->aMacro();
         $fluent->anotherMacro();
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         foreach ($fluent->getQueued() as $field) {
             $field->build();
@@ -714,9 +708,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             return $field->name('other_name')->nullable();
         });
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         $this->assertEquals('other_name', $this->fluent->getClassMetadata()->getFieldMapping('name')['columnName']);
         $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('name')['nullable']);
@@ -730,12 +722,12 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             return $relation->source('source_id')->target('target_id');
         });
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
-        $this->assertEquals('target_id', $this->fluent->getClassMetadata()->getAssociationMapping('manyToOne')['joinColumns'][0]['name']);
-        $this->assertEquals('source_id', $this->fluent->getClassMetadata()->getAssociationMapping('manyToOne')['joinColumns'][0]['referencedColumnName']);
+        $this->assertEquals('target_id',
+            $this->fluent->getClassMetadata()->getAssociationMapping('manyToOne')['joinColumns'][0]['name']);
+        $this->assertEquals('source_id', $this->fluent->getClassMetadata()
+                                                      ->getAssociationMapping('manyToOne')['joinColumns'][0]['referencedColumnName']);
     }
 
     public function test_can_override_many_to_many_association()
@@ -746,21 +738,19 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             return $relation->joinTable('custom_table_name')->source('source_id');
         });
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
-        $this->assertEquals('custom_table_name', $this->fluent->getClassMetadata()->getAssociationMapping('manyToMany')['joinTable']['name']);
-        $this->assertEquals('source_id', $this->fluent->getClassMetadata()->getAssociationMapping('manyToMany')['joinTable']['joinColumns'][0]['name']);
+        $this->assertEquals('custom_table_name',
+            $this->fluent->getClassMetadata()->getAssociationMapping('manyToMany')['joinTable']['name']);
+        $this->assertEquals('source_id', $this->fluent->getClassMetadata()
+                                                      ->getAssociationMapping('manyToMany')['joinTable']['joinColumns'][0]['name']);
     }
 
     public function test_can_guess_a_one_to_one_relation_name()
     {
         $this->fluent->oneToOne(FluentEntity::class);
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         try {
             $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntity');
@@ -773,9 +763,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fluent->hasOne(FluentEntity::class);
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         try {
             $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntity');
@@ -788,9 +776,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fluent->belongsTo(FluentEntity::class);
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         try {
             $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntity');
@@ -803,9 +789,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fluent->oneToMany(FluentEntity::class)->mappedBy('fluentEntity');
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         try {
             $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntities');
@@ -818,9 +802,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fluent->hasMany(FluentEntity::class)->mappedBy('fluentEntity');
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         try {
             $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntities');
@@ -833,9 +815,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fluent->manyToMany(FluentEntity::class);
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         try {
             $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntities');
@@ -848,9 +828,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fluent->belongsToMany(FluentEntity::class);
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         try {
             $this->fluent->getClassMetadata()->getAssociationMapping('fluentEntities');
@@ -863,9 +841,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fluent->embed(StubEmbeddable::class);
 
-        foreach ($this->fluent->getQueued() as $field) {
-            $field->build();
-        }
+        $this->fluent->build();
 
         $this->assertArrayHasKey(
             'stubEmbeddable',

@@ -3,12 +3,12 @@
 namespace LaravelDoctrine\Fluent\Builders;
 
 use InvalidArgumentException;
-use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\Inheritance\InheritanceFactory;
 use LaravelDoctrine\Fluent\Builders\Overrides\Override;
 use LaravelDoctrine\Fluent\Builders\Traits\Fields;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
+use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 use LaravelDoctrine\Fluent\Builders\Traits\Relations;
 use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
@@ -18,12 +18,7 @@ use LogicException;
  */
 class Builder extends AbstractBuilder implements Fluent
 {
-    use Fields, Relations, Macroable;
-
-    /**
-     * @var Buildable[]
-     */
-    protected $queued = [];
+    use Fields, Relations, Macroable, Queueable;
 
     /**
      * @param string|callable $name
@@ -208,27 +203,25 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param callable|null $callback
+     *
+     * @return LifecycleEvents
+     */
+    public function events(callable $callback = null)
+    {
+        $events = new LifecycleEvents($this->builder);
+
+        $this->callbackAndQueue($events, $callback);
+
+        return $events;
+    }
+
+    /**
      * @return bool
      */
     public function isEmbeddedClass()
     {
         return $this->builder->getClassMetadata()->isEmbeddedClass;
-    }
-
-    /**
-     * @return Buildable[]
-     */
-    public function getQueued()
-    {
-        return $this->queued;
-    }
-
-    /**
-     * @param Buildable $buildable
-     */
-    protected function queue(Buildable $buildable)
-    {
-        $this->queued[] = $buildable;
     }
 
     /**
@@ -249,32 +242,5 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
-    }
-
-    /**
-     * @param Buildable     $buildable
-     * @param callable|null $callback
-     */
-    protected function callbackAndQueue(Buildable $buildable, callable $callback = null)
-    {
-        if (is_callable($callback)) {
-            $callback($buildable);
-        }
-
-        $this->queue($buildable);
-    }
-
-    /**
-     * @param callable|null $callback
-     *
-     * @return LifecycleEvents
-     */
-    public function events(callable $callback = null)
-    {
-        $events = new LifecycleEvents($this->builder);
-
-        $this->callbackAndQueue($events, $callback);
-
-        return $events;
     }
 }

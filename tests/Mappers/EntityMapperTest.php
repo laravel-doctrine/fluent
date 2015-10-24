@@ -51,63 +51,8 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertContains(StubEntity::class, $metadata->associationMappings['many']['targetEntity']);
     }
 
-    public function test_it_should_build_the_queued_buildables()
-    {
-        $meta    = m::mock(ClassMetadataBuilder::class);
-        $builder = $this->mockBuilder($meta);
-
-        $builder->shouldReceive('getQueued')->andReturn([
-            $buildable1 = m::mock(Buildable::class),
-            $buildable2 = m::mock(Buildable::class)
-        ]);
-
-        $buildable1->shouldReceive('build')->once();
-        $buildable2->shouldReceive('build')->once();
-
-        $this->mapper->map($builder);
-    }
-
-    public function test_it_should_build_the_delayed_queued_buildables()
-    {
-        $meta    = m::mock(ClassMetadataBuilder::class);
-        $builder = $this->mockBuilder($meta);
-
-        $builder->shouldReceive('getQueued')->andReturn([
-            $delayed = m::mock(Delay::class),
-            $buildable2 = m::mock(Buildable::class)
-        ]);
-
-        $delayed->shouldReceive('build')->once();
-        $buildable2->shouldReceive('build')->once();
-
-        $this->mapper->map($builder);
-    }
-
     protected function tearDown()
     {
         m::close();
-    }
-
-    /**
-     * @param $meta
-     *
-     * @return m\MockInterface
-     */
-    protected function mockBuilder($meta)
-    {
-        $builder = m::mock(Builder::class);
-        $builder->shouldReceive('getBuilder')->once()->andReturn($meta);
-        $builder->shouldReceive('increments')->once();
-        $builder->shouldReceive('string')->once();
-        $builder->shouldReceive('belongsTo')->once()->andReturn(m::self());
-        $builder->shouldReceive('hasMany')->once()->andReturn(m::self());
-        $builder->shouldReceive('hasOne')->once()->andReturn(m::self());
-        $builder->shouldReceive('belongsToMany')->once()->andReturn(m::self());
-        $builder->shouldReceive('inversedBy')->once();
-        $builder->shouldReceive('mappedBy')->once();
-        $builder->shouldReceive('ownedBy')->once();
-        $builder->shouldReceive('owns')->once();
-
-        return $builder;
     }
 }

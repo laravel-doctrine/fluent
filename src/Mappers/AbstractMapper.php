@@ -3,7 +3,6 @@
 namespace LaravelDoctrine\Fluent\Mappers;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Mapping;
 
@@ -31,20 +30,7 @@ abstract class AbstractMapper implements Mapper
 
         $this->mapping->map($builder);
 
-        $delayed = [];
-        foreach ($builder->getQueued() as $buildable) {
-            if ($buildable instanceof Delay) {
-                $delayed[] = $buildable;
-            } else {
-                $buildable->build();
-            }
-        }
-
-        // We will delay some of the builds, because they
-        // depend on the executing of the other builds
-        foreach ($delayed as $buildable) {
-            $buildable->build();
-        }
+        $builder->build();
     }
 
     /**
