@@ -5,10 +5,17 @@ namespace Tests\Relations;
 use BadMethodCallException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use InvalidArgumentException;
+use LaravelDoctrine\Fluent\Relations\ManyToMany;
+use LaravelDoctrine\Fluent\Relations\OneToMany;
 
 class RelationTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $field;
+
+    /**
+     * @var Relation
+     */
+    protected $relation;
 
     public function test_can_set_cascade()
     {

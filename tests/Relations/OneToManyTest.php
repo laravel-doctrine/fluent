@@ -8,13 +8,14 @@ use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
 use Tests\Relations\Traits\Indexable;
+use Tests\Relations\Traits\NonPrimary;
 use Tests\Relations\Traits\OneTo;
 use Tests\Relations\Traits\Orderable;
 use Tests\Relations\Traits\Ownable;
 
 class OneToManyTest extends RelationTestCase
 {
-    use OneTo, Indexable, Orderable, Ownable;
+    use OneTo, Indexable, Orderable, Ownable, NonPrimary;
 
     /**
      * @var OneToMany

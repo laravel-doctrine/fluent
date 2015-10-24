@@ -8,10 +8,11 @@ use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Relations\JoinColumn;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use Tests\Relations\Traits\Owning;
+use Tests\Relations\Traits\Primary;
 
 class ManyToOneTest extends RelationTestCase
 {
-    use Owning;
+    use Owning, Primary;
 
     /**
      * @var ManyToOne

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
 use LaravelDoctrine\Fluent\Relations\Traits\Owning;
+use LaravelDoctrine\Fluent\Relations\Traits\Primary;
 
 /**
  * @method $this inversedBy($fieldName)
@@ -22,7 +23,7 @@ use LaravelDoctrine\Fluent\Relations\Traits\Owning;
  */
 class ManyToOne extends AbstractRelation
 {
-    use ManyTo, Owning;
+    use ManyTo, Owning, Primary;
 
     /**
      * @param ClassMetadataBuilder $builder

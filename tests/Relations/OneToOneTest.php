@@ -10,10 +10,11 @@ use LaravelDoctrine\Fluent\Relations\OneToOne;
 use Tests\Relations\Traits\OneTo;
 use Tests\Relations\Traits\Ownable;
 use Tests\Relations\Traits\Owning;
+use Tests\Relations\Traits\Primary;
 
 class OneToOneTest extends RelationTestCase
 {
-    use OneTo, Owning, Ownable;
+    use OneTo, Owning, Ownable, Primary;
 
     /**
      * @var ManyToOne

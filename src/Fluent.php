@@ -4,8 +4,14 @@ namespace LaravelDoctrine\Fluent;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use LaravelDoctrine\Fluent\Builders\Embedded;
+use LaravelDoctrine\Fluent\Builders\Entity;
 use LaravelDoctrine\Fluent\Builders\Field;
+use LaravelDoctrine\Fluent\Builders\Index;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
+use LaravelDoctrine\Fluent\Builders\LifecycleEvents;
+use LaravelDoctrine\Fluent\Builders\Overrides\Override;
+use LaravelDoctrine\Fluent\Builders\Primary;
+use LaravelDoctrine\Fluent\Builders\Table;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
@@ -412,4 +418,26 @@ interface Fluent
      * @return Inheritance
      */
     public function joinedTableInheritance(callable $callback = null);
+
+    /**
+     * @param array|string $fields
+     *
+     * @return Primary
+     */
+    public function primary($fields);
+
+    /**
+     * @param string   $name
+     * @param callable $callback
+     *
+     * @return Override
+     */
+    public function override($name, callable $callback);
+
+    /**
+     * @param callable|null $callback
+     *
+     * @return LifecycleEvents
+     */
+    public function events(callable $callback = null);
 }

@@ -10,7 +10,6 @@ use InvalidArgumentException;
 
 /**
  * @method $this orphanRemoval()
- * @method $this makePrimaryKey()
  * @method $this cascadeAll()
  * @method $this cascadePersist()
  * @method $this cascadeRemove()
