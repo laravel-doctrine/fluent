@@ -25,7 +25,7 @@ This package provides a fluent Builder over Doctrine's `ClassMetadataBuilder`, a
 Doctrine's mapping concepts in Laravel. The builder adds syntax sugar and implements the same grammar that you
 might use in Laravel migrations.
 
-```
+```php
 class ScientistMapping extends EntityMapping
 {
     /**
