@@ -29,7 +29,10 @@
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",
-    "mockery/mockery": "~0.9"
+    "mockery/mockery": "~0.9",
+    "beberlei/DoctrineExtensions": "~1.0",
+    "zf1/zend-date": "~1.12",
+    "nesbot/carbon": "*"
   },
   "autoload": {
     "psr-4": {

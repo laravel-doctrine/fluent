@@ -307,9 +307,64 @@ trait Fields
      *
      * @return Field
      */
+    public function carbonDateTime($name, callable $callback = null)
+    {
+        return $this->field('carbondatetime', $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function carbonDateTimeTz($name, callable $callback = null)
+    {
+        return $this->field('carbondatetimetz', $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function carbonDate($name, callable $callback = null)
+    {
+        return $this->field('carbondate', $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function carbonTime($name, callable $callback = null)
+    {
+        return $this->field('carbontime', $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    public function zendDate($name, callable $callback = null)
+    {
+        return $this->field('zenddate', $name, $callback);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
     public function timestamp($name, callable $callback = null)
     {
-        return $this->field(Type::DATETIME, $name, $callback);
+        return $this->carbonDateTime($name, $callback);
     }
 
     /**
@@ -320,7 +375,7 @@ trait Fields
      */
     public function timestampTz($name, callable $callback = null)
     {
-        return $this->field(Type::DATETIMETZ, $name, $callback);
+        return $this->carbonDateTimeTz($name, $callback);
     }
 
     /**

@@ -7,6 +7,11 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\MappingException;
+use DoctrineExtensions\Types\CarbonDateTimeType;
+use DoctrineExtensions\Types\CarbonDateTimeTzType;
+use DoctrineExtensions\Types\CarbonDateType;
+use DoctrineExtensions\Types\CarbonTimeType;
+use DoctrineExtensions\Types\ZendDateType;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Embedded;
@@ -45,29 +50,43 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $types = [
-        'string'       => Type::STRING,
-        'text'         => Type::TEXT,
-        'integer'      => Type::INTEGER,
-        'smallInteger' => Type::SMALLINT,
-        'bigInteger'   => Type::BIGINT,
-        'float'        => Type::FLOAT,
-        'decimal'      => Type::DECIMAL,
-        'object'       => Type::OBJECT,
-        'boolean'      => Type::BOOLEAN,
-        'jsonArray'    => Type::JSON_ARRAY,
-        'date'         => Type::DATE,
-        'dateTime'     => Type::DATETIME,
-        'dateTimeTz'   => Type::DATETIMETZ,
-        'time'         => Type::TIME,
-        'timestamp'    => Type::DATETIME,
-        'timestampTz'  => Type::DATETIMETZ,
-        'binary'       => Type::BINARY,
-        'guid'         => Type::GUID,
-        'blob'         => Type::BLOB,
-        'array'        => Type::TARRAY,
-        'setArray'     => Type::TARRAY,
-        'simpleArray'  => Type::SIMPLE_ARRAY,
+        'string'           => Type::STRING,
+        'text'             => Type::TEXT,
+        'integer'          => Type::INTEGER,
+        'smallInteger'     => Type::SMALLINT,
+        'bigInteger'       => Type::BIGINT,
+        'float'            => Type::FLOAT,
+        'decimal'          => Type::DECIMAL,
+        'object'           => Type::OBJECT,
+        'boolean'          => Type::BOOLEAN,
+        'jsonArray'        => Type::JSON_ARRAY,
+        'date'             => Type::DATE,
+        'dateTime'         => Type::DATETIME,
+        'dateTimeTz'       => Type::DATETIMETZ,
+        'time'             => Type::TIME,
+        'carbonDateTime'   => 'carbondatetime',
+        'carbonDateTimeTz' => 'carbondatetimetz',
+        'carbonDate'       => 'carbondate',
+        'carbonTime'       => 'carbontime',
+        'zendDate'         => 'zenddate',
+        'timestamp'        => 'carbondatetime',
+        'timestampTz'      => 'carbondatetimetz',
+        'binary'           => Type::BINARY,
+        'guid'             => Type::GUID,
+        'blob'             => Type::BLOB,
+        'array'            => Type::TARRAY,
+        'setArray'         => Type::TARRAY,
+        'simpleArray'      => Type::SIMPLE_ARRAY,
     ];
+
+    public static function setUpBeforeClass()
+    {
+        Type::addType(CarbonDateTimeType::CARBONDATETIME, CarbonDateTimeType::class);
+        Type::addType(CarbonDateTimeTzType::CARBONDATETIMETZ, CarbonDateTimeTzType::class);
+        Type::addType(CarbonDateType::CARBONDATE, CarbonDateType::class);
+        Type::addType(CarbonTimeType::CARBONTIME, CarbonTimeType::class);
+        Type::addType(ZendDateType::ZENDDATE, ZendDateType::class);
+    }
 
     protected function setUp()
     {
