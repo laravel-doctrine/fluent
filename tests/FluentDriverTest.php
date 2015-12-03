@@ -193,6 +193,13 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($driver->isTransient(StubMappedSuperClass::class));
     }
 
+    public function test_unmapped_classes_should_be_transient()
+    {
+        $driver = new FluentDriver;
+
+        $this->assertTrue($driver->isTransient(StubMappedSuperClass::class));
+    }
+
     public function test_it_should_fail_when_asked_for_metadata_that_was_not_added_to_it()
     {
         $driver = new FluentDriver();

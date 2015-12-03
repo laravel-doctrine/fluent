@@ -72,7 +72,9 @@ class FluentDriver implements MappingDriver
      */
     public function isTransient($className)
     {
-        return $this->mappers->getMapperFor($className)->isTransient();
+        return
+            ! $this->mappers->hasMapperFor($className) ||
+            $this->mappers->getMapperFor($className)->isTransient();
     }
 
     /**
