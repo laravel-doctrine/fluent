@@ -36,7 +36,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->builder->getClassMetadata()->isReadOnly);
 
-        $this->entity->isReadOnly();
+        $this->entity->readOnly();
 
         $this->assertTrue($this->builder->getClassMetadata()->isReadOnly);
     }

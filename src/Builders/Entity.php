@@ -21,7 +21,7 @@ class Entity extends AbstractBuilder
     /**
      * @return Entity
      */
-    public function isReadOnly()
+    public function readOnly()
     {
         $this->builder->setReadOnly();
 
