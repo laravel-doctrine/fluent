@@ -52,12 +52,13 @@ class ManyToMany extends AbstractRelation
     /**
      * @param string $joinColumn
      * @param string $references
+     * @param bool   $unique
      *
      * @return $this
      */
-    public function joinColumn($joinColumn, $references = 'id')
+    public function joinColumn($joinColumn, $references = 'id', $unique = false)
     {
-        $this->addJoinColumn(null, $joinColumn, $references, false);
+        $this->addJoinColumn(null, $joinColumn, $references, false, $unique);
 
         return $this;
     }
@@ -65,34 +66,37 @@ class ManyToMany extends AbstractRelation
     /**
      * @param string $foreignKey
      * @param string $references
+     * @param bool   $unique
      *
      * @return $this
      */
-    public function foreignKey($foreignKey, $references = 'id')
+    public function foreignKey($foreignKey, $references = 'id', $unique = false)
     {
-        return $this->joinColumn($foreignKey, $references);
+        return $this->joinColumn($foreignKey, $references, $unique);
     }
 
     /**
      * @param string $foreignKey
      * @param string $references
+     * @param bool   $unique
      *
      * @return $this
      */
-    public function source($foreignKey, $references = 'id')
+    public function source($foreignKey, $references = 'id', $unique = false)
     {
-        return $this->joinColumn($foreignKey, $references);
+        return $this->joinColumn($foreignKey, $references, $unique);
     }
 
     /**
      * @param string $inverseKey
      * @param string $references
+     * @param bool   $unique
      *
      * @return $this
      */
-    public function inverseKey($inverseKey, $references = 'id')
+    public function inverseKey($inverseKey, $references = 'id', $unique = false)
     {
-        $this->association->addInverseJoinColumn($inverseKey, $references, false);
+        $this->association->addInverseJoinColumn($inverseKey, $references, false, $unique);
 
         return $this;
     }
@@ -100,11 +104,12 @@ class ManyToMany extends AbstractRelation
     /**
      * @param string $inverseKey
      * @param string $references
+     * @param bool   $unique
      *
      * @return $this
      */
-    public function target($inverseKey, $references = 'id')
+    public function target($inverseKey, $references = 'id', $unique = false)
     {
-        return $this->inverseKey($inverseKey, $references);
+        return $this->inverseKey($inverseKey, $references, $unique);
     }
 }
