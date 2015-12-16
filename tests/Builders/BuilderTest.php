@@ -172,6 +172,16 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\LaravelDoctrine\Fluent\Builders\Entity::class, $entity);
     }
 
+    public function test_the_related_entity_builder_should_have_the_same_naming_strategy()
+    {
+        $entity = $this->fluent->entity();
+
+        $this->assertSame(
+            $this->fluent->getNamingStrategy(),
+            $entity->getNamingStrategy()
+        );
+    }
+
     public function test_can_set_inheritance()
     {
         $inheritance = $this->fluent->inheritance(Inheritance::SINGLE, function ($inheritance) {
