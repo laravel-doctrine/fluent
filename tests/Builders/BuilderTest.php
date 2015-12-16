@@ -535,6 +535,19 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($relation, $this->fluent->getQueued());
     }
 
+    public function test_has_one_implies_an_inverse_one_to_one()
+    {
+        $relation = $this->fluent->hasOne(FakeEntity::class, 'one');
+
+        $relation->build();
+
+        $result = $this->builder->getClassMetadata()->associationMappings['one'];
+
+        $this->assertFalse($result['isOwningSide'],
+            "HasOne relation is an inversed one-to-one, but resulted in the owning side."
+        );
+    }
+
     public function test_can_add_one_to_one()
     {
         $relation = $this->fluent->oneToOne(FakeEntity::class, 'one', function ($relation) {

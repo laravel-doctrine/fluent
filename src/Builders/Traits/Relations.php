@@ -21,7 +21,9 @@ trait Relations
      */
     public function hasOne($entity, $field = null, callable $callback = null)
     {
-        return $this->oneToOne($entity, $field, $callback);
+        return $this->oneToOne($entity, $field, $callback)->ownedBy(
+            $this->guessSingularField($entity)
+        );
     }
 
     /**
