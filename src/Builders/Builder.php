@@ -58,7 +58,7 @@ class Builder extends AbstractBuilder implements Fluent
             throw new LogicException();
         }
 
-        $entity = new Entity($this->builder);
+        $entity = new Entity($this->builder, $this->namingStrategy);
 
         if (is_callable($callback)) {
             $callback($entity);
