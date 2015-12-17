@@ -111,16 +111,10 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function index($columns)
     {
-        $columns = is_array($columns) ? $columns : func_get_args();
-
-        $index = new Index(
-            $this->builder,
-            $columns
+        return $this->constraint(
+            Index::class,
+            is_array($columns) ? $columns : func_get_args()
         );
-
-        $this->queue($index);
-
-        return $index;
     }
 
     /**
@@ -130,16 +124,10 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function primary($fields)
     {
-        $fields = is_array($fields) ? $fields : func_get_args();
-
-        $primary = new Primary(
-            $this->builder,
-            $fields
+        return $this->constraint(
+            Primary::class,
+            is_array($fields) ? $fields : func_get_args()
         );
-
-        $this->queue($primary);
-
-        return $primary;
     }
 
     /**
@@ -149,16 +137,25 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function unique($columns)
     {
-        $columns = is_array($columns) ? $columns : func_get_args();
-
-        $unique = new UniqueConstraint(
-            $this->builder,
-            $columns
+        return $this->constraint(
+            UniqueConstraint::class,
+            is_array($columns) ? $columns : func_get_args()
         );
+    }
 
-        $this->queue($unique);
+    /**
+     * @param string $class
+     * @param array  $columns
+     *
+     * @return Index|Primary|UniqueConstraint
+     */
+    protected function constraint($class, array $columns)
+    {
+        $constraint = new $class($this->builder, $columns);
 
-        return $unique;
+        $this->queue($constraint);
+
+        return $constraint;
     }
 
     /**
