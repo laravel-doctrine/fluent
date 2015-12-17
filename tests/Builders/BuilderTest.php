@@ -75,7 +75,6 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         'guid'             => Type::GUID,
         'blob'             => Type::BLOB,
         'array'            => Type::TARRAY,
-        'setArray'         => Type::TARRAY,
         'simpleArray'      => Type::SIMPLE_ARRAY,
     ];
 
