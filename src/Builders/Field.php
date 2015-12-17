@@ -130,20 +130,6 @@ class Field implements Buildable
     }
 
     /**
-     * The default value to set for the column if no value is supplied.
-     *
-     * @param string $default
-     *
-     * @return Field
-     */
-    public function setDefault($default)
-    {
-        $this->builder->option('default', $default);
-
-        return $this;
-    }
-
-    /**
      * Boolean value to determine if the specified length of a string column should be fixed or varying
      * (applies only for string/binary column and might not be supported by all vendors).
      *
@@ -247,5 +233,19 @@ class Field implements Buildable
         }
 
         throw new BadMethodCallException("FieldBuilder method [{$method}] does not exist.");
+    }
+
+    /**
+     * The default value to set for the column if no value is supplied.
+     *
+     * @param string $default
+     *
+     * @return Field
+     */
+    protected function setDefault($default)
+    {
+        $this->builder->option('default', $default);
+
+        return $this;
     }
 }
