@@ -2,6 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Builders;
 
+use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
@@ -213,6 +214,17 @@ class Builder extends AbstractBuilder implements Fluent
     public function isEmbeddedClass()
     {
         return $this->builder->getClassMetadata()->isEmbeddedClass;
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    protected function setArray($name, callable $callback = null)
+    {
+        return $this->field(Type::TARRAY, $name, $callback);
     }
 
     /**
