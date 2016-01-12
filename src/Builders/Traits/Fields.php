@@ -230,17 +230,6 @@ trait Fields
      *
      * @return Field
      */
-    public function setArray($name, callable $callback = null)
-    {
-        return $this->field(Type::TARRAY, $name, $callback);
-    }
-
-    /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
-     */
     public function simpleArray($name, callable $callback = null)
     {
         return $this->field(Type::SIMPLE_ARRAY, $name, $callback);
@@ -398,6 +387,17 @@ trait Fields
     public function rememberToken($name = 'rememberToken', callable $callback = null)
     {
         return $this->string($name, $callback)->nullable()->length(100);
+    }
+
+    /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    protected function setArray($name, callable $callback = null)
+    {
+        return $this->field(Type::TARRAY, $name, $callback);
     }
 
     /**

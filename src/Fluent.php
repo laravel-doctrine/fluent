@@ -410,14 +410,6 @@ interface Fluent extends Buildable
      *
      * @return Field
      */
-    public function setArray($name, callable $callback = null);
-
-    /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
-     */
     public function simpleArray($name, callable $callback = null);
 
     /**
