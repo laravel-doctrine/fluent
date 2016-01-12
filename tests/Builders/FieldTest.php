@@ -120,23 +120,13 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->builder->getClassMetadata()->getFieldMapping('name')['options']['unsigned']);
     }
 
-    public function test_can_set_default()
+    public function test_can_set_default_fluently()
     {
-        $this->field->setDefault('default');
+        $this->field->default('default');
 
         $this->field->build();
 
         $this->assertEquals('default',
-            $this->builder->getClassMetadata()->getFieldMapping('name')['options']['default']);
-    }
-
-    public function test_can_set_default_fluently()
-    {
-        $this->field->default('default2');
-
-        $this->field->build();
-
-        $this->assertEquals('default2',
             $this->builder->getClassMetadata()->getFieldMapping('name')['options']['default']);
     }
 
