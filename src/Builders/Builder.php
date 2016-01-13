@@ -2,14 +2,8 @@
 
 namespace LaravelDoctrine\Fluent\Builders;
 
+use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
-use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
-use LaravelDoctrine\Fluent\Builders\Inheritance\InheritanceFactory;
-use LaravelDoctrine\Fluent\Builders\Overrides\Override;
-use LaravelDoctrine\Fluent\Builders\Traits\Fields;
-use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
-use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
-use LaravelDoctrine\Fluent\Builders\Traits\Relations;
 use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
 
@@ -18,7 +12,12 @@ use LogicException;
  */
 class Builder extends AbstractBuilder implements Fluent
 {
-    use Fields, Relations, Macroable, Queueable;
+    use Traits\Fields;
+    use Traits\Dates;
+    use Traits\Aliases;
+    use Traits\Relations;
+    use Traits\Macroable;
+    use Traits\Queueable;
 
     /**
      * @param string|callable $name
@@ -28,9 +27,7 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function table($name, callable $callback = null)
     {
-        if ($this->isEmbeddedClass()) {
-            throw new LogicException();
-        }
+        $this->disallowInEmbeddedClasses();
 
         $table = new Table($this->builder);
 
@@ -54,9 +51,7 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function entity(callable $callback = null)
     {
-        if ($this->isEmbeddedClass()) {
-            throw new LogicException();
-        }
+        $this->disallowInEmbeddedClasses();
 
         $entity = new Entity($this->builder, $this->namingStrategy);
 
@@ -71,11 +66,11 @@ class Builder extends AbstractBuilder implements Fluent
      * @param string        $type
      * @param callable|null $callback
      *
-     * @return Inheritance
+     * @return Inheritance\Inheritance
      */
     public function inheritance($type, callable $callback = null)
     {
-        $inheritance = InheritanceFactory::create($type, $this->builder);
+        $inheritance = Inheritance\InheritanceFactory::create($type, $this->builder);
 
         if (is_callable($callback)) {
             $callback($inheritance);
@@ -87,21 +82,21 @@ class Builder extends AbstractBuilder implements Fluent
     /**
      * @param callable|null $callback
      *
-     * @return Inheritance
+     * @return Inheritance\Inheritance
      */
     public function singleTableInheritance(callable $callback = null)
     {
-        return $this->inheritance(Inheritance::SINGLE, $callback);
+        return $this->inheritance(Inheritance\Inheritance::SINGLE, $callback);
     }
 
     /**
      * @param callable|null $callback
      *
-     * @return Inheritance
+     * @return Inheritance\Inheritance
      */
     public function joinedTableInheritance(callable $callback = null)
     {
-        return $this->inheritance(Inheritance::JOINED, $callback);
+        return $this->inheritance(Inheritance\Inheritance::JOINED, $callback);
     }
 
     /**
@@ -183,11 +178,11 @@ class Builder extends AbstractBuilder implements Fluent
      * @param string   $name
      * @param callable $callback
      *
-     * @return Override
+     * @return Overrides\Override
      */
     public function override($name, callable $callback)
     {
-        $override = new Override(
+        $override = new Overrides\Override(
             $this->getBuilder(),
             $this->getNamingStrategy(),
             $name,
@@ -222,6 +217,17 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
+     * @param string        $name
+     * @param callable|null $callback
+     *
+     * @return Field
+     */
+    protected function setArray($name, callable $callback = null)
+    {
+        return $this->field(Type::TARRAY, $name, $callback);
+    }
+
+    /**
      * @param string $method
      * @param array  $params
      *
@@ -239,5 +245,16 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
+    }
+
+    /**
+     * @param  string         $message
+     * @throws LogicException
+     */
+    protected function disallowInEmbeddedClasses($message = "")
+    {
+        if ($this->isEmbeddedClass()) {
+            throw new LogicException($message);
+        }
     }
 }
