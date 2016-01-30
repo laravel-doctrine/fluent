@@ -142,7 +142,7 @@ class Builder extends AbstractBuilder implements Fluent
      * @param string $class
      * @param array  $columns
      *
-     * @return Index|Primary|UniqueConstraint
+     * @return mixed
      */
     protected function constraint($class, array $columns)
     {
