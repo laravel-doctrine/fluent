@@ -2,15 +2,13 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
-use LaravelDoctrine\Fluent\Builders\Field;
-
 trait Aliases
 {
     /**
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function increments($name, callable $callback = null)
     {
@@ -23,7 +21,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function smallIncrements($name, callable $callback = null)
     {
@@ -36,7 +34,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function bigIncrements($name, callable $callback = null)
     {
@@ -49,7 +47,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function unsignedSmallInteger($name, callable $callback = null)
     {
@@ -60,7 +58,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function unsignedInteger($name, callable $callback = null)
     {
@@ -71,7 +69,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function unsignedBigInteger($name, callable $callback = null)
     {
@@ -82,7 +80,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function rememberToken($name = 'rememberToken', callable $callback = null)
     {
@@ -99,7 +97,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     abstract public function integer($name, callable $callback = null);
 
@@ -107,7 +105,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     abstract public function smallInteger($name, callable $callback = null);
 
@@ -115,7 +113,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     abstract public function bigInteger($name, callable $callback = null);
 
@@ -123,7 +121,7 @@ trait Aliases
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     abstract public function string($name, callable $callback = null);
 }

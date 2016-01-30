@@ -3,7 +3,6 @@
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
 use Doctrine\DBAL\Types\Type;
-use LaravelDoctrine\Fluent\Builders\Field;
 
 trait Dates
 {
@@ -11,7 +10,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function date($name, callable $callback = null)
     {
@@ -22,7 +21,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function dateTime($name, callable $callback = null)
     {
@@ -33,7 +32,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function dateTimeTz($name, callable $callback = null)
     {
@@ -44,7 +43,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function time($name, callable $callback = null)
     {
@@ -55,7 +54,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function carbonDateTime($name, callable $callback = null)
     {
@@ -66,7 +65,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function carbonDateTimeTz($name, callable $callback = null)
     {
@@ -77,7 +76,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function carbonDate($name, callable $callback = null)
     {
@@ -88,7 +87,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function carbonTime($name, callable $callback = null)
     {
@@ -99,7 +98,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function zendDate($name, callable $callback = null)
     {
@@ -110,7 +109,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function timestamp($name, callable $callback = null)
     {
@@ -121,7 +120,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     public function timestampTz($name, callable $callback = null)
     {
@@ -133,7 +132,7 @@ trait Dates
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Field
+     * @return \LaravelDoctrine\Fluent\Builders\Field
      */
     abstract public function field($type, $name, callable $callback = null);
 }
