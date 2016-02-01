@@ -1,6 +1,6 @@
 # Fluent Mapping Driver
 
-<img src="https://cloud.githubusercontent.com/assets/7728097/12721289/5ef38302-c8ff-11e5-8e3f-1ac64d440b80.jpg"/>
+<img src="https://cloud.githubusercontent.com/assets/7728097/12727235/4f6ad3fa-c91c-11e5-9932-f0be9b473fa1.jpg"/>
 
 [![GitHub release](https://img.shields.io/github/release/laravel-doctrine/fluent.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/fluent)
 [![Packagist](https://img.shields.io/packagist/dt/laravel-doctrine/fluent.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/fluent)
