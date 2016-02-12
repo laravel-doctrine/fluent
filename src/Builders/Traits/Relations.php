@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
-use Illuminate\Support\Str;
+use Doctrine\Common\Inflector\Inflector;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -165,7 +165,9 @@ trait Relations
      */
     protected function guessSingularField($entity, $field = null)
     {
-        return $field ?: Str::camel(class_basename($entity));
+        return $field ?: Inflector::singularize(
+            lcfirst(basename(str_replace('\\', '/', $entity)))
+        );
     }
 
     /**
@@ -176,7 +178,7 @@ trait Relations
      */
     protected function guessPluralField($entity, $field = null)
     {
-        return $field ?: Str::plural($this->guessSingularField($entity));
+        return $field ?: Inflector::pluralize($this->guessSingularField($entity));
     }
 
     /**
