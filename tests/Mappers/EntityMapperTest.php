@@ -50,9 +50,4 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertContains(StubEntity::class, $metadata->associationMappings['one']['targetEntity']);
         $this->assertContains(StubEntity::class, $metadata->associationMappings['many']['targetEntity']);
     }
-
-    protected function tearDown()
-    {
-        m::close();
-    }
 }
