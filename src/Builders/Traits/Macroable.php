@@ -39,7 +39,7 @@ trait Macroable
      *
      * @return callable
      */
-    public function getMacro($method)
+    protected function getMacro($method)
     {
         return self::$macros[$method];
     }
@@ -50,7 +50,7 @@ trait Macroable
      *
      * @return mixed
      */
-    public function callMacro($method, array $params = [])
+    protected function callMacro($method, array $params = [])
     {
         // Add builder as first closure param, append the given params
         array_unshift($params, $this);

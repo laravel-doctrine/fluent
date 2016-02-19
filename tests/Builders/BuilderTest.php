@@ -13,6 +13,7 @@ use DoctrineExtensions\Types\CarbonDateType;
 use DoctrineExtensions\Types\CarbonTimeType;
 use DoctrineExtensions\Types\ZendDateType;
 use InvalidArgumentException;
+use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Embedded;
 use LaravelDoctrine\Fluent\Builders\Field;
@@ -820,6 +821,20 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             'stubEmbeddable',
             $this->fluent->getClassMetadata()->embeddedClasses
         );
+    }
+
+    public function test_buildable_objects_returned_from_macros_get_queued_and_built()
+    {
+        Builder::macro('foo', function(){
+            /** @var Buildable|\Mockery\Mock $buildable */
+            $buildable = \Mockery::mock(Buildable::class);
+            $buildable->shouldReceive('build')->once();
+
+            return $buildable;
+        });
+
+        $this->fluent->foo();
+        $this->fluent->build();
     }
 
     /**

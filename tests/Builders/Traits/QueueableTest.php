@@ -11,8 +11,8 @@ class QueueableTest extends \PHPUnit_Framework_TestCase
     public function test_can_queue_buildables()
     {
         $builder = new QueueableClass;
-        $builder->queue(new BuildableClass);
-        $builder->queue(new BuildableClass);
+        $builder->addToQueue(new BuildableClass);
+        $builder->addToQueue(new BuildableClass);
 
         $this->assertCount(2, $builder->getQueued());
     }
@@ -41,8 +41,8 @@ class QueueableTest extends \PHPUnit_Framework_TestCase
         $buildable = new BuildableClass;
 
         $builder = new QueueableClass;
-        $builder->queue($buildable);
-        $builder->queue($buildable);
+        $builder->addToQueue($buildable);
+        $builder->addToQueue($buildable);
 
         $builder->build();
 
@@ -55,8 +55,8 @@ class QueueableTest extends \PHPUnit_Framework_TestCase
         $delayed = new DelayedBuildableClass;
 
         $builder = new QueueableClass;
-        $builder->queue($buildable);
-        $builder->queue($delayed);
+        $builder->addToQueue($buildable);
+        $builder->addToQueue($delayed);
 
         $builder->build();
 
@@ -68,6 +68,11 @@ class QueueableTest extends \PHPUnit_Framework_TestCase
 class QueueableClass
 {
     use Queueable;
+    
+    public function addToQueue(Buildable $buildable)
+    {
+        $this->queue($buildable);
+    }
 }
 
 class BuildableClass implements Buildable

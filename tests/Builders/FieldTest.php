@@ -3,6 +3,7 @@
 namespace Tests\Builders;
 
 use BadMethodCallException;
+use Doctrine\DBAL\Types\StringType;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
@@ -292,16 +293,24 @@ class FieldTest extends \PHPUnit_Framework_TestCase
             ->build();
     }
     
-    public function test_queued_buildables_get_built_on_build()
+    public function test_can_obtain_its_type_after_creation()
     {
-        /** @var Buildable|\Mockery\Mock $buildable */
-        $buildable = \Mockery::mock(Buildable::class);
-        $buildable->shouldReceive('build')->once();
-        
-    	$this->field->queue($buildable);
-        $this->field->build();
+        $this->assertInstanceOf(StringType::class, $this->field->getType());
     }
     
+    public function test_buildable_objects_returned_from_macros_get_queued_and_built()
+    {
+    	Field::macro('foo', function(){
+            /** @var Buildable|\Mockery\Mock $buildable */
+            $buildable = \Mockery::mock(Buildable::class);
+            $buildable->shouldReceive('build')->once();
+            
+            return $buildable;
+        });
+        
+        $this->field->foo();
+        $this->field->build();
+    }
 
     private function doTestValidTypeForVersioning($type)
     {

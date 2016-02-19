@@ -18,6 +18,7 @@ class Builder extends AbstractBuilder implements Fluent
     use Traits\Relations;
     use Traits\Macroable;
     use Traits\Queueable;
+    use Traits\QueuesMacros;
 
     /**
      * @param string|callable $name
@@ -241,7 +242,7 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         if ($this->hasMacro($method)) {
-            return $this->callMacro($method, $params);
+            return $this->queueMacro($method, $params);
         }
 
         throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');

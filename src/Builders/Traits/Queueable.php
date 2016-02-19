@@ -15,7 +15,7 @@ trait Queueable
     /**
      * @param Buildable $buildable
      */
-    public function queue(Buildable $buildable)
+    protected function queue(Buildable $buildable)
     {
         $this->queued[] = $buildable;
     }

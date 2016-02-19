@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
+use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 
 /**
@@ -41,6 +42,7 @@ class Field implements Buildable
     use Queueable {
         build as buildQueued;
     }
+    use QueuesMacros;
 
     /**
      * @var FieldBuilder
@@ -276,7 +278,7 @@ class Field implements Buildable
         }
 
         if ($this->hasMacro($method)) {
-            return $this->callMacro($method, $args);
+            return $this->queueMacro($method, $args);
         }
 
         if (method_exists($this->getBuilder(), $method)) {

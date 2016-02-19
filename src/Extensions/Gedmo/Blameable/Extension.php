@@ -45,20 +45,13 @@ class Extension implements Buildable
     public static function enable()
     {
         Field::macro(self::MACRO_METHOD, function(Field $builder){
-            $extension = new static($builder->getClassMetadata(), $builder->getName());
-            
-            $builder->queue($extension);
-            
-            return $extension;
+            return new static($builder->getClassMetadata(), $builder->getName());
         });
         
         ManyToOne::macro(self::MACRO_METHOD, function(ManyToOne $builder){
             $joinColumn = $builder->getJoinColumn();
-            $extension = new static($builder->getClassMetadata(), $joinColumn->getJoinColumn());
             
-            $builder->queue($extension);
-            
-            return $extension;
+            return new static($builder->getClassMetadata(), $joinColumn->getJoinColumn());
         });
     }
 
