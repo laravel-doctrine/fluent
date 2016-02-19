@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping\Builder\FieldBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
+use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
+use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 
 /**
  * @method $this unique(boolean $flag = true)   Boolean value to determine if the value of the column should be unique
@@ -36,7 +38,10 @@ use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 class Field implements Buildable
 {
     use Macroable;
-    
+    use Queueable {
+        build as buildQueued;
+    }
+
     /**
      * @var FieldBuilder
      */
@@ -48,15 +53,29 @@ class Field implements Buildable
     protected $classMetadata;
 
     /**
+     * @var Type
+     */
+    protected $type;
+
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
      * Protected constructor to force usage of factory method
      *
      * @param FieldBuilder      $builder
      * @param ClassMetadataInfo $classMetadata
+     * @param Type              $type
+     * @param string            $name
      */
-    protected function __construct(FieldBuilder $builder, ClassMetadataInfo $classMetadata)
+    protected function __construct(FieldBuilder $builder, ClassMetadataInfo $classMetadata, Type $type, $name)
     {
         $this->builder       = $builder;
         $this->classMetadata = $classMetadata;
+        $this->type          = $type;
+        $this->name          = $name;
     }
 
     /**
@@ -73,9 +92,34 @@ class Field implements Buildable
 
         $field = $builder->createField($name, $type->getName());
 
-        return new static($field, $builder->getClassMetadata());
+        return new static($field, $builder->getClassMetadata(), $type, $name);
     }
 
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return ClassMetadataInfo|ExtensibleClassMetadata
+     */
+    public function getClassMetadata()
+    {
+        return $this->classMetadata;
+    }
+    
+    
     /**
      * By default the property name is used for the database column name also, however the ‘name’ attribute
      * allows you to determine the column name.
@@ -201,6 +245,8 @@ class Field implements Buildable
     public function build()
     {
         $this->builder->build();
+        
+        $this->buildQueued();
 
         return $this;
     }

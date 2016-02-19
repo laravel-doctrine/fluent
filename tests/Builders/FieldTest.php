@@ -6,6 +6,7 @@ use BadMethodCallException;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
+use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\GeneratedValue;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
@@ -290,6 +291,17 @@ class FieldTest extends \PHPUnit_Framework_TestCase
             ->useForVersioning()
             ->build();
     }
+    
+    public function test_queued_buildables_get_built_on_build()
+    {
+        /** @var Buildable|\Mockery\Mock $buildable */
+        $buildable = \Mockery::mock(Buildable::class);
+        $buildable->shouldReceive('build')->once();
+        
+    	$this->field->queue($buildable);
+        $this->field->build();
+    }
+    
 
     private function doTestValidTypeForVersioning($type)
     {
