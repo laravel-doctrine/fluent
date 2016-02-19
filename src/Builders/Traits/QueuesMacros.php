@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
 use LaravelDoctrine\Fluent\Buildable;
@@ -17,12 +18,12 @@ trait QueuesMacros
      * @param Buildable $buildable
      */
     abstract protected function queue(Buildable $buildable);
-    
+
     /**
      * Intercept the Macro call and queue the result if it's a Buildable object.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
      *
      * @return mixed
      */

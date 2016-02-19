@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo\IpTraceable;
 
 use Gedmo\IpTraceable\Mapping\Driver\Fluent;
@@ -15,7 +16,7 @@ class Extension extends AbstractTrackingExtension implements Buildable
      */
     public static function enable()
     {
-        Field::macro(static::MACRO_METHOD, function(Field $builder){
+        Field::macro(static::MACRO_METHOD, function (Field $builder) {
             return new static($builder->getClassMetadata(), $builder->getName());
         });
     }

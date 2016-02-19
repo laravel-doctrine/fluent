@@ -93,7 +93,7 @@ class ManyToOne extends AbstractRelation
         if ($this->hasMacro($method)) {
             return $this->callMacro($method, $args);
         }
-        
+
         if (method_exists($this->getJoinColumn(), $method)) {
             call_user_func_array([$this->getJoinColumn(), $method], $args);
 

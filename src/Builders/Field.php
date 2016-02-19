@@ -120,8 +120,7 @@ class Field implements Buildable
     {
         return $this->classMetadata;
     }
-    
-    
+
     /**
      * By default the property name is used for the database column name also, however the ‘name’ attribute
      * allows you to determine the column name.
@@ -247,7 +246,7 @@ class Field implements Buildable
     public function build()
     {
         $this->builder->build();
-        
+
         $this->buildQueued();
 
         return $this;

@@ -188,4 +188,12 @@ abstract class AbstractRelation implements Relation
     {
         return $this->namingStrategy;
     }
+
+    /**
+     * @return string
+     */
+    public function getRelation()
+    {
+        return $this->relation;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
 
 use Gedmo\Blameable\Mapping\Driver\Fluent;
@@ -13,22 +14,20 @@ class Extension extends AbstractTrackingExtension implements Buildable
 
     /**
      * Enable the extension.
-     * 
+     *
      * @return void
      */
     public static function enable()
     {
-        Field::macro(self::MACRO_METHOD, function(Field $builder){
+        Field::macro(self::MACRO_METHOD, function (Field $builder) {
             return new static($builder->getClassMetadata(), $builder->getName());
         });
-        
-        ManyToOne::macro(self::MACRO_METHOD, function(ManyToOne $builder){
-            $joinColumn = $builder->getJoinColumn();
-            
-            return new static($builder->getClassMetadata(), $joinColumn->getJoinColumn());
+
+        ManyToOne::macro(self::MACRO_METHOD, function (ManyToOne $builder) {
+            return new static($builder->getClassMetadata(), $builder->getRelation());
         });
     }
-    
+
     /**
      * Return the name of the actual extension.
      *

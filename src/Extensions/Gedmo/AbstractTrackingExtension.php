@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\Exception\InvalidMappingException;
@@ -33,7 +34,7 @@ abstract class AbstractTrackingExtension
 
     /**
      * Return the name of the actual extension.
-     * 
+     *
      * @return string
      */
     abstract protected function getExtensionName();

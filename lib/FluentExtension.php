@@ -1,4 +1,5 @@
 <?php
+
 namespace Gedmo;
 
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
@@ -24,7 +25,7 @@ abstract class FluentExtension implements Driver
      * a single mapped class
      *
      * @param ExtensibleClassMetadata $meta
-     * @param array $config
+     * @param array                   $config
      *
      * @return void
      */
@@ -33,7 +34,7 @@ abstract class FluentExtension implements Driver
         if (! $meta instanceof ExtensibleClassMetadata) {
             return;
         }
-        
+
         $config = array_merge_recursive($config, $meta->getExtension(
             $this->getExtensionName()
         ));
@@ -41,8 +42,8 @@ abstract class FluentExtension implements Driver
 
     /**
      * Make sure the original driver is Fluent.
-     * 
-     * @param MappingDriver $driver
+     *
+     * @param  MappingDriver $driver
      * @return void
      */
     public function setOriginalDriver($driver)
@@ -66,7 +67,7 @@ abstract class FluentExtension implements Driver
             if ($default instanceof FluentDriver) {
                 return $default;
             }
-            
+
             foreach ($driver->getDrivers() as $namespace => $driver) {
                 if ($driver instanceof FluentDriver) {
                     return $driver;

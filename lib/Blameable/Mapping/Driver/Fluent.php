@@ -1,4 +1,5 @@
 <?php
+
 namespace Gedmo\Blameable\Mapping\Driver;
 
 use Gedmo\FluentExtension;
@@ -6,7 +7,7 @@ use Gedmo\FluentExtension;
 class Fluent extends FluentExtension
 {
     const EXTENSION_NAME = 'Blameable';
-    
+
     /**
      * @return string
      */
