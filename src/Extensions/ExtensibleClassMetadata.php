@@ -31,6 +31,10 @@ class ExtensibleClassMetadata extends ClassMetadata
      */
     public function getExtension($name)
     {
-        return $this->extensions[$name];
+        if (isset($this->extensions[$name])) {
+            return $this->extensions[$name];
+        }
+
+        return [];
     }
 }
