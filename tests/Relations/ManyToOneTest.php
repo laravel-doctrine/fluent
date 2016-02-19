@@ -5,14 +5,16 @@ namespace Tests\Relations;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Relations\JoinColumn;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use Tests\Builders\IsMacroable;
 use Tests\Relations\Traits\Owning;
 use Tests\Relations\Traits\Primary;
 
 class ManyToOneTest extends RelationTestCase
 {
-    use Owning, Primary;
+    use Owning, Primary, IsMacroable;
 
     /**
      * @var ManyToOne
@@ -88,5 +90,15 @@ class ManyToOneTest extends RelationTestCase
         $this->relation->onDelete('delete');
 
         $this->assertEquals('delete', $this->relation->getJoinColumn()->getOnDelete());
+    }
+
+    /**
+     * Get the builder under test.
+     *
+     * @return Macroable
+     */
+    protected function getMacroableBuilder()
+    {
+        return $this->relation;
     }
 }
