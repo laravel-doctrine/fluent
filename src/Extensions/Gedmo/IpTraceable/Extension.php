@@ -1,34 +1,25 @@
 <?php
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo\IpTraceable;
 
-use Gedmo\Blameable\Mapping\Driver\Fluent;
+use Gedmo\IpTraceable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
-use LaravelDoctrine\Fluent\Relations\ManyToOne;
 
 class Extension extends AbstractTrackingExtension implements Buildable
 {
-    const MACRO_METHOD = 'blameable';
+    const MACRO_METHOD = 'ipTraceable';
 
     /**
-     * Enable the extension.
-     * 
      * @return void
      */
     public static function enable()
     {
-        Field::macro(self::MACRO_METHOD, function(Field $builder){
+        Field::macro(static::MACRO_METHOD, function(Field $builder){
             return new static($builder->getClassMetadata(), $builder->getName());
         });
-        
-        ManyToOne::macro(self::MACRO_METHOD, function(ManyToOne $builder){
-            $joinColumn = $builder->getJoinColumn();
-            
-            return new static($builder->getClassMetadata(), $joinColumn->getJoinColumn());
-        });
     }
-    
+
     /**
      * Return the name of the actual extension.
      *
