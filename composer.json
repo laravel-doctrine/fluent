@@ -32,11 +32,13 @@
     "mockery/mockery": "~0.9",
     "beberlei/DoctrineExtensions": "~1.0",
     "zf1/zend-date": "~1.12",
-    "nesbot/carbon": "*"
+    "nesbot/carbon": "*",
+    "gedmo/doctrine-extensions": "^2.4"
   },
   "autoload": {
     "psr-4": {
-      "LaravelDoctrine\\Fluent\\": "src/"
+      "LaravelDoctrine\\Fluent\\": "src/",
+      "Gedmo\\": "lib/"
     }
   },
   "autoload-dev": {
