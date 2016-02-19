@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\FieldBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 
 /**
  * @method $this unique(boolean $flag = true)   Boolean value to determine if the value of the column should be unique
@@ -34,6 +35,8 @@ use LaravelDoctrine\Fluent\Buildable;
  */
 class Field implements Buildable
 {
+    use Macroable;
+    
     /**
      * @var FieldBuilder
      */
@@ -224,6 +227,10 @@ class Field implements Buildable
         // Work around reserved keywords
         if ($method === 'default') {
             return call_user_func_array([$this, 'setDefault'], $args);
+        }
+
+        if ($this->hasMacro($method)) {
+            return $this->callMacro($method, $args);
         }
 
         if (method_exists($this->getBuilder(), $method)) {

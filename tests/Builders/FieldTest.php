@@ -8,10 +8,13 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\GeneratedValue;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use Tests\Stubs\Entities\StubEntity;
 
 class FieldTest extends \PHPUnit_Framework_TestCase
 {
+    use IsMacroable;
+    
     /**
      * @var ClassMetadataBuilder
      */
@@ -307,5 +310,15 @@ class FieldTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException(MappingException::class);
         $field->useForVersioning()->build();
+    }
+
+    /**
+     * Get the builder under test.
+     *
+     * @return Macroable
+     */
+    protected function getMacroableBuilder()
+    {
+        return $this->field;
     }
 }

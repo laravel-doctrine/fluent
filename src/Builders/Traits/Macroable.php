@@ -18,7 +18,7 @@ trait Macroable
     public static function macro($method, callable $callback = null)
     {
         if (!is_callable($callback)) {
-            throw new InvalidArgumentException('Fluent builder should be extended with a closure argument, none given');
+            throw new InvalidArgumentException('Macros should be used with a closure argument, none given');
         }
 
         self::$macros[$method] = $callback;

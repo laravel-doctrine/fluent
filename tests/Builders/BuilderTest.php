@@ -24,7 +24,6 @@ use LaravelDoctrine\Fluent\Builders\LifecycleEvents;
 use LaravelDoctrine\Fluent\Builders\Primary;
 use LaravelDoctrine\Fluent\Builders\Table;
 use LaravelDoctrine\Fluent\Builders\UniqueConstraint;
-use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
@@ -36,6 +35,8 @@ use Tests\Stubs\Embedabbles\StubEmbeddable;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
+    use IsMacroable;
+    
     /**
      * @var ClassMetadataBuilder
      */
@@ -634,44 +635,6 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($embedded, $this->fluent->getQueued());
     }
 
-    public function test_can_extend_fluent()
-    {
-        Builder::macro('timestamps', function (Fluent $builder) {
-            $builder->string('createdAt');
-        });
-
-        $this->fluent->timestamps();
-
-        $this->fluent->build();
-
-        $this->assertContains('createdAt', $this->fluent->getClassMetadata()->getFieldNames());
-    }
-
-    public function test_can_extend_fluent_with_params()
-    {
-        Builder::macro('timestamps', function (Fluent $builder, $createdAt, $updatedAt) {
-            $builder->string($createdAt);
-            $builder->string($updatedAt);
-        });
-
-        $this->fluent->timestamps('other_created_field', 'other_updated_field');
-
-        $this->fluent->build();
-
-        $this->assertContains('other_created_field', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertContains('other_updated_field', $this->fluent->getClassMetadata()->getFieldNames());
-    }
-
-    public function test_fluent_should_be_extended_with_closure()
-    {
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            'Fluent builder should be extended with a closure argument, none given'
-        );
-
-        $this->fluent->macro('fail');
-    }
-
     public function test_fluent_builder_method_should_exist()
     {
         $this->setExpectedException(
@@ -680,37 +643,6 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->fluent->doesNotExist();
-    }
-
-    public function test_two_different_instances_of_fluent_contain_all_macros()
-    {
-        Builder::macro('aMacro', function (Fluent $builder) {
-            $builder->string('aField');
-        });
-
-        $this->fluent->aMacro();
-
-        Builder::macro('anotherMacro', function (Fluent $builder) {
-            $builder->string('anotherField');
-        });
-
-        $this->fluent->anotherMacro();
-
-        $fluent = new Builder(new ClassMetadataBuilder(new ClassMetadataInfo(FluentEntity::class)));
-
-        $fluent->aMacro();
-        $fluent->anotherMacro();
-
-        $this->fluent->build();
-
-        foreach ($fluent->getQueued() as $field) {
-            $field->build();
-        }
-
-        $this->assertContains('aField', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertContains('anotherField', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertContains('aField', $fluent->getClassMetadata()->getFieldNames());
-        $this->assertContains('anotherField', $fluent->getClassMetadata()->getFieldNames());
     }
 
     public function test_events_can_be_associated_to_the_entity()
@@ -888,6 +820,14 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             'stubEmbeddable',
             $this->fluent->getClassMetadata()->embeddedClasses
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMacroableBuilder()
+    {
+        return $this->fluent;
     }
 }
 
