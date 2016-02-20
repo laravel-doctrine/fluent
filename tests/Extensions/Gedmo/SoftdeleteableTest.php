@@ -98,7 +98,7 @@ class SoftdeleteableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return AbstractTrackingExtension
+     * @return Softdeleteable
      */
     protected function getExtension()
     {
