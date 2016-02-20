@@ -1,21 +1,21 @@
 <?php
-namespace Tests\Extensions\Gedmo\IpTraceable;
+namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Gedmo\IpTraceable\Mapping\Driver\Fluent as IpTraceable;
+use Gedmo\Timestampable\Mapping\Driver\Fluent as TimestampableDriver;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\IpTraceable\Extension;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable;
 use PHPUnit_Framework_TestCase;
-use Tests\Extensions\Gedmo\TrackingExtensions;
 
-class ExtensionTest extends PHPUnit_Framework_TestCase
+class TimestampableTest extends PHPUnit_Framework_TestCase
 {
     use TrackingExtensions;
     
     /**
-     * @var Extension
+     * @var Timestampable
      */
     private $extension;
 
@@ -23,18 +23,24 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
     {
         $this->fieldName     = 'ip';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
-        $this->extension     = new Extension($this->classMetadata, $this->fieldName);
+        $this->extension     = new Timestampable($this->classMetadata, $this->fieldName);
     }
     
     public function test_it_should_add_itself_as_a_field_macro()
     {
-        Extension::enable();
+        Timestampable::enable();
 
         $field = Field::make(new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')), 'string', $this->fieldName);
 
         $this->assertInstanceOf(
-            Extension::class,
-            call_user_func([$field, Extension::MACRO_METHOD])
+            Timestampable::class,
+            call_user_func([$field, Timestampable::MACRO_METHOD])
+        );
+
+        $builder = new Builder($cmb = new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')));
+
+        $this->assertNull(
+            call_user_func([$builder, 'timestamps'])
         );
     }
     
@@ -52,6 +58,6 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
      */
     protected function getExtensionName()
     {
-        return IpTraceable::EXTENSION_NAME;
+        return TimestampableDriver::EXTENSION_NAME;
     }
 }

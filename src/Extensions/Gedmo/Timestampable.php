@@ -1,16 +1,15 @@
 <?php
 
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
-use Gedmo\Blameable\Mapping\Driver\Fluent;
+use Gedmo\Timestampable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
-use LaravelDoctrine\Fluent\Relations\ManyToOne;
 
-class Extension extends AbstractTrackingExtension implements Buildable
+class Timestampable extends AbstractTrackingExtension implements Buildable
 {
-    const MACRO_METHOD = 'blameable';
+    const MACRO_METHOD = 'timestampable';
 
     /**
      * Enable the extension.
@@ -23,8 +22,9 @@ class Extension extends AbstractTrackingExtension implements Buildable
             return new static($builder->getClassMetadata(), $builder->getName());
         });
 
-        ManyToOne::macro(self::MACRO_METHOD, function (ManyToOne $builder) {
-            return new static($builder->getClassMetadata(), $builder->getRelation());
+        Builder::macro('timestamps', function (\LaravelDoctrine\Fluent\Fluent $builder) {
+            $builder->dateTime('createdAt')->timestampable()->onCreate();
+            $builder->dateTime('updatedAt')->timestampable()->onUpdate();
         });
     }
 

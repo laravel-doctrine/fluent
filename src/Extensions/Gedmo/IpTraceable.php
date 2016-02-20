@@ -1,13 +1,12 @@
 <?php
 
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\IpTraceable;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\IpTraceable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
 
-class Extension extends AbstractTrackingExtension implements Buildable
+class IpTraceable extends AbstractTrackingExtension implements Buildable
 {
     const MACRO_METHOD = 'ipTraceable';
 
