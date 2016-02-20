@@ -3,9 +3,12 @@
 namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 
 class Entity extends AbstractBuilder
 {
+    use Macroable;
+
     /**
      * @param string $class
      *
@@ -50,4 +53,19 @@ class Entity extends AbstractBuilder
 
         return $this;
     }
+
+    /**
+     * @param string $method
+     * @param array  $params
+     *
+     * @return mixed
+     */
+    public function __call($method, $params)
+    {
+        if ($this->hasMacro($method)) {
+            return $this->callMacro($method, $params);
+        }
+
+        throw new \InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
+    }   
 }
