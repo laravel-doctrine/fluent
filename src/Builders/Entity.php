@@ -67,5 +67,5 @@ class Entity extends AbstractBuilder
         }
 
         throw new \InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
-    }   
+    }
 }

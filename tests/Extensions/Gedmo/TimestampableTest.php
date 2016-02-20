@@ -36,6 +36,11 @@ class TimestampableTest extends PHPUnit_Framework_TestCase
             Timestampable::class,
             call_user_func([$field, Timestampable::MACRO_METHOD])
         );
+    }
+
+    public function test_it_should_make_itself_a_builder_macro()
+    {
+        Timestampable::enable();
 
         $builder = new Builder($cmb = new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')));
 
@@ -43,7 +48,6 @@ class TimestampableTest extends PHPUnit_Framework_TestCase
             call_user_func([$builder, 'timestamps'])
         );
     }
-    
 
     /**
      * @return AbstractTrackingExtension
