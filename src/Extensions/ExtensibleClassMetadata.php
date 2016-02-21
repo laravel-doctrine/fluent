@@ -37,4 +37,18 @@ class ExtensibleClassMetadata extends ClassMetadata
 
         return [];
     }
+
+    /**
+     * @param string $name
+     * @param array  $config
+     */
+    public function appendExtension($name, array $config = [])
+    {
+        $merged = array_merge(
+            $this->getExtension($name),
+            $config
+        );
+
+        $this->addExtension($name, $merged);
+    }
 }

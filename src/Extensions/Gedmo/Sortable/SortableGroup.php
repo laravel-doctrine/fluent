@@ -66,10 +66,10 @@ class SortableGroup implements Buildable
      */
     public function build()
     {
-        $extension = $this->classMetadata->getExtension($this->getExtensionName());
-
-        $extension['groups'][] = $this->fieldName;
-
-        $this->classMetadata->addExtension($this->getExtensionName(), $extension);
+        $this->classMetadata->appendExtension($this->getExtensionName(), [
+            'groups' => [
+                $this->fieldName
+            ]
+        ]);
     }
 }

@@ -56,10 +56,8 @@ class SortablePosition implements Buildable
      */
     public function build()
     {
-        $extension = $this->classMetadata->getExtension($this->getExtensionName());
-
-        $extension['position'] = $this->fieldName;
-
-        $this->classMetadata->addExtension($this->getExtensionName(), $extension);
+        $this->classMetadata->appendExtension($this->getExtensionName(), [
+            'position' => $this->fieldName
+        ]);
     }
 }

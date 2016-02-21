@@ -126,11 +126,11 @@ class Sluggable implements Buildable
      */
     public function build()
     {
-        $extension = $this->classMetadata->getExtension($this->getExtensionName());
-
-        $extension['slugs'][$this->fieldName] = $this->makeConfiguration();
-
-        $this->classMetadata->addExtension($this->getExtensionName(), $extension);
+        $this->classMetadata->appendExtension($this->getExtensionName(), [
+            'slugs' => [
+                $this->fieldName => $this->makeConfiguration()
+            ]
+        ]);
     }
 
     /**
