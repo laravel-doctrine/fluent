@@ -96,6 +96,6 @@ class ManyToOne extends AbstractRelation
             return $this;
         }
 
-        parent::__call($method, $args);
+        return parent::__call($method, $args);
     }
 }
