@@ -8,9 +8,7 @@ use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\LifecycleEvents;
 use LaravelDoctrine\Fluent\Builders\Overrides\Override;
-use LaravelDoctrine\Fluent\Builders\Primary;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Softdeleteable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable;
+use LaravelDoctrine\Fluent\Builders\Primary;e;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
@@ -21,8 +19,8 @@ use LaravelDoctrine\Fluent\Relations\Relation;
  * @method $this array($name, callable $callback = null)
  *
  * Extensions:
- * @method Timestampable  timestamps(string $createdAt = 'createdAt', string $updatedAt = 'updatedAt', string $type = 'dateTime')
- * @method Softdeleteable softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')
+ * @method \LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable  timestamps(string $createdAt = 'createdAt', string $updatedAt = 'updatedAt', string $type = 'dateTime')
+ * @method \LaravelDoctrine\Fluent\Extensions\Gedmo\Softdeleteable softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')
  */
 interface Fluent extends Buildable
 {
