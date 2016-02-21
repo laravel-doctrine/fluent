@@ -4,6 +4,8 @@ namespace LaravelDoctrine\Fluent\Relations;
 
 use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
+use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 use LaravelDoctrine\Fluent\Relations\Traits\Ownable;
 use LaravelDoctrine\Fluent\Relations\Traits\Owning;
 use LaravelDoctrine\Fluent\Relations\Traits\Primary;
@@ -14,7 +16,7 @@ use LaravelDoctrine\Fluent\Relations\Traits\Primary;
  */
 class OneToOne extends AbstractRelation
 {
-    use Owning, Ownable, Primary;
+    use Owning, Ownable, Primary, Macroable, QueuesMacros;
 
     /**
      * @param ClassMetadataBuilder $builder
@@ -30,4 +32,21 @@ class OneToOne extends AbstractRelation
             $entity
         );
     }
+
+    /**
+     * @param string $method
+     * @param array  $args
+     *
+     * @throws \BadMethodCallException
+     * @return $this
+     */
+    public function __call($method, $args)
+    {
+        if ($this->hasMacro($method)) {
+            return $this->queueMacro($method, $args);
+        }
+
+        return parent::__call($method, $args);
+    }
+
 }
