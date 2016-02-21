@@ -247,10 +247,10 @@ class Sluggable implements Buildable
      * Checks if $field type is valid as Sluggable field
      *
      * @param ClassMetadata $meta
-     * @param string $field
+     * @param string        $field
      *
-     * @return bool
      * @throws InvalidArgumentException
+     * @return bool
      */
     protected function isValidField(ClassMetadata $meta, $field)
     {
