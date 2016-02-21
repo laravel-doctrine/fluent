@@ -8,7 +8,7 @@ use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
 use LaravelDoctrine\Fluent\Builders\LifecycleEvents;
 use LaravelDoctrine\Fluent\Builders\Overrides\Override;
-use LaravelDoctrine\Fluent\Builders\Primary;e;
+use LaravelDoctrine\Fluent\Builders\Primary;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToMany;
