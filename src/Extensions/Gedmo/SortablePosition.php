@@ -2,14 +2,14 @@
 
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
-use Gedmo\Translatable\Mapping\Driver\Fluent as FluentDriver;
+use Gedmo\Sortable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 
-class Translatable implements Buildable
+class SortablePosition implements Buildable
 {
-    const MACRO_METHOD = 'translatable';
+    const MACRO_METHOD = 'sortablePosition';
 
     /**
      * @var ExtensibleClassMetadata
@@ -46,12 +46,9 @@ class Translatable implements Buildable
      */
     public static function enable()
     {
-        Field::macro(static::MACRO_METHOD, function (Field $builder) {
+        Field::macro(self::MACRO_METHOD, function (Field $builder) {
             return new static($builder->getClassMetadata(), $builder->getName());
         });
-
-        Locale::enable();
-        TranslationClass::enable();
     }
 
     /**
@@ -60,9 +57,7 @@ class Translatable implements Buildable
     public function build()
     {
         $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'fields' => [
-                $this->fieldName
-            ]
+            'position' => $this->fieldName
         ]);
     }
 }

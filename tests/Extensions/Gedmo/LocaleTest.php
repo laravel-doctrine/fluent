@@ -1,18 +1,18 @@
 <?php
+
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Gedmo\Exception\InvalidArgumentException;
-use LaravelDoctrine\Fluent\Builders\Entity;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Locale;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Translatable;
 
 /**
  * @mixin \PHPUnit_Framework_TestCase
  */
-class TranslatableTest extends \PHPUnit_Framework_TestCase
+class LocaleTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var string
@@ -31,46 +31,34 @@ class TranslatableTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->fieldName     = 'title';
+        $this->fieldName     = 'locale';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
-        Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', 'title')->build();
+        Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', 'locale')->build();
 
-        $this->extension = new Translatable($this->classMetadata, $this->fieldName, 'name');
+        $this->extension = new Locale($this->classMetadata, $this->fieldName);
     }
 
     public function test_it_should_add_itself_as_a_field_macro()
     {
-        Translatable::enable();
+        Locale::enable();
 
-        $field = Field::make(new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')), 'string',
-            $this->fieldName)->build();
+        $field = Field::make(new ClassMetadataBuilder(
+            new ExtensibleClassMetadata('Foo')), 'string', $this->fieldName
+        )->build();
 
         $this->assertInstanceOf(
-            Translatable::class,
-            call_user_func([$field, Translatable::MACRO_METHOD])
+            Locale::class,
+            call_user_func([$field, Locale::MACRO_METHOD])
         );
     }
 
-    public function test_it_should_add_translatable_to_the_given_field()
+    public function test_can_mark_a_field_as_locale()
     {
         $this->getExtension()->build();
 
         $this->assertBuildResultIs([
-            'fields' => ['title'],
+            'locale' => 'locale',
         ]);
-    }
-
-    public function can_have_many_translatable_fields()
-    {
-        $field1 = new Translatable($this->classMetadata, 'field1', 'name');
-        $field2 = new Translatable($this->classMetadata, 'field2', 'name');
-
-        $field1->build();
-        $this->assertCount(1, $this->classMetadata->getExtension($this->getExtensionName())['fields']);
-
-        $field2->build();
-
-        $this->assertCount(2, $this->classMetadata->getExtension($this->getExtensionName())['fields']);
     }
 
     /**
@@ -89,7 +77,7 @@ class TranslatableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Translatable
+     * @return Locale
      */
     protected function getExtension()
     {

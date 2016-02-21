@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Sortable;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\Sortable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Gedmo\Sortable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Sortable\SortableGroup;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\SortableGroup;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 

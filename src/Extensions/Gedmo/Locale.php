@@ -1,27 +1,28 @@
 <?php
 
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Sortable;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
-use Gedmo\Sortable\Mapping\Driver\Fluent as FluentDriver;
+use Gedmo\Translatable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 
-class SortablePosition implements Buildable
+class Locale implements Buildable
 {
-    const MACRO_METHOD = 'sortablePosition';
+    const MACRO_METHOD = 'locale';
 
     /**
      * @var ExtensibleClassMetadata
      */
-    protected $classMetadata;
+    private $classMetadata;
 
     /**
      * @var string
      */
-    protected $fieldName;
+    private $fieldName;
 
     /**
+     * Locale constructor.
      * @param ExtensibleClassMetadata $classMetadata
      * @param string                  $fieldName
      */
@@ -32,22 +33,12 @@ class SortablePosition implements Buildable
     }
 
     /**
-     * Return the name of the actual extension.
-     *
-     * @return string
-     */
-    public function getExtensionName()
-    {
-        return FluentDriver::EXTENSION_NAME;
-    }
-
-    /**
      * @return void
      */
     public static function enable()
     {
-        Field::macro(self::MACRO_METHOD, function (Field $builder) {
-            return new static($builder->getClassMetadata(), $builder->getName());
+        Field::macro(self::MACRO_METHOD, function (Field $field) {
+            return new static($field->getClassMetadata(), $field->getName());
         });
     }
 
@@ -57,7 +48,17 @@ class SortablePosition implements Buildable
     public function build()
     {
         $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'position' => $this->fieldName
+            'locale' => $this->fieldName
         ]);
+    }
+
+    /**
+     * Return the name of the actual extension.
+     *
+     * @return string
+     */
+    public function getExtensionName()
+    {
+        return FluentDriver::EXTENSION_NAME;
     }
 }

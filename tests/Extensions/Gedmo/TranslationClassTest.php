@@ -1,19 +1,23 @@
 <?php
 
-namespace Tests\Extensions\Gedmo\Sortable;
+namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Gedmo\Sortable\Mapping\Driver\Fluent;
-use LaravelDoctrine\Fluent\Builders\Field;
+use LaravelDoctrine\Fluent\Builders\Entity;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Sortable\SortablePosition;
+use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\TranslationClass;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Translatable;
 
-class SortablePositionTest extends \PHPUnit_Framework_TestCase
+/**
+ * @mixin \PHPUnit_Framework_TestCase
+ */
+class TranslationClassTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var string
      */
-    protected $fieldName;
+    protected $className;
 
     /**
      * @var ExtensibleClassMetadata
@@ -21,37 +25,37 @@ class SortablePositionTest extends \PHPUnit_Framework_TestCase
     protected $classMetadata;
 
     /**
-     * @var SortablePosition
+     * @var Translatable
      */
     private $extension;
 
     protected function setUp()
     {
-        $this->fieldName     = 'position';
+        $this->className     = 'TranslationClass';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
-        $this->extension     = new SortablePosition($this->classMetadata, $this->fieldName, 'name');
+        $this->extension = new TranslationClass($this->classMetadata, $this->className);
     }
 
-    public function test_it_should_add_itself_as_a_field_macro()
+    public function test_it_should_add_itself_as_an_entity_macro()
     {
-        SortablePosition::enable();
+        TranslationClass::enable();
 
-        $field = Field::make(new ClassMetadataBuilder(
-            new ExtensibleClassMetadata('Foo')
-        ), 'string', $this->fieldName)->build();
+        $entity = (new Entity(new ClassMetadataBuilder(
+            new ExtensibleClassMetadata('Foo'))
+        ));
 
         $this->assertInstanceOf(
-            SortablePosition::class,
-            call_user_func([$field, SortablePosition::MACRO_METHOD])
+            TranslationClass::class,
+            call_user_func([$entity, TranslationClass::MACRO_METHOD], $this->className)
         );
     }
 
-    public function test_it_should_add_sortable_to_the_given_field()
+    public function test_can_mark_a_field_as_locale()
     {
         $this->getExtension()->build();
 
         $this->assertBuildResultIs([
-            'position' => 'position',
+            'translationClass' => 'TranslationClass',
         ]);
     }
 
@@ -71,7 +75,7 @@ class SortablePositionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return SortablePosition
+     * @return TranslationClass
      */
     protected function getExtension()
     {
@@ -83,6 +87,6 @@ class SortablePositionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getExtensionName()
     {
-        return Fluent::EXTENSION_NAME;
+        return TranslatableDriver::EXTENSION_NAME;
     }
 }

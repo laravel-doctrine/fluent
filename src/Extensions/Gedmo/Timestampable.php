@@ -4,9 +4,7 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\Timestampable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
-use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
-use LaravelDoctrine\Fluent\Fluent;
 
 class Timestampable extends AbstractTrackingExtension implements Buildable
 {
@@ -23,10 +21,7 @@ class Timestampable extends AbstractTrackingExtension implements Buildable
             return new static($builder->getClassMetadata(), $builder->getName());
         });
 
-        Builder::macro('timestamps', function (Fluent $builder, $createdAt = 'createdAt', $updatedAt = 'updatedAt', $type = 'dateTime') {
-            $builder->{$type}($createdAt)->timestampable()->onCreate();
-            $builder->{$type}($updatedAt)->timestampable()->onUpdate();
-        });
+        Timestamps::enable();
     }
 
     /**
