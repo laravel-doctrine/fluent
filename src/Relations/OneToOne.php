@@ -48,5 +48,4 @@ class OneToOne extends AbstractRelation
 
         return parent::__call($method, $args);
     }
-
 }
