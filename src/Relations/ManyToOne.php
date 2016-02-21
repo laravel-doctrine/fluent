@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
 use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
 use LaravelDoctrine\Fluent\Relations\Traits\Owning;
 use LaravelDoctrine\Fluent\Relations\Traits\Primary;
@@ -22,6 +23,9 @@ use LaravelDoctrine\Fluent\Relations\Traits\Primary;
  * @method $this nullable()
  * @method $this unique()
  * @method $this onDelete($onDelete = null)
+ *
+ * Extensions:
+ * @method Blameable blameable()
  */
 class ManyToOne extends AbstractRelation
 {

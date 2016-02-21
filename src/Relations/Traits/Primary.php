@@ -8,7 +8,7 @@ namespace LaravelDoctrine\Fluent\Relations\Traits;
 trait Primary
 {
     /**
-     * @return AssociationBuilder
+     * @return $this
      */
     public function primary()
     {

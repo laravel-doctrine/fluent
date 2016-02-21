@@ -3,6 +3,7 @@
 namespace LaravelDoctrine\Fluent\Builders;
 
 use BadMethodCallException;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\FieldBuilder;
@@ -12,6 +13,11 @@ use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\IpTraceable;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Sluggable;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Softdeleteable;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable;
 
 /**
  * @method $this unique(boolean $flag = true)   Boolean value to determine if the value of the column should be unique
@@ -35,6 +41,13 @@ use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
  *                                              use of this feature and the consequences. SchemaTool will not detect
  *                                              changes on the column correctly anymore if you use “columnDefinition”.
  * @method $this option($name, $value)          Set custom options
+ *
+ * Extensions:
+ * @method Timestampable  timestampable()
+ * @method Sluggable      sluggable(array $fields)
+ * @method IpTraceable    ipTraceable()
+ * @method Blameable      blameable()
+ * @method Softdeleteable softDelete()
  */
 class Field implements Buildable
 {
@@ -114,7 +127,7 @@ class Field implements Buildable
     }
 
     /**
-     * @return ClassMetadataInfo|ExtensibleClassMetadata
+     * @return ClassMetadata|ExtensibleClassMetadata
      */
     public function getClassMetadata()
     {

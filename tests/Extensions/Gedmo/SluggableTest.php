@@ -2,10 +2,9 @@
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use LaravelDoctrine\Fluent\Builders\Builder;
+use Gedmo\Exception\InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
 use Gedmo\Sluggable\Mapping\Driver\Fluent as SluggableDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Sluggable;
 
@@ -33,6 +32,8 @@ class SluggableTest extends \PHPUnit_Framework_TestCase
     {
         $this->fieldName     = 'slug';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
+        Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', 'slug')->build();
+
         $this->extension     = new Sluggable($this->classMetadata, $this->fieldName, 'name');
     }
 
@@ -40,13 +41,24 @@ class SluggableTest extends \PHPUnit_Framework_TestCase
     {
         Sluggable::enable();
 
-        $field = Field::make(new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')), 'string', $this->fieldName);
+        $field = Field::make(new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')), 'string', $this->fieldName)->build();
 
         $this->assertInstanceOf(
             Sluggable::class,
             call_user_func([$field, Sluggable::MACRO_METHOD], 'name')
         );
     }
+
+    public function test_can_only_make_a_valid_field_sluggable()
+    {
+        $this->setExpectedException(InvalidArgumentException::class, 'Sluggable field is not a valid field type');
+
+        Sluggable::enable();
+
+        $field = Field::make(new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')), 'smallint', $this->fieldName)->build();
+        call_user_func([$field, Sluggable::MACRO_METHOD], 'name');
+    }
+
 
     public function test_it_should_add_sluggable_to_the_given_field()
     {

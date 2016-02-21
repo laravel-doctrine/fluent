@@ -135,7 +135,7 @@ abstract class AbstractRelation implements Relation
      * @param string      $usage
      * @param string|null $region
      *
-     * @return AssociationBuilder
+     * @return $this
      */
     public function cache($usage = 'READ_ONLY', $region = null)
     {

@@ -2,6 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
+use Gedmo\Exception\InvalidArgumentException;
 use Gedmo\Sluggable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
@@ -92,6 +93,8 @@ class Sluggable implements Buildable
      */
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName, $fields)
     {
+        $this->isValidField($classMetadata, $fieldName);
+
         $this->classMetadata = $classMetadata;
         $this->fieldName     = $fieldName;
         $this->baseOn($fields);
@@ -251,7 +254,9 @@ class Sluggable implements Buildable
     {
         $mapping = $meta->getFieldMapping($field);
 
-        return $mapping && in_array($mapping['type'], $this->validTypes);
+        if (!$mapping || !in_array($mapping['type'], $this->validTypes)) {
+            throw new InvalidArgumentException('Sluggable field is not a valid field type');
+        }
     }
 
     /**

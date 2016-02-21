@@ -68,7 +68,7 @@ class Softdeleteable implements Buildable
      */
     public static function enable()
     {
-        Builder::macro(static::MACRO_METHOD, function (Builder $builder, $fieldName, $type = 'dateTime') {
+        Builder::macro(static::MACRO_METHOD, function (Builder $builder, $fieldName = 'deletedAt', $type = 'dateTime') {
 
             $builder->{$type}($fieldName)->nullable();
 

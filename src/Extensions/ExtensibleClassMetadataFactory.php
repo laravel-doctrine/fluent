@@ -2,14 +2,13 @@
 
 namespace LaravelDoctrine\Fluent\Extensions;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataFactory;
 
 class ExtensibleClassMetadataFactory extends ClassMetadataFactory
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
