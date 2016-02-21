@@ -5,6 +5,8 @@ namespace LaravelDoctrine\Fluent\Relations;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\ManyToManyAssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
+use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 use LaravelDoctrine\Fluent\Relations\Traits\Indexable;
 use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
 use LaravelDoctrine\Fluent\Relations\Traits\Orderable;
@@ -18,7 +20,7 @@ use LaravelDoctrine\Fluent\Relations\Traits\Owning;
  */
 class ManyToMany extends AbstractRelation
 {
-    use ManyTo, Owning, Ownable, Orderable, Indexable;
+    use ManyTo, Owning, Ownable, Orderable, Indexable, Macroable, QueuesMacros;
 
     /**
      * @var ManyToManyAssociationBuilder
@@ -111,5 +113,23 @@ class ManyToMany extends AbstractRelation
     public function target($inverseKey, $references = 'id', $unique = false)
     {
         return $this->inverseKey($inverseKey, $references, $unique);
+    }
+
+    /**
+     * Magic call method works as a proxy for the Doctrine associationBuilder
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @throws \BadMethodCallException
+     * @return $this
+     */
+    public function __call($method, $args)
+    {
+        if ($this->hasMacro($method)) {
+            return $this->queueMacro($method, $args);
+        }
+
+        return parent::__call($method, $args);
     }
 }

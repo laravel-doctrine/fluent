@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
-use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
 use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
 use LaravelDoctrine\Fluent\Relations\Traits\Owning;
@@ -29,7 +29,7 @@ use LaravelDoctrine\Fluent\Relations\Traits\Primary;
  */
 class ManyToOne extends AbstractRelation
 {
-    use ManyTo, Owning, Primary, Macroable;
+    use ManyTo, Owning, Primary, Macroable, QueuesMacros;
 
     /**
      * @param ClassMetadataBuilder $builder
@@ -42,14 +42,6 @@ class ManyToOne extends AbstractRelation
         parent::__construct($builder, $namingStrategy, $relation, $entity);
 
         $this->addJoinColumn($relation);
-    }
-
-    /**
-     * @return \Doctrine\ORM\Mapping\ClassMetadata|ExtensibleClassMetadata
-     */
-    public function getClassMetadata()
-    {
-        return $this->builder->getClassMetadata();
     }
 
     /**
@@ -95,7 +87,7 @@ class ManyToOne extends AbstractRelation
     public function __call($method, $args)
     {
         if ($this->hasMacro($method)) {
-            return $this->callMacro($method, $args);
+            return $this->queueMacro($method, $args);
         }
 
         if (method_exists($this->getJoinColumn(), $method)) {

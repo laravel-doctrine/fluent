@@ -51,7 +51,7 @@ class TranslatableTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function test_it_should_add_sluggable_to_the_given_field()
+    public function test_it_should_add_translatable_to_the_given_field()
     {
         $this->getExtension()->build();
 

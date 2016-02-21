@@ -124,6 +124,14 @@ abstract class AbstractRelation implements Relation
     }
 
     /**
+     * @return \Doctrine\ORM\Mapping\ClassMetadata|ExtensibleClassMetadata
+     */
+    public function getClassMetadata()
+    {
+        return $this->builder->getClassMetadata();
+    }
+
+    /**
      * @return AssociationBuilder
      */
     public function getAssociation()
