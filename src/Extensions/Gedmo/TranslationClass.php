@@ -4,7 +4,7 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\Translatable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
-use LaravelDoctrine\Fluent\Builders\Entity;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 
 class TranslationClass implements Buildable
@@ -37,8 +37,8 @@ class TranslationClass implements Buildable
      */
     public static function enable()
     {
-        Entity::macro(self::MACRO_METHOD, function (Entity $entity, $class) {
-            return new static($entity->getClassMetadata(), $class);
+        Builder::macro(self::MACRO_METHOD, function (Builder $builder, $class) {
+            return new static($builder->getClassMetadata(), $class);
         });
     }
 

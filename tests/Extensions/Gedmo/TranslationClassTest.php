@@ -3,7 +3,8 @@
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use LaravelDoctrine\Fluent\Builders\Entity;
+use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TranslationClass;
@@ -36,17 +37,15 @@ class TranslationClassTest extends \PHPUnit_Framework_TestCase
         $this->extension = new TranslationClass($this->classMetadata, $this->className);
     }
 
-    public function test_it_should_add_itself_as_an_entity_macro()
+    public function test_it_should_add_itself_as_a_builder_macro()
     {
         TranslationClass::enable();
 
-        $entity = (new Entity(new ClassMetadataBuilder(
-            new ExtensibleClassMetadata('Foo'))
-        ));
+        $builder = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy());
 
         $this->assertInstanceOf(
             TranslationClass::class,
-            call_user_func([$entity, TranslationClass::MACRO_METHOD], $this->className)
+            call_user_func([$builder, TranslationClass::MACRO_METHOD], $this->className)
         );
     }
 
