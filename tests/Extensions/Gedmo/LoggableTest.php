@@ -5,7 +5,7 @@ namespace Tests\Extensions\Gedmo;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Gedmo\Loggable\Mapping\Driver\Fluent;
-use LaravelDoctrine\Fluent\Builders\Entity;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Loggable;
@@ -66,11 +66,11 @@ class LoggableTest extends PHPUnit_Framework_TestCase
         ], $this->classMetadata->getExtension(Fluent::EXTENSION_NAME));
     }
 
-    public function test_it_should_add_itself_as_an_entity_macro()
+    public function test_it_should_add_itself_as_a_builder_macro()
     {
     	Loggable::enable();
         
-        $entity = new Entity(new ClassMetadataBuilder($this->classMetadata));
+        $entity = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy());
         
         $entity->loggable();
         

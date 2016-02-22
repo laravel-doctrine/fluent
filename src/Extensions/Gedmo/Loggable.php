@@ -4,7 +4,7 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\Loggable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Buildable;
-use LaravelDoctrine\Fluent\Builders\Entity;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -37,7 +37,7 @@ class Loggable implements Buildable
      */
     public static function enable()
     {
-        Entity::macro('loggable', function (Entity $builder, $logEntry = null) {
+        Builder::macro('loggable', function (Builder $builder, $logEntry = null) {
             $loggable = new static($builder->getClassMetadata(), $logEntry);
             $loggable->build();
         });
