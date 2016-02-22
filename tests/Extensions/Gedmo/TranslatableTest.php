@@ -2,8 +2,6 @@
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Gedmo\Exception\InvalidArgumentException;
-use LaravelDoctrine\Fluent\Builders\Entity;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
