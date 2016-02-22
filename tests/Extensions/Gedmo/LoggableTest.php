@@ -76,53 +76,52 @@ class LoggableTest extends PHPUnit_Framework_TestCase
         
         $this->assertNotNull($this->classMetadata->getExtension(Fluent::EXTENSION_NAME));
     }
-    
+
     public function test_it_should_add_versioned_as_a_field_macro()
     {
-    	Loggable::enable();
-        
+        Loggable::enable();
+
         $field = Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', 'foo');
-        
+
         $field->versioned();
         $field->build();
-        
+
         $this->assertNotNull($this->classMetadata->getExtension(Fluent::EXTENSION_NAME));
     }
-    
+
     public function test_it_should_add_versioned_as_a_many_to_one_macro()
     {
-    	Loggable::enable();
-        
+        Loggable::enable();
+
         $relation = new ManyToOne(
             new ClassMetadataBuilder($this->classMetadata),
             new DefaultNamingStrategy(),
             'someRelation',
             'SomeEntity'
         );
-        
-        
+
+
         $relation->versioned();
         $relation->build();
-        
+
         $this->assertNotNull($this->classMetadata->getExtension(Fluent::EXTENSION_NAME));
     }
-    
+
     public function test_it_should_add_versioned_as_a_one_to_one_macro()
     {
-    	Loggable::enable();
-        
+        Loggable::enable();
+
         $relation = new OneToOne(
             new ClassMetadataBuilder($this->classMetadata),
             new DefaultNamingStrategy(),
             'someRelation',
             'SomeEntity'
         );
-        
-        
+
+
         $relation->versioned();
         $relation->build();
-        
+
         $this->assertNotNull($this->classMetadata->getExtension(Fluent::EXTENSION_NAME));
     }
-    
 }

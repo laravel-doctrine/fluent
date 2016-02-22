@@ -4,7 +4,10 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\Loggable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use LaravelDoctrine\Fluent\Relations\OneToOne;
 
 class Versioned implements Buildable
 {
@@ -28,6 +31,21 @@ class Versioned implements Buildable
     {
         $this->classMetadata = $classMetadata;
         $this->fieldName     = $fieldName;
+    }
+
+    public static function enable()
+    {
+        Field::macro('versioned', function (Field $builder) {
+            return new static($builder->getClassMetadata(), $builder->getName());
+        });
+
+        ManyToOne::macro('versioned', function (ManyToOne $builder) {
+            return new static($builder->getClassMetadata(), $builder->getRelation());
+        });
+
+        OneToOne::macro('versioned', function (OneToOne $builder) {
+            return new static($builder->getClassMetadata(), $builder->getRelation());
+        });
     }
 
     /**

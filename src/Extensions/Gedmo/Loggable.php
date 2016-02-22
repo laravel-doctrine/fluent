@@ -42,17 +42,7 @@ class Loggable implements Buildable
             $loggable->build();
         });
 
-        Field::macro('versioned', function (Field $builder) {
-            return new Versioned($builder->getClassMetadata(), $builder->getName());
-        });
-
-        ManyToOne::macro('versioned', function (ManyToOne $builder) {
-            return new Versioned($builder->getClassMetadata(), $builder->getRelation());
-        });
-
-        OneToOne::macro('versioned', function (OneToOne $builder) {
-            return new Versioned($builder->getClassMetadata(), $builder->getRelation());
-        });
+        Versioned::enable();
     }
 
     /**
