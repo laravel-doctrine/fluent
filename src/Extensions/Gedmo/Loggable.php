@@ -5,10 +5,7 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 use Gedmo\Loggable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
-use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use LaravelDoctrine\Fluent\Relations\ManyToOne;
-use LaravelDoctrine\Fluent\Relations\OneToOne;
 
 class Loggable implements Buildable
 {
