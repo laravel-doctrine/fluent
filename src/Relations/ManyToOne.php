@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Hints\GedmoManyToOneHints;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\GedmoManyToOneHints;
 use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
 use LaravelDoctrine\Fluent\Relations\Traits\Owning;
 use LaravelDoctrine\Fluent\Relations\Traits\Primary;

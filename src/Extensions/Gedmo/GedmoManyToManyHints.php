@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Hints;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 /**
  * Trait only meant for type hinting

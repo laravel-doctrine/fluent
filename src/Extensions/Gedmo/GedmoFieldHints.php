@@ -1,12 +1,6 @@
 <?php
 
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Hints;
-
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\IpTraceable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Sluggable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Softdeleteable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 /**
  * Trait only meant for type hinting

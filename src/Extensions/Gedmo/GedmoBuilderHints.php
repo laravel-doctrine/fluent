@@ -1,11 +1,6 @@
 <?php
 
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Hints;
-
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Softdeleteable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\TranslationClass;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Tree;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Uploadable;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 /**
  * Trait only meant for type hinting

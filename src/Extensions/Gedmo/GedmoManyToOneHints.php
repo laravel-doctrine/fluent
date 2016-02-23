@@ -1,8 +1,6 @@
 <?php
 
-namespace LaravelDoctrine\Fluent\Extensions\Gedmo\Hints;
-
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
+namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 /**
  * Trait only meant for type hinting

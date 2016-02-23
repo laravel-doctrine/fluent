@@ -13,7 +13,7 @@ use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Hints\GedmoFieldHints;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\GedmoFieldHints;
 
 /**
  * @method $this unique(boolean $flag = true)   Boolean value to determine if the value of the column should be unique

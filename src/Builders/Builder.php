@@ -4,7 +4,7 @@ namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Hints\GedmoBuilderHints;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\GedmoBuilderHints;
 use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
 
