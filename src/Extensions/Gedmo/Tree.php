@@ -36,6 +36,26 @@ class Tree implements Buildable, Extension
     protected $strategy;
 
     /**
+     * @var string
+     */
+    protected $left;
+
+    /**
+     * @var string
+     */
+    protected $right;
+
+    /**
+     * @var string
+     */
+    protected $level;
+
+    /**
+     * @var string
+     */
+    protected $root;
+
+    /**
      * @var bool
      */
     protected $activateLocking = false;
@@ -51,13 +71,20 @@ class Tree implements Buildable, Extension
     protected $closure;
 
     /**
+     * @var bool
+     */
+    private $autoComplete = false;
+
+    /**
      * @param ExtensibleClassMetadata $classMetadata
      * @param string                  $strategy
+     * @param bool                    $autoComplete
      */
-    public function __construct(ExtensibleClassMetadata $classMetadata, $strategy = 'nested')
+    public function __construct(ExtensibleClassMetadata $classMetadata, $strategy = 'nested', $autoComplete = false)
     {
         $this->classMetadata = $classMetadata;
         $this->strategy      = $strategy;
+        $this->autoComplete  = $autoComplete;
     }
 
     /**
@@ -65,8 +92,18 @@ class Tree implements Buildable, Extension
      */
     public static function enable()
     {
-        Builder::macro(self::MACRO_METHOD, function (Fluent $fluent, $strategy = 'nested') {
-            return new static($fluent->getBuilder()->getClassMetadata(), $strategy);
+        Builder::macro(self::MACRO_METHOD, function (Fluent $fluent, $strategy = 'nested', $callback = null, $autoComplete = false) {
+            $tree = new static($fluent->getBuilder()->getClassMetadata(), $strategy, $autoComplete);
+
+            if (is_callable($callback)) {
+                call_user_func($callback, $tree);
+            }
+
+            return $tree;
+        });
+
+        Builder::macro('nestedSet', function (Fluent $fluent, $callback = null) {
+            return $fluent->tree('nested', $callback, true);
         });
 
         TreeLeft::enable();
@@ -81,6 +118,66 @@ class Tree implements Buildable, Extension
     }
 
     /**
+     * @param  string $field
+     * @param  string $type
+     * @param  null   $name
+     * @return $this
+     */
+    public function root($field = 'root', $type = 'integer', $name = null)
+    {
+        $this->mapField($field, $type, $name, true);
+
+        $this->root = $field;
+
+        return $this;
+    }
+
+    /**
+     * @param  string $field
+     * @param  string $type
+     * @param  null   $name
+     * @return $this
+     */
+    public function left($field = 'left', $type = 'integer', $name = null)
+    {
+        $this->mapField($field, $type, $name);
+
+        $this->left = $field;
+
+        return $this;
+    }
+
+    /**
+     * @param  string $field
+     * @param  string $type
+     * @param  null   $name
+     * @return $this
+     */
+    public function right($field = 'right', $type = 'integer', $name = null)
+    {
+        $this->mapField($field, $type, $name);
+
+        $this->right = $field;
+
+        return $this;
+    }
+
+    /**
+     * @param  string $field
+     * @param  string $type
+     * @param  null   $name
+     * @return $this
+     */
+    public function level($field = 'level', $type = 'integer', $name = null)
+    {
+        $this->mapField($field, $type, $name);
+
+        $this->level = $field;
+
+        return $this;
+    }
+
+    /**
      * Execute the build process
      */
     public function build()
@@ -89,7 +186,29 @@ class Tree implements Buildable, Extension
             throw new InvalidMappingException("Tree type: $this->strategy is not available.");
         }
 
+        if ($this->autoComplete) {
+            if (!$this->root) {
+                $this->root('root');
+            }
+
+            if (!$this->level) {
+                $this->level('level');
+            }
+
+            if (!$this->left) {
+                $this->left('left');
+            }
+
+            if (!$this->right) {
+                $this->right('right');
+            }
+        }
+
         $this->classMetadata->appendExtension($this->getExtensionName(), [
+            'root'             => $this->root,
+            'level'            => $this->level,
+            'right'            => $this->right,
+            'left'             => $this->left,
             'strategy'         => $this->strategy,
             'activate_locking' => $this->activateLocking,
             'locking_timeout'  => $this->lockingTimeout,
@@ -153,5 +272,21 @@ class Tree implements Buildable, Extension
         $this->closure = $closure;
 
         return $this;
+    }
+
+    /**
+     * @param      $field
+     * @param      $type
+     * @param      $name
+     * @param bool $nullable
+     */
+    private function mapField($field, $type, $name, $nullable = false)
+    {
+        $this->classMetadata->mapField([
+            'type'       => $type,
+            'fieldName'  => $field,
+            'columnName' => $name,
+            'nullable'   => $nullable
+        ]);
     }
 }
