@@ -4,7 +4,6 @@ namespace Tests\Extensions;
 
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
