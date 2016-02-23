@@ -11,6 +11,8 @@ use LaravelDoctrine\Fluent\Relations\OneToOne;
 
 class Versioned implements Buildable
 {
+    const MACRO_METHOD = 'versioned';
+    
     /**
      * @var ExtensibleClassMetadata
      */
@@ -35,15 +37,15 @@ class Versioned implements Buildable
 
     public static function enable()
     {
-        Field::macro('versioned', function (Field $builder) {
+        Field::macro(self::MACRO_METHOD, function (Field $builder) {
             return new static($builder->getClassMetadata(), $builder->getName());
         });
 
-        ManyToOne::macro('versioned', function (ManyToOne $builder) {
+        ManyToOne::macro(self::MACRO_METHOD, function (ManyToOne $builder) {
             return new static($builder->getClassMetadata(), $builder->getRelation());
         });
 
-        OneToOne::macro('versioned', function (OneToOne $builder) {
+        OneToOne::macro(self::MACRO_METHOD, function (OneToOne $builder) {
             return new static($builder->getClassMetadata(), $builder->getRelation());
         });
     }
