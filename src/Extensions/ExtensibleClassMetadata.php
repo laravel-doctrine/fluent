@@ -44,7 +44,7 @@ class ExtensibleClassMetadata extends ClassMetadata
      */
     public function appendExtension($name, array $config = [])
     {
-        $merged = array_merge(
+        $merged = array_merge_recursive(
             $this->getExtension($name),
             $config
         );

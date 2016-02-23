@@ -90,7 +90,7 @@ abstract class AbstractTrackingExtension
             throw new InvalidMappingException("Extension does not support multiple value change-set detection yet.");
         }
 
-        $this->classMetadata->addExtension($this->getExtensionName(), [
+        $this->classMetadata->appendExtension($this->getExtensionName(), [
             $this->on => [
                 $this->makeConfiguration(),
             ],
