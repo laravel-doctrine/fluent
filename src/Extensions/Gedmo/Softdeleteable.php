@@ -7,8 +7,9 @@ use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class Softdeleteable implements Buildable
+class Softdeleteable implements Buildable, Extension
 {
     const MACRO_METHOD = 'softDelete';
 

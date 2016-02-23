@@ -2,7 +2,9 @@
 
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
-class Sortable
+use LaravelDoctrine\Fluent\Extensions\Extension;
+
+class Sortable implements Extension
 {
     /**
      * @return void

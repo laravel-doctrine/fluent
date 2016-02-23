@@ -5,9 +5,10 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 use Gedmo\Blameable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 
-class Blameable extends AbstractTrackingExtension implements Buildable
+class Blameable extends AbstractTrackingExtension implements Buildable, Extension
 {
     const MACRO_METHOD = 'blameable';
 

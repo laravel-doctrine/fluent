@@ -8,8 +8,9 @@ use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class Uploadable implements Buildable, Delay
+class Uploadable implements Buildable, Delay, Extension
 {
     const MACRO_METHOD = 'uploadable';
 
@@ -44,7 +45,7 @@ class Uploadable implements Buildable, Delay
     private $filenameGenerator = Validator::FILENAME_GENERATOR_NONE;
 
     /**
-     * @var double
+     * @var float
      */
     private $maxSize = 0;
 
@@ -232,7 +233,7 @@ class Uploadable implements Buildable, Delay
      *
      * Default value: 0, meaning that no size validation will occur.
      *
-     * @param double $bytes
+     * @param float $bytes
      *
      * @return Uploadable
      */

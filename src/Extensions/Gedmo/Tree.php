@@ -7,9 +7,10 @@ use Gedmo\Tree\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 use LaravelDoctrine\Fluent\Fluent;
 
-class Tree implements Buildable
+class Tree implements Buildable, Extension
 {
     const MACRO_METHOD = 'tree';
 

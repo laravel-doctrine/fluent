@@ -6,8 +6,9 @@ use Gedmo\Loggable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class Loggable implements Buildable
+class Loggable implements Buildable, Extension
 {
     /**
      * @var ExtensibleClassMetadata

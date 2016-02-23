@@ -6,8 +6,9 @@ use Gedmo\Translatable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class Translatable implements Buildable
+class Translatable implements Buildable, Extension
 {
     const MACRO_METHOD = 'translatable';
 

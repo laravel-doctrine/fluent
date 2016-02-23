@@ -8,8 +8,9 @@ use Gedmo\Sluggable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class Sluggable implements Buildable
+class Sluggable implements Buildable, Extension
 {
     const MACRO_METHOD = 'sluggable';
 
