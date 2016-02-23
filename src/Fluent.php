@@ -3,7 +3,7 @@
 namespace LaravelDoctrine\Fluent;
 
 /**
- * @method $this array($name, callable $callback = null)
+ * @method Builders\Field array($name, callable $callback = null)
  *
  * Extensions:
  * @method void                              loggable(string $logEntry = null)

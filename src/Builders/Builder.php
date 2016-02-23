@@ -9,7 +9,7 @@ use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
 
 /**
- * @method $this array($name, callable $callback = null)
+ * @method Field array($name, callable $callback = null)
  */
 class Builder extends AbstractBuilder implements Fluent
 {
