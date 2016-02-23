@@ -44,7 +44,7 @@ class Uploadable implements Buildable, Delay
     private $filenameGenerator = Validator::FILENAME_GENERATOR_NONE;
 
     /**
-     * @var int
+     * @var double
      */
     private $maxSize = 0;
 
@@ -232,7 +232,7 @@ class Uploadable implements Buildable, Delay
      *
      * Default value: 0, meaning that no size validation will occur.
      *
-     * @param float $bytes
+     * @param double $bytes
      *
      * @return Uploadable
      */
