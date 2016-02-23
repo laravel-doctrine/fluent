@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Builder\ManyToManyAssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\OneToManyAssociationBuilder;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Hints\GedmoManyToManyHints;
 use LaravelDoctrine\Fluent\Relations\Traits\Indexable;
 use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
 use LaravelDoctrine\Fluent\Relations\Traits\Orderable;
@@ -21,6 +22,7 @@ use LaravelDoctrine\Fluent\Relations\Traits\Owning;
 class ManyToMany extends AbstractRelation
 {
     use ManyTo, Owning, Ownable, Orderable, Indexable, Macroable, QueuesMacros;
+    use GedmoManyToManyHints;
 
     /**
      * @var ManyToManyAssociationBuilder

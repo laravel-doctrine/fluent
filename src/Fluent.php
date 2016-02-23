@@ -19,8 +19,12 @@ use LaravelDoctrine\Fluent\Relations\Relation;
  * @method $this array($name, callable $callback = null)
  *
  * Extensions:
- * @method \LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable  timestamps(string $createdAt = 'createdAt', string $updatedAt = 'updatedAt', string $type = 'dateTime')
- * @method \LaravelDoctrine\Fluent\Extensions\Gedmo\Softdeleteable softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')
+ * @method void                              loggable(string $logEntry = null)
+ * @method Extensions\Gedmo\Softdeleteable   softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')
+ * @method void                              timestamps(string $createdAt = 'createdAt', string $updatedAt = 'updatedAt', string $type = 'dateTime')
+ * @method Extensions\Gedmo\TranslationClass translationClass(string $class)
+ * @method Extensions\Gedmo\Tree             tree(string $strategy = 'nested')
+ * @method Extensions\Gedmo\Uploadable       uploadable()
  */
 interface Fluent extends Buildable
 {
@@ -58,7 +62,7 @@ interface Fluent extends Buildable
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * @return Field
      */
     public function field($type, $name, callable $callback = null);
 
@@ -66,7 +70,7 @@ interface Fluent extends Buildable
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * @return Field
      */
     public function increments($name, callable $callback = null);
 
@@ -90,7 +94,7 @@ interface Fluent extends Buildable
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * @return Field
      */
     public function string($name, callable $callback = null);
 
@@ -309,7 +313,7 @@ interface Fluent extends Buildable
      * @param string        $field
      * @param callable|null $callback
      *
-     * @return ManyToOne
+     * @return ManyToOne|Extensions\Gedmo\Hints\GedmoManyToOneHints
      */
     public function belongsTo($entity, $field = null, callable $callback = null);
 
@@ -318,7 +322,7 @@ interface Fluent extends Buildable
      * @param string        $field
      * @param callable|null $callback
      *
-     * @return ManyToOne
+     * @return ManyToOne|Extensions\Gedmo\Hints\GedmoManyToOneHints
      */
     public function manyToOne($entity, $field = null, callable $callback = null);
 
@@ -345,7 +349,7 @@ interface Fluent extends Buildable
      * @param string        $field
      * @param callable|null $callback
      *
-     * @return ManyToMany
+     * @return ManyToMany|Extensions\Gedmo\Hints\GedmoManyToManyHints
      */
     public function belongsToMany($entity, $field = null, callable $callback = null);
 
@@ -354,7 +358,7 @@ interface Fluent extends Buildable
      * @param string        $field
      * @param callable|null $callback
      *
-     * @return ManyToMany
+     * @return ManyToMany|Extensions\Gedmo\Hints\GedmoManyToManyHints
      */
     public function manyToMany($entity, $field, callable $callback = null);
 

@@ -12,7 +12,7 @@ use LaravelDoctrine\Fluent\Relations\OneToOne;
 class Versioned implements Buildable
 {
     const MACRO_METHOD = 'versioned';
-    
+
     /**
      * @var ExtensibleClassMetadata
      */

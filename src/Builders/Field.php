@@ -13,11 +13,7 @@ use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\IpTraceable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Sluggable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Softdeleteable;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Hints\GedmoFieldHints;
 
 /**
  * @method $this unique(boolean $flag = true)   Boolean value to determine if the value of the column should be unique
@@ -41,13 +37,6 @@ use LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable;
  *                                              use of this feature and the consequences. SchemaTool will not detect
  *                                              changes on the column correctly anymore if you use “columnDefinition”.
  * @method $this option($name, $value)          Set custom options
- *
- * Extensions:
- * @method Timestampable  timestampable()
- * @method Sluggable      sluggable(array $fields)
- * @method IpTraceable    ipTraceable()
- * @method Blameable      blameable()
- * @method Softdeleteable softDelete()
  */
 class Field implements Buildable
 {
@@ -56,6 +45,7 @@ class Field implements Buildable
         build as buildQueued;
     }
     use QueuesMacros;
+    use GedmoFieldHints;
 
     /**
      * @var FieldBuilder

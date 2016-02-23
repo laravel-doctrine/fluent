@@ -5,10 +5,7 @@ namespace LaravelDoctrine\Fluent\Builders\Traits;
 trait Aliases
 {
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function increments($name, callable $callback = null)
     {
@@ -18,10 +15,7 @@ trait Aliases
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function smallIncrements($name, callable $callback = null)
     {
@@ -31,10 +25,7 @@ trait Aliases
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function bigIncrements($name, callable $callback = null)
     {
@@ -44,10 +35,7 @@ trait Aliases
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function unsignedSmallInteger($name, callable $callback = null)
     {
@@ -55,10 +43,7 @@ trait Aliases
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function unsignedInteger($name, callable $callback = null)
     {
@@ -66,10 +51,7 @@ trait Aliases
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function unsignedBigInteger($name, callable $callback = null)
     {
@@ -77,10 +59,7 @@ trait Aliases
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function rememberToken($name = 'rememberToken', callable $callback = null)
     {

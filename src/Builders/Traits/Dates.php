@@ -7,10 +7,7 @@ use Doctrine\DBAL\Types\Type;
 trait Dates
 {
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function date($name, callable $callback = null)
     {
@@ -18,10 +15,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function dateTime($name, callable $callback = null)
     {
@@ -29,10 +23,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function dateTimeTz($name, callable $callback = null)
     {
@@ -40,10 +31,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function time($name, callable $callback = null)
     {
@@ -51,10 +39,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function carbonDateTime($name, callable $callback = null)
     {
@@ -62,10 +47,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function carbonDateTimeTz($name, callable $callback = null)
     {
@@ -73,10 +55,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function carbonDate($name, callable $callback = null)
     {
@@ -84,10 +63,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function carbonTime($name, callable $callback = null)
     {
@@ -95,10 +71,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function zendDate($name, callable $callback = null)
     {
@@ -106,10 +79,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function timestamp($name, callable $callback = null)
     {
@@ -117,10 +87,7 @@ trait Dates
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return \LaravelDoctrine\Fluent\Builders\Field
+     * {@inheritdoc}
      */
     public function timestampTz($name, callable $callback = null)
     {

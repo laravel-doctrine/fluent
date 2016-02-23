@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\Hints\GedmoBuilderHints;
 use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
 
@@ -19,12 +20,10 @@ class Builder extends AbstractBuilder implements Fluent
     use Traits\Macroable;
     use Traits\Queueable;
     use Traits\QueuesMacros;
+    use GedmoBuilderHints;
 
     /**
-     * @param string|callable $name
-     * @param callable|null   $callback
-     *
-     * @return Table
+     * {@inheritdoc}
      */
     public function table($name, callable $callback = null)
     {
@@ -46,9 +45,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return Entity
+     * {@inheritdoc}
      */
     public function entity(callable $callback = null)
     {
@@ -64,10 +61,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param string        $type
-     * @param callable|null $callback
-     *
-     * @return Inheritance\Inheritance
+     * {@inheritdoc}
      */
     public function inheritance($type, callable $callback = null)
     {
@@ -81,9 +75,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return Inheritance\Inheritance
+     * {@inheritdoc}
      */
     public function singleTableInheritance(callable $callback = null)
     {
@@ -91,9 +83,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return Inheritance\Inheritance
+     * {@inheritdoc}
      */
     public function joinedTableInheritance(callable $callback = null)
     {
@@ -101,9 +91,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param array|string $columns
-     *
-     * @return Index
+     * {@inheritdoc}
      */
     public function index($columns)
     {
@@ -114,9 +102,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param array|string $fields
-     *
-     * @return Primary
+     * {@inheritdoc}
      */
     public function primary($fields)
     {
@@ -127,9 +113,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param array|string $columns
-     *
-     * @return UniqueConstraint
+     * {@inheritdoc}
      */
     public function unique($columns)
     {
@@ -155,11 +139,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param string        $embeddable
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return Embedded
+     * {@inheritdoc}
      */
     public function embed($embeddable, $field = null, callable $callback = null)
     {
@@ -176,10 +156,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param string   $name
-     * @param callable $callback
-     *
-     * @return Overrides\Override
+     * {@inheritdoc}
      */
     public function override($name, callable $callback)
     {
@@ -196,9 +173,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return LifecycleEvents
+     * {@inheritdoc}
      */
     public function events(callable $callback = null)
     {
@@ -210,7 +185,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function isEmbeddedClass()
     {
@@ -249,8 +224,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param  string         $message
-     * @throws LogicException
+     * {@inheritdoc}
      */
     protected function disallowInEmbeddedClasses($message = "")
     {
