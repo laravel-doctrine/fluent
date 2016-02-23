@@ -26,9 +26,7 @@ trait Queueable
      */
     public function callbackAndQueue(Buildable $buildable, callable $callback = null)
     {
-        if (is_callable($callback)) {
-            $callback($buildable);
-        }
+        $this->callIfCallable($callback, $buildable);
 
         $this->queue($buildable);
     }
@@ -38,18 +36,14 @@ trait Queueable
      */
     public function build()
     {
-        $delayed = [];
-        foreach ($this->getQueued() as $buildable) {
-            if ($buildable instanceof Delay) {
-                $delayed[] = $buildable;
-            } else {
-                $buildable->build();
-            }
-        }
+        /** @var Buildable[] $queued */
+        $queued = $this->getQueued();
 
-        // We will delay some of the builds, because they
-        // depend on the executing of the other builds
-        foreach ($delayed as $buildable) {
+        usort($queued, function (Buildable $buildable) {
+            return $buildable instanceof Delay ? 1 : 0;
+        });
+
+        foreach ($queued as $buildable) {
             $buildable->build();
         }
     }
@@ -60,5 +54,20 @@ trait Queueable
     public function getQueued()
     {
         return $this->queued;
+    }
+
+    /**
+     * Call the callable... only if it is really one.
+     *
+     * @param callable|null $callback
+     * @param mixed         $builder
+     *
+     * @return void
+     */
+    protected function callIfCallable($callback, $builder)
+    {
+        if (is_callable($callback)) {
+            $callback($builder);
+        }
     }
 }

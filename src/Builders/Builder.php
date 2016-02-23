@@ -29,17 +29,9 @@ class Builder extends AbstractBuilder implements Fluent
     {
         $this->disallowInEmbeddedClasses();
 
-        $table = new Table($this->builder);
+        $table = new Table($this->builder, $name);
 
-        if (is_callable($name)) {
-            $name($table);
-        } else {
-            $table->setName($name);
-        }
-
-        if (is_callable($callback)) {
-            $callback($table);
-        }
+        $this->callIfCallable($callback, $table);
 
         return $table;
     }
@@ -53,9 +45,7 @@ class Builder extends AbstractBuilder implements Fluent
 
         $entity = new Entity($this->builder, $this->namingStrategy);
 
-        if (is_callable($callback)) {
-            $callback($entity);
-        }
+        $this->callIfCallable($callback, $entity);
 
         return $entity;
     }
@@ -67,9 +57,7 @@ class Builder extends AbstractBuilder implements Fluent
     {
         $inheritance = Inheritance\InheritanceFactory::create($type, $this->builder);
 
-        if (is_callable($callback)) {
-            $callback($inheritance);
-        }
+        $this->callIfCallable($callback, $inheritance);
 
         return $inheritance;
     }
