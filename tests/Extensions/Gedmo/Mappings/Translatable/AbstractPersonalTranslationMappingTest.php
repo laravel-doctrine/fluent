@@ -24,10 +24,12 @@ class AbstractPersonalTranslationMappingTest extends MappingTestCase
         $this->builder->shouldReceive('string')->with('locale')->once()->andReturn($this->field);
         $this->builder->shouldReceive('string')->with('field')->once()->andReturn($this->field);
         $this->builder->shouldReceive('text')->with('content')->once()->andReturn($this->field);
-        
+
         $this->field->shouldReceive('unsigned')->once()->andReturnSelf();
         $this->field->shouldReceive('primary')->once()->andReturnSelf();
-        $this->field->shouldReceive('generatedValue')->with(\Mockery::type(\Closure::class))->once()->andReturnSelf();
+        $this->field->shouldReceive('generatedValue')->once()->with(
+            $this->generatedValueExpectation()
+        )->andReturnSelf();
         $this->field->shouldReceive('length')->with(8)->once()->andReturnSelf();
         $this->field->shouldReceive('length')->with(32)->once()->andReturnSelf();
         $this->field->shouldReceive('nullable')->once()->andReturnSelf();

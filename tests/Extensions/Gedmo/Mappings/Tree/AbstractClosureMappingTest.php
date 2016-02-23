@@ -14,9 +14,11 @@ class AbstractClosureMappingTest extends MappingTestCase
         $this->builder->shouldReceive('integer')->with('id')->once()->andReturn($this->field);
         $this->builder->shouldReceive('integer')->with('depth')->once()->andReturn(\Mockery::mock(Field::class));
 
-        $this->field->shouldReceive('unsigned')->once()->andReturn($this->field);
-        $this->field->shouldReceive('primary')->once()->andReturn($this->field);
-        $this->field->shouldReceive('generatedValue')->once()->with(\Mockery::type(\Closure::class))->andReturn($this->field);
+        $this->field->shouldReceive('unsigned')->once()->andReturnSelf();
+        $this->field->shouldReceive('primary')->once()->andReturnSelf();
+        $this->field->shouldReceive('generatedValue')->once()->with(
+            $this->generatedValueExpectation()
+        )->andReturnSelf();
     }
 
     protected function getMappingClass()
