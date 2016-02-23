@@ -17,6 +17,7 @@ class Builder extends AbstractBuilder implements Fluent
     use Traits\Dates;
     use Traits\Aliases;
     use Traits\Relations;
+    use Traits\Constraints;
     use Traits\Macroable;
     use Traits\Queueable;
     use Traits\QueuesMacros;
@@ -76,54 +77,6 @@ class Builder extends AbstractBuilder implements Fluent
     public function joinedTableInheritance(callable $callback = null)
     {
         return $this->inheritance(Inheritance\Inheritance::JOINED, $callback);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function index($columns)
-    {
-        return $this->constraint(
-            Index::class,
-            is_array($columns) ? $columns : func_get_args()
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function primary($fields)
-    {
-        return $this->constraint(
-            Primary::class,
-            is_array($fields) ? $fields : func_get_args()
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function unique($columns)
-    {
-        return $this->constraint(
-            UniqueConstraint::class,
-            is_array($columns) ? $columns : func_get_args()
-        );
-    }
-
-    /**
-     * @param string $class
-     * @param array  $columns
-     *
-     * @return mixed
-     */
-    protected function constraint($class, array $columns)
-    {
-        $constraint = new $class($this->builder, $columns);
-
-        $this->queue($constraint);
-
-        return $constraint;
     }
 
     /**
