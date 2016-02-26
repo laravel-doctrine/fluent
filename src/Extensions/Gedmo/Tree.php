@@ -26,6 +26,11 @@ class Tree implements Buildable, Extension
     ];
 
     /**
+     * @var Fluent
+     */
+    private $builder;
+
+    /**
      * @var ExtensibleClassMetadata
      */
     protected $classMetadata;
@@ -76,13 +81,14 @@ class Tree implements Buildable, Extension
     private $autoComplete = false;
 
     /**
-     * @param ExtensibleClassMetadata $classMetadata
-     * @param string                  $strategy
-     * @param bool                    $autoComplete
+     * @param Fluent $builder
+     * @param string $strategy
+     * @param bool   $autoComplete
      */
-    public function __construct(ExtensibleClassMetadata $classMetadata, $strategy = 'nested', $autoComplete = false)
+    public function __construct(Fluent $builder, $strategy = 'nested', $autoComplete = false)
     {
-        $this->classMetadata = $classMetadata;
+        $this->builder       = $builder;
+        $this->classMetadata = $builder->getBuilder()->getClassMetadata();
         $this->strategy      = $strategy;
         $this->autoComplete  = $autoComplete;
     }
@@ -92,18 +98,19 @@ class Tree implements Buildable, Extension
      */
     public static function enable()
     {
-        Builder::macro(self::MACRO_METHOD, function (Fluent $fluent, $strategy = 'nested', $callback = null, $autoComplete = false) {
-            $tree = new static($fluent->getBuilder()->getClassMetadata(), $strategy, $autoComplete);
+        $macro = function (Fluent $fluent, $strategy = 'nested', $callback = null, $autoComplete = false) {
+            $tree = new static($fluent, $strategy, $autoComplete);
 
             if (is_callable($callback)) {
                 call_user_func($callback, $tree);
             }
 
             return $tree;
-        });
+        };
 
-        Builder::macro('nestedSet', function (Fluent $fluent, $callback = null) {
-            return $fluent->tree('nested', $callback, true);
+        Builder::macro(self::MACRO_METHOD, $macro);
+        Builder::macro('nestedSet', function (Fluent $fluent, $callback = null) use ($macro) {
+            return $macro($fluent, 'nested', $callback, true);
         });
 
         TreeLeft::enable();
@@ -118,14 +125,15 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param  string $field
-     * @param  string $type
-     * @param  null   $name
+     * @param string      $field
+     * @param string      $type
+     * @param string|null $column
+     *
      * @return $this
      */
-    public function root($field = 'root', $type = 'integer', $name = null)
+    public function root($field = 'root', $type = 'integer', $column = null)
     {
-        $this->mapField($field, $type, $name, true);
+        $this->mapField($type, $field, $column, true);
 
         $this->root = $field;
 
@@ -133,14 +141,15 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param  string $field
-     * @param  string $type
-     * @param  null   $name
+     * @param string      $field
+     * @param string      $type
+     * @param string|null $column
+     *
      * @return $this
      */
-    public function left($field = 'left', $type = 'integer', $name = null)
+    public function left($field = 'left', $type = 'integer', $column = null)
     {
-        $this->mapField($field, $type, $name);
+        $this->mapField($type, $field, $column);
 
         $this->left = $field;
 
@@ -148,14 +157,15 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param  string $field
-     * @param  string $type
-     * @param  null   $name
+     * @param string      $field
+     * @param string      $type
+     * @param string|null $column
+     *
      * @return $this
      */
-    public function right($field = 'right', $type = 'integer', $name = null)
+    public function right($field = 'right', $type = 'integer', $column = null)
     {
-        $this->mapField($field, $type, $name);
+        $this->mapField($type, $field, $column);
 
         $this->right = $field;
 
@@ -163,14 +173,15 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param  string $field
-     * @param  string $type
-     * @param  null   $name
+     * @param string      $field
+     * @param string      $type
+     * @param string|null $column
+     *
      * @return $this
      */
-    public function level($field = 'level', $type = 'integer', $name = null)
+    public function level($field = 'level', $type = 'integer', $column = null)
     {
-        $this->mapField($field, $type, $name);
+        $this->mapField($type, $field, $column);
 
         $this->level = $field;
 
@@ -187,21 +198,7 @@ class Tree implements Buildable, Extension
         }
 
         if ($this->autoComplete) {
-            if (!$this->root) {
-                $this->root('root');
-            }
-
-            if (!$this->level) {
-                $this->level('level');
-            }
-
-            if (!$this->left) {
-                $this->left('left');
-            }
-
-            if (!$this->right) {
-                $this->right('right');
-            }
+            $this->addDefaults();
         }
 
         $this->classMetadata->appendExtension($this->getExtensionName(), [
@@ -212,7 +209,7 @@ class Tree implements Buildable, Extension
             'strategy'         => $this->strategy,
             'activate_locking' => $this->activateLocking,
             'locking_timeout'  => $this->lockingTimeout,
-            'closure'          => $this->closure
+            'closure'          => $this->closure,
         ]);
     }
 
@@ -227,7 +224,8 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param  bool $activateLocking
+     * @param bool $activateLocking
+     *
      * @return Tree
      */
     public function activateLocking($activateLocking = true)
@@ -238,7 +236,8 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param  string $strategy
+     * @param string $strategy
+     *
      * @return Tree
      */
     public function strategy($strategy)
@@ -249,7 +248,8 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param  int  $lockingTimeout
+     * @param int $lockingTimeout
+     *
      * @return Tree
      */
     public function lockingTimeout($lockingTimeout)
@@ -264,7 +264,8 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param  string $closure
+     * @param string $closure
+     *
      * @return Tree
      */
     public function closure($closure)
@@ -275,18 +276,41 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * @param      $field
-     * @param      $type
-     * @param      $name
-     * @param bool $nullable
+     * @param string $type
+     * @param string $field
+     * @param string $column
+     * @param bool   $nullable
      */
-    private function mapField($field, $type, $name, $nullable = false)
+    private function mapField($type, $field, $column = null, $nullable = false)
     {
-        $this->classMetadata->mapField([
-            'type'       => $type,
-            'fieldName'  => $field,
-            'columnName' => $name,
-            'nullable'   => $nullable
-        ]);
+        $field = $this->builder->field($type, $field)->nullable($nullable);
+
+        if ($column) {
+            $field->name($column);
+        }
+    }
+
+    /**
+     * Add default values to all required fields.
+     *
+     * @return void
+     */
+    private function addDefaults()
+    {
+        if (!$this->root) {
+            $this->root('root');
+        }
+
+        if (!$this->level) {
+            $this->level('level');
+        }
+
+        if (!$this->left) {
+            $this->left('left');
+        }
+
+        if (!$this->right) {
+            $this->right('right');
+        }
     }
 }

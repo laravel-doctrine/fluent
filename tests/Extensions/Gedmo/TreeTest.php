@@ -33,7 +33,7 @@ class TreeTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->classMetadata = new ExtensibleClassMetadata('foo');
-        $this->extension     = new Tree($this->classMetadata);
+        $this->extension     = new Tree(new Builder(new ClassMetadataBuilder($this->classMetadata)));
     }
 
     public function test_it_should_add_itself_as_a_builder_macro()
@@ -69,6 +69,28 @@ class TreeTest extends \PHPUnit_Framework_TestCase
                 $this->assertInstanceOf(Tree::class, $tree);
             })
         );
+    }
+
+
+    public function test_the_nested_set_alias_works_without_callback()
+    {
+        Tree::enable();
+
+        $builder = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy);
+
+        $builder->nestedSet()->left('izq')->right('der')->root('raiz');
+        $builder->build();
+
+        $this->assertBuildResultIs([
+            'root'             => 'raiz',
+            'level'            => 'level',
+            'right'            => 'der',
+            'left'             => 'izq',
+            'strategy'         => 'nested',
+            'activate_locking' => false,
+            'locking_timeout'  => 3,
+            'closure'          => null,
+        ]);
     }
 
     public function test_can_mark_entity_as_tree()
@@ -219,6 +241,6 @@ class TreeTest extends \PHPUnit_Framework_TestCase
      */
     private function getNestedSet()
     {
-        return (new Tree($this->classMetadata, 'nested', true));
+        return new Tree(new Builder(new ClassMetadataBuilder($this->classMetadata)), 'nested', true);
     }
 }
