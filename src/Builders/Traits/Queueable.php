@@ -17,7 +17,7 @@ trait Queueable
      */
     protected function queue(Buildable $buildable)
     {
-        $this->queued[] = $buildable;
+        $this->queued[spl_object_hash($buildable)] = $buildable;
     }
 
     /**
