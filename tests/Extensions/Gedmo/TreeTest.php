@@ -8,6 +8,9 @@ use Gedmo\Exception\InvalidMappingException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\ClosureTable;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\MaterializedPath;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\NestedSet;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Tree;
 
 /**
@@ -30,180 +33,93 @@ class TreeTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
+    /**
+     * @var Builder
+     */
+    private $builder;
+
     protected function setUp()
     {
         $this->classMetadata = new ExtensibleClassMetadata('foo');
-        $this->extension     = new Tree(new Builder(new ClassMetadataBuilder($this->classMetadata)));
+        $this->builder       = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy);
+        $this->extension     = new Tree($this->builder);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState false
+     */
     public function test_it_should_add_itself_as_a_builder_macro()
     {
         Tree::enable();
 
-        $builder = (new Builder(new ClassMetadataBuilder(
-            new ExtensibleClassMetadata('Foo')), new DefaultNamingStrategy()
-        ));
-
         $this->assertInstanceOf(
             Tree::class,
-            call_user_func([$builder, Tree::MACRO_METHOD])
+            call_user_func([$this->builder, Tree::MACRO_METHOD])
         );
     }
 
-    public function test_it_should_at_nested_set_as_alias_for_tree()
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState false
+     */
+    public function test_it_should_add_itself_as_a_builder_macro_with_optional_callback()
     {
         Tree::enable();
 
-        $builder = (new Builder(new ClassMetadataBuilder(
-            new ExtensibleClassMetadata('Foo')), new DefaultNamingStrategy()
-        ));
+        $mock = \Mockery::mock(['callMe' => true]);
+        $mock->shouldReceive('callMe')->once();
 
-        $this->assertInstanceOf(
-            Tree::class,
-            call_user_func([$builder, 'nestedSet'])
-        );
-
-        $this->assertInstanceOf(
-            Tree::class,
-            call_user_func([$builder, 'nestedSet'], function($tree) {
-                $this->assertInstanceOf(Tree::class, $tree);
-            })
-        );
+        $this->builder->tree(function(Tree $tree) use ($mock) {
+            $mock->callMe();
+        });
     }
 
-
-    public function test_the_nested_set_alias_works_without_callback()
+    public function test_it_delegates_on_a_nested_set_buildable()
     {
-        Tree::enable();
+    	$nested = $this->extension->asNestedSet();
 
-        $builder = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy);
-
-        $builder->nestedSet()->left('izq')->right('der')->root('raiz');
-        $builder->build();
-
-        $this->assertBuildResultIs([
-            'root'             => 'raiz',
-            'level'            => 'level',
-            'right'            => 'der',
-            'left'             => 'izq',
-            'strategy'         => 'nested',
-            'activate_locking' => false,
-            'locking_timeout'  => 3,
-            'closure'          => null,
-        ]);
+        $this->assertInstanceOf(NestedSet::class, $nested);
     }
 
-    public function test_can_mark_entity_as_tree()
+    public function test_it_builds_the_delegated_nested_set_on_build()
     {
-        $this->getExtension()->build();
+    	$this->extension->asNestedSet();
+        $this->extension->build();
 
-        $this->assertBuildResultIs([
-            'root'             => null,
-            'level'            => null,
-            'right'            => null,
-            'left'             => null,
-            'strategy'         => 'nested',
-            'activate_locking' => false,
-            'locking_timeout'  => 3,
-            'closure'          => null
-        ]);
+        $this->assertEquals('nested', $this->classMetadata->getExtension($this->getExtensionName())['strategy']);
     }
 
-    public function test_nested_set_autocompletes_all_fields()
+    public function test_it_delegates_on_a_materialized_path_buildable()
     {
-        $this->getNestedSet()->build();
+    	$materializedPath = $this->extension->asMaterializedPath();
 
-        $this->assertBuildResultIs([
-            'root'             => 'root',
-            'level'            => 'level',
-            'right'            => 'right',
-            'left'             => 'left',
-            'strategy'         => 'nested',
-            'activate_locking' => false,
-            'locking_timeout'  => 3,
-            'closure'          => null
-        ]);
+        $this->assertInstanceOf(MaterializedPath::class, $materializedPath);
     }
 
-    public function test_nested_set_autocompletes_missing_fields()
+    public function test_it_builds_the_delegated_materialized_path_on_build()
     {
-        $this->getNestedSet()
-             ->left('lft')
-             ->right('rgt')
-             ->build();
+    	$this->extension->asMaterializedPath();
+        $this->extension->build();
 
-        $this->assertBuildResultIs([
-            'root'             => 'root',
-            'level'            => 'level',
-            'right'            => 'rgt',
-            'left'             => 'lft',
-            'strategy'         => 'nested',
-            'activate_locking' => false,
-            'locking_timeout'  => 3,
-            'closure'          => null
-        ]);
+        $this->assertEquals('materializedPath', $this->classMetadata->getExtension($this->getExtensionName())['strategy']);
     }
 
-    public function test_can_set_custom_nested_set_columns_on_tree()
+    public function test_it_delegates_on_a_closure_table_buildable()
     {
-        $this->getExtension()
-             ->left('lft')
-             ->right('rgt')
-             ->level('lvl')
-             ->root('r')
-             ->build();
+    	$materializedPath = $this->extension->asClosureTable();
 
-        $this->assertBuildResultIs([
-            'root'             => 'r',
-            'level'            => 'lvl',
-            'right'            => 'rgt',
-            'left'             => 'lft',
-            'strategy'         => 'nested',
-            'activate_locking' => false,
-            'locking_timeout'  => 3,
-            'closure'          => null
-        ]);
+        $this->assertInstanceOf(ClosureTable::class, $materializedPath);
     }
 
-    public function test_can_set_custom_settings_on_tree()
+    public function test_it_builds_the_delegated_closure_table_on_build()
     {
-        $this->getExtension()
-             ->strategy('materializedPath')
-             ->activateLocking()
-             ->lockingTimeout(5)
-             ->closure('Closure')
-             ->build();
+    	$this->extension->asClosureTable();
+        $this->extension->build();
 
-        $this->assertBuildResultIs([
-            'root'             => null,
-            'level'            => null,
-            'right'            => null,
-            'left'             => null,
-            'strategy'         => 'materializedPath',
-            'activate_locking' => true,
-            'locking_timeout'  => 5,
-            'closure'          => 'Closure'
-        ]);
+        $this->assertEquals('closure', $this->classMetadata->getExtension($this->getExtensionName())['strategy']);
     }
 
-    public function test_cannot_use_invalid_tree_strategy()
-    {
-        $this->setExpectedException(InvalidMappingException::class, 'Tree type: invalid is not available.');
-
-        $this->getExtension()
-             ->strategy('invalid')
-             ->build();
-    }
-
-    public function test_locking_timout_should_be_at_least_one()
-    {
-        $this->setExpectedException(InvalidMappingException::class,
-            'Tree Locking Timeout must be at least of 1 second.');
-
-        $this->getExtension()
-             ->lockingTimeout(0)
-             ->build();
-    }
 
     /**
      * Assert that the resulting build matches exactly with the given array.
@@ -221,26 +137,10 @@ class TreeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Tree
-     */
-    protected function getExtension()
-    {
-        return $this->extension;
-    }
-
-    /**
      * @return string
      */
     protected function getExtensionName()
     {
         return TreeDriver::EXTENSION_NAME;
-    }
-
-    /**
-     * @return Tree
-     */
-    private function getNestedSet()
-    {
-        return new Tree(new Builder(new ClassMetadataBuilder($this->classMetadata)), 'nested', true);
     }
 }

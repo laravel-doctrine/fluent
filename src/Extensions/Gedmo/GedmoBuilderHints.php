@@ -9,8 +9,7 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
  * @method Softdeleteable   softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')
  * @method void             timestamps(string $createdAt = 'createdAt', string $updatedAt = 'updatedAt', string $type = 'dateTime')
  * @method TranslationClass translationClass(string $class)
- * @method Tree             tree(string $strategy = 'nested', $callback = null, $autoComplete = false)
- * @method Tree             nestedSet($callback = null)
+ * @method Tree             tree(callable $callback = null)
  * @method Uploadable       uploadable()
  */
 trait GedmoBuilderHints
