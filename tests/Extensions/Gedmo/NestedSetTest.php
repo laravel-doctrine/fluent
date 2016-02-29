@@ -5,6 +5,7 @@ namespace Tests\Extensions\Gedmo;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
@@ -204,7 +205,12 @@ class NestedSetTest extends \PHPUnit_Framework_TestCase
         });
     }
 
+    public function test_it_sets_up_gedmos_repository()
+    {
+    	$this->extension->build();
 
+        $this->assertEquals(NestedTreeRepository::class, $this->builder->getClassMetadata()->customRepositoryClassName);
+    }
 
     public function getNumericFields()
     {

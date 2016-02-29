@@ -3,6 +3,7 @@
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Gedmo\Tree\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
@@ -156,6 +157,8 @@ class NestedSet implements Buildable, Extension
     public function build()
     {
         $this->addDefaults();
+
+        $this->builder->entity()->setRepositoryClass(NestedTreeRepository::class);
 
         /** @var ExtensibleClassMetadata $classMetadata */
         $classMetadata = $this->builder->getBuilder()->getClassMetadata();
