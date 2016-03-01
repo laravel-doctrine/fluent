@@ -5,7 +5,6 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 use Gedmo\Exception\InvalidMappingException;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use LaravelDoctrine\Fluent\Buildable;
-use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Extension;
 
 class NestedSet extends TreeStrategy implements Buildable, Extension
@@ -130,5 +129,4 @@ class NestedSet extends TreeStrategy implements Buildable, Extension
             'root'     => $this->root,
         ]);
     }
-
 }

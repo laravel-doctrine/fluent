@@ -46,5 +46,4 @@ class ClosureTable extends TreeStrategy implements Buildable
             'closure'  => $this->closureClass,
         ]);
     }
-
 }
