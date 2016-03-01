@@ -76,7 +76,7 @@ class TreeSelfReference implements Buildable
      */
     protected static function addMacro($method, $key)
     {
-        Field::macro($method, function(Field $field) use ($key) {
+        Field::macro($method, function (Field $field) use ($key) {
             $field->nullable();
 
             return new static($field->getClassMetadata(), $field->getName(), $key);
