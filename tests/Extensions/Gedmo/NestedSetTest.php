@@ -3,14 +3,11 @@
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Gedmo\Exception\InvalidMappingException;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\NestedSet;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Tree;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TreeStrategy;
 use LaravelDoctrine\Fluent\Fluent;
-use LaravelDoctrine\Fluent\Relations\ManyToOne;
 
 class NestedSetTest extends TreeStrategyTest
 {

@@ -27,16 +27,13 @@ class NestedSet extends TreeStrategy implements Buildable, Extension
      */
     protected $root;
 
-    /**
-     * Enable extension
-     */
     public static function enable()
     {
+        parent::enable();
+
         TreeLeft::enable();
         TreeRight::enable();
-        TreeLevel::enable();
         TreeRoot::enable();
-        TreeParent::enable();
     }
 
     /**

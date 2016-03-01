@@ -35,6 +35,15 @@ abstract class TreeStrategy implements Buildable, Extension
     }
 
     /**
+     * Enable extension
+     */
+    public static function enable()
+    {
+        TreeLevel::enable();
+        TreeParent::enable();
+    }
+
+    /**
      * @param string        $field
      * @param string        $type
      * @param callable|null $callback
