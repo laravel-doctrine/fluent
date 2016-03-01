@@ -22,6 +22,7 @@ class ClosureTableTest extends TreeStrategyTest
         $this->assertExtensionEquals([
             'strategy' => 'closure',
             'closure'  => 'Bar',
+            'parent'   => 'parent',
         ]);
     }
 

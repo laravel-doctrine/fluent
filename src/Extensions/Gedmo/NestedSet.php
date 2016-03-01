@@ -94,8 +94,6 @@ class NestedSet extends TreeStrategy implements Buildable, Extension, Delay
      */
     public function build()
     {
-        $this->addDefaults();
-
         $this->builder->entity()->setRepositoryClass(NestedTreeRepository::class);
 
         parent::build();
@@ -106,17 +104,15 @@ class NestedSet extends TreeStrategy implements Buildable, Extension, Delay
      *
      * @return void
      */
-    protected function addDefaults()
+    protected function defaults()
     {
-        if (!$this->parent) {
-            $this->parent();
-        }
+        parent::defaults();
 
-        if (!$this->left) {
+        if ($this->isMissingLeft()) {
             $this->left();
         }
 
-        if (!$this->right) {
+        if ($this->isMissingRight()) {
             $this->right();
         }
     }
@@ -129,5 +125,21 @@ class NestedSet extends TreeStrategy implements Buildable, Extension, Delay
             'right'    => $this->right,
             'root'     => $this->root,
         ]);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isMissingLeft()
+    {
+        return !$this->alreadyConfigured('left') && !$this->left;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isMissingRight()
+    {
+        return !$this->alreadyConfigured('right') && !$this->right;
     }
 }

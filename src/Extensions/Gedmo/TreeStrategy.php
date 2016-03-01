@@ -82,6 +82,8 @@ abstract class TreeStrategy implements Buildable, Extension
      */
     public function build()
     {
+        $this->defaults();
+
         $this->getClassMetadata()->mergeExtension($this->getExtensionName(), $this->getValues());
     }
 
@@ -162,5 +164,42 @@ abstract class TreeStrategy implements Buildable, Extension
         }
 
         return $values;
+    }
+
+    /**
+     * Check if a given key is already configured for this extension.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    protected function alreadyConfigured($key)
+    {
+        $config = $this->getClassMetadata()->getExtension($this->getExtensionName());
+
+        return isset($config[$key]);
+    }
+
+    /**
+     * Check if parent is missing from both configuration and the current tree strategy builder.
+     *
+     * @return bool
+     */
+    protected function isMissingParent()
+    {
+        return !$this->alreadyConfigured('parent') && !$this->parent;
+    }
+
+    /**
+     * Set the default fields to fill if they were not configured.
+     * All Tree strategies share one common required field: the parent reference.
+     *
+     * @return void
+     */
+    protected function defaults()
+    {
+        if ($this->isMissingParent()) {
+            $this->parent();
+        }
     }
 }

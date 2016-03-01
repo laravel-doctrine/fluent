@@ -139,6 +139,14 @@ abstract class TreeStrategyTest extends \PHPUnit_Framework_TestCase
         });
     }
 
+    public function test_it_always_maps_the_parent_self_reference_relation()
+    {
+    	$this->strategy->build();
+
+        $this->assertExtensionKeyEquals('parent', 'parent');
+    }
+
+
     public function getNumericFields()
     {
         return [

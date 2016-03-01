@@ -109,8 +109,6 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension, Del
      */
     public function build()
     {
-        $this->defaults();
-
         parent::build();
 
         $this->buildQueue();
@@ -121,19 +119,15 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension, Del
      *
      * @return void
      */
-    private function defaults()
+    protected function defaults()
     {
-        $config = $this->getClassMetadata()->getExtension($this->getExtensionName());
+        parent::defaults();
 
-        if (!$this->path && !isset($config['path'])) {
+        if ($this->isMissingPath()) {
             $this->path();
         }
 
-        if (!$this->parent && !isset($config['parent'])) {
-            $this->parent();
-        }
-
-        if (!$this->source && !isset($config['path_source'])) {
+        if ($this->isMissingSource()) {
             $this->pathSource();
         }
     }
@@ -158,5 +152,21 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension, Del
         }
 
         return $values;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isMissingPath()
+    {
+        return !$this->alreadyConfigured('path') && !$this->path;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isMissingSource()
+    {
+        return !$this->alreadyConfigured('path_source') && !$this->source;
     }
 }
