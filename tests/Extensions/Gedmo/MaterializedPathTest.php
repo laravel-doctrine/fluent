@@ -91,6 +91,7 @@ class MaterializedPathTest extends PHPUnit_Framework_TestCase
             'path_append_id'             => true,
             'path_starts_with_separator' => true,
             'path_ends_with_separator'   => false,
+            'activate_locking'           => false,
         ]);
     }
 
@@ -151,8 +152,17 @@ class MaterializedPathTest extends PHPUnit_Framework_TestCase
             'path_append_id'             => null,
             'path_starts_with_separator' => false,
             'path_ends_with_separator'   => true,
+            'activate_locking'           => false,
         ]);
     }
+
+    public function test_it_returns_a_false_value_for_activate_locking_as_its_not_supported()
+    {
+    	$this->tree->build();
+
+        $this->assertExtensionKeyEquals('activate_locking', false);
+    }
+
 
     /**
      * Assert that the resulting build matches exactly with the given array.

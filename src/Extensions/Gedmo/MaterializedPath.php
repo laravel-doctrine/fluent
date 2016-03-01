@@ -150,6 +150,7 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension, Del
             'path_append_id'             => $this->appendIds,
             'path_starts_with_separator' => $this->startsWithSeparator,
             'path_ends_with_separator'   => $this->endsWithSeparator,
+            'activate_locking'           => false,
         ]);
 
         if ($this->hash) {
