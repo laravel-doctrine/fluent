@@ -2,26 +2,102 @@
 
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
-use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use LaravelDoctrine\Fluent\Fluent;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class MaterializedPath implements Buildable
+class MaterializedPath extends TreeStrategy implements Buildable, Extension
 {
-    /**
-     * @var Fluent
-     */
-    private $builder;
+    use Queueable;
 
     /**
-     * MaterializedPath constructor.
-     *
-     * @param Fluent $builder
+     * @var string
      */
-    public function __construct(Fluent $builder)
+    private $path;
+
+    /**
+     * @var string
+     */
+    private $hash;
+
+    /**
+     * @var string
+     */
+    private $source;
+
+    /**
+     * @var string
+     */
+    private $separator;
+
+    /**
+     * @var bool
+     */
+    private $appendIds;
+
+    /**
+     * @var bool
+     */
+    private $startsWithSeparator = false;
+
+    /**
+     * @var bool
+     */
+    private $endsWithSeparator = true;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function enable()
     {
-        $this->builder = $builder;
+        TreePath::enable();
+        TreePathHash::enable();
+        TreePathSource::enable();
+    }
+
+    /**
+     * @param string        $field
+     * @param string        $separator
+     * @param callable|null $callback
+     *
+     * @return $this
+     */
+    public function path($field = 'path', $separator = '|', callable $callback = null)
+    {
+        $this->mapField('string', $field);
+
+        $this->path = new TreePath($this->getClassMetadata(), $field, $separator);
+
+        $this->callbackAndQueue($this->path, $callback);
+
+        return $this;
+    }
+
+    /**
+     * @param string $hash
+     *
+     * @return $this
+     */
+    public function pathHash($hash = 'pathHash')
+    {
+        $this->mapField('string', $hash);
+
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * @param string $field
+     *
+     * @return $this
+     */
+    public function pathSource($field = 'id')
+    {
+        $this->source = $field;
+
+        return $this;
     }
 
     /**
@@ -29,19 +105,55 @@ class MaterializedPath implements Buildable
      */
     public function build()
     {
-        /** @var ExtensibleClassMetadata $classMetadata */
-        $classMetadata = $this->builder->getBuilder()->getClassMetadata();
+        $this->defaults();
 
-        $classMetadata->appendExtension($this->getExtensionName(), [
-            'strategy' => 'materializedPath',
-        ]);
+        /** @var ExtensibleClassMetadata $classMetadata */
+        $classMetadata = $this->getClassMetadata();
+        $classMetadata->mergeExtension($this->getExtensionName(), $this->getValues());
+
+        foreach ($this->getQueued() as $queued) {
+            $queued->build();
+        }
     }
 
     /**
-     * @return string
+     * Add default values to all required fields.
+     *
+     * @return void
      */
-    protected function getExtensionName()
+    private function defaults()
     {
-        return TreeDriver::EXTENSION_NAME;
+        if (!$this->path) {
+            $this->path();
+        }
+
+        if (!$this->parent) {
+            $this->parent();
+        }
+
+        if (!$this->source) {
+            $this->pathSource();
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getValues()
+    {
+        $values = array_merge(parent::getValues(), [
+            'strategy'                   => 'materializedPath',
+            'path_source'                => $this->source,
+            'path_separator'             => $this->separator,
+            'path_append_id'             => $this->appendIds,
+            'path_starts_with_separator' => $this->startsWithSeparator,
+            'path_ends_with_separator'   => $this->endsWithSeparator,
+        ]);
+
+        if ($this->hash) {
+            $values['path_hash'] = $this->hash;
+        }
+
+        return $values;
     }
 }

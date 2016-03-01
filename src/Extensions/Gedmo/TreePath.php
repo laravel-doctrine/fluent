@@ -12,6 +12,8 @@ class TreePath implements Buildable
 {
     const MACRO_METHOD = 'treePath';
 
+    const DEFAULT_SEPARATOR = '|';
+
     /**
      * @var ExtensibleClassMetadata
      */
@@ -25,10 +27,10 @@ class TreePath implements Buildable
     /**
      * @var string
      */
-    protected $separator;
+    protected $separator = self::DEFAULT_SEPARATOR;
 
     /**
-     * @var mixed
+     * @var bool|null
      */
     protected $appendId = null;
 
@@ -47,7 +49,7 @@ class TreePath implements Buildable
      * @param string                  $fieldName
      * @param string                  $separator
      */
-    public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName, $separator = '|')
+    public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName, $separator = self::DEFAULT_SEPARATOR)
     {
         $this->classMetadata = $classMetadata;
         $this->fieldName     = $fieldName;
@@ -65,35 +67,8 @@ class TreePath implements Buildable
     }
 
     /**
-     * Execute the build process
-     */
-    public function build()
-    {
-        if (strlen($this->separator) > 1) {
-            throw new InvalidMappingException("Tree Path field - [{$this->fieldName}] Separator {$this->separator} is invalid. It must be only one character long.");
-        }
-
-        $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'path'                       => $this->fieldName,
-            'path_separator'             => $this->separator,
-            'path_append_id'             => $this->appendId,
-            'path_starts_with_separator' => $this->startsWithSeparator,
-            'path_ends_with_separator'   => $this->endsWithSeparator
-        ]);
-    }
-
-    /**
-     * Return the name of the actual extension.
+     * @param string $separator
      *
-     * @return string
-     */
-    public function getExtensionName()
-    {
-        return FluentDriver::EXTENSION_NAME;
-    }
-
-    /**
-     * @param  string   $separator
      * @return TreePath
      */
     public function separator($separator)
@@ -104,35 +79,66 @@ class TreePath implements Buildable
     }
 
     /**
-     * @param  mixed    $appendId
+     * @param bool $shouldIt
+     *
      * @return TreePath
      */
-    public function appendId($appendId)
+    public function appendId($shouldIt = true)
     {
-        $this->appendId = $appendId;
+        $this->appendId = $shouldIt;
 
         return $this;
     }
 
     /**
-     * @param  bool     $startsWithSeparator
+     * @param bool $doesIt
+     *
      * @return TreePath
      */
-    public function startsWithSeparator($startsWithSeparator = true)
+    public function startsWithSeparator($doesIt = true)
     {
-        $this->startsWithSeparator = $startsWithSeparator;
+        $this->startsWithSeparator = $doesIt;
 
         return $this;
     }
 
     /**
-     * @param  bool     $endsWithSeparator
+     * @param bool $doesIt
+     *
      * @return TreePath
      */
-    public function endsWithSeparator($endsWithSeparator = true)
+    public function endsWithSeparator($doesIt = true)
     {
-        $this->endsWithSeparator = $endsWithSeparator;
+        $this->endsWithSeparator = $doesIt;
 
         return $this;
+    }
+
+    /**
+     * Execute the build process
+     */
+    public function build()
+    {
+        if (strlen($this->separator) > 1) {
+            throw new InvalidMappingException("Tree Path field - [{$this->fieldName}] Separator {$this->separator} is invalid. It must be only one character long.");
+        }
+
+        $this->classMetadata->mergeExtension($this->getExtensionName(), [
+            'path'                       => $this->fieldName,
+            'path_separator'             => $this->separator,
+            'path_append_id'             => $this->appendId,
+            'path_starts_with_separator' => $this->startsWithSeparator,
+            'path_ends_with_separator'   => $this->endsWithSeparator,
+        ]);
+    }
+
+    /**
+     * Return the name of the actual extension.
+     *
+     * @return string
+     */
+    protected function getExtensionName()
+    {
+        return FluentDriver::EXTENSION_NAME;
     }
 }

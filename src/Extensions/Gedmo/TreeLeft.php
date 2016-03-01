@@ -52,8 +52,8 @@ class TreeLeft implements Buildable
             throw new InvalidMappingException("Tree left field must be 'integer' in class - {$this->classMetadata->name}");
         }
 
-        $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'left' => $this->fieldName
+        $this->classMetadata->mergeExtension($this->getExtensionName(), [
+            'left' => $this->fieldName,
         ]);
     }
 

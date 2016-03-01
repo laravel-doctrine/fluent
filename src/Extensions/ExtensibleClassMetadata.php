@@ -14,14 +14,16 @@ class ExtensibleClassMetadata extends ClassMetadata
     public $extensions = [];
 
     /**
+     * Adds the extension configuration.
+     *
      * @param string $name
-     * @param array  $configuration
+     * @param array  $config
      *
      * @return void
      */
-    public function addExtension($name, array $configuration)
+    public function addExtension($name, array $config)
     {
-        $this->extensions[$name] = $configuration;
+        $this->extensions[$name] = $config;
     }
 
     /**
@@ -39,6 +41,8 @@ class ExtensibleClassMetadata extends ClassMetadata
     }
 
     /**
+     * Merge with current extension configuration, appending new values to old ones.
+     *
      * @param string $name
      * @param array  $config
      */
@@ -50,5 +54,21 @@ class ExtensibleClassMetadata extends ClassMetadata
         );
 
         $this->addExtension($name, $merged);
+    }
+
+    /**
+     * Merge with current extension configuration, overwriting with new values.
+     *
+     * @param string $name
+     * @param array  $config
+     *
+     * @return void
+     */
+    public function mergeExtension($name, array $config)
+    {
+        $this->addExtension($name, array_merge(
+            $this->getExtension($name),
+            $config
+        ));
     }
 }

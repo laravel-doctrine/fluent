@@ -51,8 +51,8 @@ class TreeRoot implements Buildable
      */
     public function build()
     {
-        $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'root' => $this->fieldName
+        $this->classMetadata->mergeExtension($this->getExtensionName(), [
+            'root' => $this->fieldName,
         ]);
     }
 

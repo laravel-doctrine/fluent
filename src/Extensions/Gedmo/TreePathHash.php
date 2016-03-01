@@ -46,8 +46,8 @@ class TreePathHash implements Buildable
      */
     public function build()
     {
-        $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'path_hash' => $this->fieldName
+        $this->classMetadata->mergeExtension($this->getExtensionName(), [
+            'path_hash' => $this->fieldName,
         ]);
     }
 

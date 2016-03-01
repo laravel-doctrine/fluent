@@ -45,10 +45,7 @@ class Tree implements Buildable, Extension
         });
 
         NestedSet::enable();
-        TreePath::enable();
-        TreePathSource::enable();
-        TreePathHash::enable();
-        TreeLockTime::enable();
+        MaterializedPath::enable();
     }
 
     /**

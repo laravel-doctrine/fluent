@@ -51,8 +51,8 @@ class TreeParent implements Buildable
      */
     public function build()
     {
-        $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'parent' => $this->fieldName
+        $this->classMetadata->mergeExtension($this->getExtensionName(), [
+            'parent' => $this->fieldName,
         ]);
     }
 

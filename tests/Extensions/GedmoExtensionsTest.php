@@ -222,7 +222,6 @@ class GedmoExtensionsTest extends PHPUnit_Framework_TestCase
             ['translatable'],
             ['treeLeft'],
             ['treeLevel'],
-            ['treeLockTime'],
             ['treeParent'],
             ['treePath'],
             ['treePathHash'],

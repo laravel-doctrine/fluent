@@ -54,8 +54,8 @@ class TreePathSource implements Buildable
             );
         }
 
-        $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'path_source' => $this->fieldName
+        $this->classMetadata->mergeExtension($this->getExtensionName(), [
+            'path_source' => $this->fieldName,
         ]);
     }
 

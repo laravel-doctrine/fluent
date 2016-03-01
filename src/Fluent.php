@@ -11,7 +11,6 @@ namespace LaravelDoctrine\Fluent;
  * @method void                              timestamps(string $createdAt = 'createdAt', string $updatedAt = 'updatedAt', string $type = 'dateTime')
  * @method Extensions\Gedmo\TranslationClass translationClass(string $class)
  * @method Extensions\Gedmo\Tree             tree(string $strategy = 'nested', $callback = null, $autoComplete = false)
- * @method Extensions\Gedmo\Tree             nestedSet($callback = null)
  * @method Extensions\Gedmo\Uploadable       uploadable()
  */
 interface Fluent extends Buildable

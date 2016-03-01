@@ -52,8 +52,8 @@ class TreeLevel implements Buildable
             throw new InvalidMappingException("Tree level field must be 'integer' in class - {$this->classMetadata->name}");
         }
 
-        $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'level' => $this->fieldName
+        $this->classMetadata->mergeExtension($this->getExtensionName(), [
+            'level' => $this->fieldName,
         ]);
     }
 
