@@ -68,6 +68,30 @@ class TreeParentTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function test_the_macro_sets_the_field_as_nullable()
+    {
+        TreeParent::enable();
+
+        $classMetadata = new ExtensibleClassMetadata('Foo');
+        $field = Field::make(new ClassMetadataBuilder($classMetadata), 'integer', $this->fieldName);
+        $field->treeParent();
+        $field->build();
+
+        $this->assertTrue($classMetadata->getFieldMapping($this->fieldName)['nullable']);
+    }
+
+    public function test_the_macro_sets_the_relation_as_nullable()
+    {
+        TreeParent::enable();
+
+        $classMetadata = new ExtensibleClassMetadata('Foo');
+        $relation = new ManyToOne(new ClassMetadataBuilder($classMetadata), new DefaultNamingStrategy(), $this->fieldName, 'Foo');
+        $relation->treeParent();
+        $relation->build();
+
+        $this->assertTrue($relation->getJoinColumn()->isNullable());
+    }
+
     public function test_can_mark_a_field_as_parent()
     {
         $this->getExtension()->build();

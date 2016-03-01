@@ -38,10 +38,14 @@ class TreeParent implements Buildable
     public static function enable()
     {
         Field::macro(self::MACRO_METHOD, function (Field $field) {
+            $field->nullable();
+
             return new static($field->getClassMetadata(), $field->getName());
         });
 
         ManyToOne::macro(self::MACRO_METHOD, function (ManyToOne $relation) {
+            $relation->nullable();
+
             return new static($relation->getClassMetadata(), $relation->getRelation());
         });
     }
