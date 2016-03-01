@@ -108,7 +108,7 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension
     {
         $this->defaults();
 
-        $this->getClassMetadata()->mergeExtension($this->getExtensionName(), $this->getValues());
+        parent::build();
 
         foreach ($this->getQueued() as $queued) {
             $queued->build();

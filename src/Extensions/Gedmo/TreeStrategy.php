@@ -78,6 +78,14 @@ abstract class TreeStrategy implements Buildable, Extension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function build()
+    {
+        $this->getClassMetadata()->mergeExtension($this->getExtensionName(), $this->getValues());
+    }
+
+    /**
      * Return the name of the actual extension.
      *
      * @return string

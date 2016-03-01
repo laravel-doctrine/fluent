@@ -107,14 +107,14 @@ class TreeTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_delegates_on_a_closure_table_buildable()
     {
-    	$materializedPath = $this->extension->asClosureTable();
+    	$materializedPath = $this->extension->asClosureTable("Foo");
 
         $this->assertInstanceOf(ClosureTable::class, $materializedPath);
     }
 
     public function test_it_builds_the_delegated_closure_table_on_build()
     {
-    	$this->extension->asClosureTable();
+    	$this->extension->asClosureTable("Foo");
         $this->extension->build();
 
         $this->assertEquals('closure', $this->classMetadata->getExtension($this->getExtensionName())['strategy']);

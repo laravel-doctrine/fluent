@@ -2,26 +2,28 @@
 
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
-use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
+use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
 use LaravelDoctrine\Fluent\Buildable;
-use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Fluent;
 
-class ClosureTable implements Buildable
+class ClosureTable extends TreeStrategy implements Buildable
 {
     /**
-     * @var Fluent
+     * @var string
      */
-    private $builder;
+    private $closureClass;
 
     /**
      * ClosureTable constructor.
      *
      * @param Fluent $builder
+     * @param string $class
      */
-    public function __construct(Fluent $builder)
+    public function __construct(Fluent $builder, $class)
     {
-        $this->builder = $builder;
+        parent::__construct($builder);
+
+        $this->closureClass = $class;
     }
 
     /**
@@ -29,19 +31,20 @@ class ClosureTable implements Buildable
      */
     public function build()
     {
-        /** @var ExtensibleClassMetadata $classMetadata */
-        $classMetadata = $this->builder->getBuilder()->getClassMetadata();
+        $this->builder->entity()->setRepositoryClass(ClosureTreeRepository::class);
 
-        $classMetadata->appendExtension($this->getExtensionName(), [
-            'strategy' => 'closure',
-        ]);
+        parent::build();
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    protected function getExtensionName()
+    protected function getValues()
     {
-        return TreeDriver::EXTENSION_NAME;
+        return array_merge(parent::getValues(), [
+            'strategy' => 'closure',
+            'closure'  => $this->closureClass,
+        ]);
     }
+
 }

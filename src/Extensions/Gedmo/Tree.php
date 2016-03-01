@@ -46,6 +46,7 @@ class Tree implements Buildable, Extension
 
         NestedSet::enable();
         MaterializedPath::enable();
+        ClosureTable::enable();
     }
 
     /**
@@ -76,11 +77,14 @@ class Tree implements Buildable, Extension
      * See {@link https://coderwall.com/p/lixing/closure-tables-for-browsing-trees-in-sql} for more
      * information on closure table trees.
      *
+     * @param string $class The class that represents the ClosureTable. You may extend Gedmo's mapped superclass
+     *                      for easier usage. {@see Gedmo\Tree\Entity\MappedSuperclass\AbstractClosure}
+     *
      * @return ClosureTable
      */
-    public function asClosureTable()
+    public function asClosureTable($class)
     {
-        return $this->strategy(new ClosureTable($this->builder));
+        return $this->strategy(new ClosureTable($this->builder, $class));
     }
 
     /**
