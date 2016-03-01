@@ -4,7 +4,6 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
-use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Extension;
 
 class MaterializedPath extends TreeStrategy implements Buildable, Extension
@@ -12,7 +11,7 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension
     use Queueable;
 
     /**
-     * @var string
+     * @var null|TreePath
      */
     private $path;
 
@@ -51,6 +50,8 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension
      */
     public static function enable()
     {
+        parent::enable();
+
         TreePath::enable();
         TreePathHash::enable();
         TreePathSource::enable();
