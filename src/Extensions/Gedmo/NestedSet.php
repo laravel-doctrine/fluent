@@ -101,9 +101,7 @@ class NestedSet extends TreeStrategy implements Buildable, Extension
 
         $this->builder->entity()->setRepositoryClass(NestedTreeRepository::class);
 
-        /** @var ExtensibleClassMetadata $classMetadata */
-        $classMetadata = $this->builder->getBuilder()->getClassMetadata();
-        $classMetadata->mergeExtension($this->getExtensionName(), $this->getValues());
+        $this->getClassMetadata()->mergeExtension($this->getExtensionName(), $this->getValues());
     }
 
     /**
