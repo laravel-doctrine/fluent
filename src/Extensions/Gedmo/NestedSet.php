@@ -5,9 +5,10 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 use Gedmo\Exception\InvalidMappingException;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class NestedSet extends TreeStrategy implements Buildable, Extension
+class NestedSet extends TreeStrategy implements Buildable, Extension, Delay
 {
     const MACRO_METHOD = 'nestedSet';
 

@@ -3,12 +3,15 @@
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class MaterializedPath extends TreeStrategy implements Buildable, Extension
+class MaterializedPath extends TreeStrategy implements Buildable, Extension, Delay
 {
-    use Queueable;
+    use Queueable {
+        build as buildQueue;
+    }
 
     /**
      * @var null|TreePath
@@ -110,9 +113,7 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension
 
         parent::build();
 
-        foreach ($this->getQueued() as $queued) {
-            $queued->build();
-        }
+        $this->buildQueue();
     }
 
     /**
@@ -122,15 +123,17 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension
      */
     private function defaults()
     {
-        if (!$this->path) {
+        $config = $this->getClassMetadata()->getExtension($this->getExtensionName());
+
+        if (!$this->path && !isset($config['path'])) {
             $this->path();
         }
 
-        if (!$this->parent) {
+        if (!$this->parent && !isset($config['parent'])) {
             $this->parent();
         }
 
-        if (!$this->source) {
+        if (!$this->source && !isset($config['path_source'])) {
             $this->pathSource();
         }
     }

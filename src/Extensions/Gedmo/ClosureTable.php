@@ -4,9 +4,10 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Fluent;
 
-class ClosureTable extends TreeStrategy implements Buildable
+class ClosureTable extends TreeStrategy implements Buildable, Delay
 {
     /**
      * @var string
