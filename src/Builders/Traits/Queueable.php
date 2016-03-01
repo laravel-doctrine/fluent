@@ -36,14 +36,18 @@ trait Queueable
      */
     public function build()
     {
-        /** @var Buildable[] $queued */
-        $queued = $this->getQueued();
+        /** @var Buildable[] $delayed */
+        $delayed = [];
 
-        usort($queued, function (Buildable $buildable) {
-            return $buildable instanceof Delay ? 1 : 0;
-        });
+        foreach ($this->getQueued() as $buildable) {
+            if ($buildable instanceof Delay) {
+                $delayed[] = $buildable;
+            } else {
+                $buildable->build();
+            }
+        }
 
-        foreach ($queued as $buildable) {
+        foreach ($delayed as $buildable) {
             $buildable->build();
         }
     }
