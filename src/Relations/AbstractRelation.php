@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
+use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 
 /**
  * @method $this orphanRemoval()

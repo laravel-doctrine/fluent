@@ -40,7 +40,7 @@ abstract class TreeStrategy implements Buildable, Extension
     public static function enable()
     {
         TreeLevel::enable();
-        TreeParent::enable();
+        TreeSelfReference::enableParent();
     }
 
     /**

@@ -33,7 +33,7 @@ class NestedSet extends TreeStrategy implements Buildable, Extension, Delay
 
         TreeLeft::enable();
         TreeRight::enable();
-        TreeRoot::enable();
+        TreeSelfReference::enableRoot();
     }
 
     /**
