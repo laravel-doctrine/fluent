@@ -163,6 +163,13 @@ class MaterializedPathTest extends PHPUnit_Framework_TestCase
         $this->assertExtensionKeyEquals('activate_locking', false);
     }
 
+    public function test_the_path_is_forced_to_nullable()
+    {
+    	$this->tree->path('someField')->build();
+        $this->builder->build();
+
+        $this->assertTrue($this->classMetadata->fieldMappings['someField']['nullable']);
+    }
 
     /**
      * Assert that the resulting build matches exactly with the given array.
