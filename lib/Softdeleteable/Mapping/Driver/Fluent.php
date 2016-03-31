@@ -6,7 +6,7 @@ use Gedmo\FluentExtension;
 
 class Fluent extends FluentExtension
 {
-    const EXTENSION_NAME = 'Softdeleteable';
+    const EXTENSION_NAME = 'softDeleteable';
 
     /**
      * @return string
