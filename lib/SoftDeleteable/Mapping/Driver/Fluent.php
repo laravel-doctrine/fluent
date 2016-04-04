@@ -1,6 +1,6 @@
 <?php
 
-namespace Gedmo\Softdeleteable\Mapping\Driver;
+namespace Gedmo\SoftDeleteable\Mapping\Driver;
 
 use Gedmo\FluentExtension;
 

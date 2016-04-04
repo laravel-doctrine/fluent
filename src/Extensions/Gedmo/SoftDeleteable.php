@@ -2,14 +2,14 @@
 
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
-use Gedmo\Softdeleteable\Mapping\Driver\Fluent as FluentDriver;
+use Gedmo\SoftDeleteable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class Softdeleteable implements Buildable, Extension
+class SoftDeleteable implements Buildable, Extension
 {
     const MACRO_METHOD = 'softDelete';
 

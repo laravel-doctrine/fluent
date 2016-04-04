@@ -7,7 +7,7 @@ namespace LaravelDoctrine\Fluent;
  *
  * Extensions:
  * @method void                              loggable(string $logEntry = null)
- * @method Extensions\Gedmo\Softdeleteable   softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')
+ * @method Extensions\Gedmo\SoftDeleteable   softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')
  * @method void                              timestamps(string $createdAt = 'createdAt', string $updatedAt = 'updatedAt', string $type = 'dateTime')
  * @method Extensions\Gedmo\TranslationClass translationClass(string $class)
  * @method Extensions\Gedmo\Tree             tree(callable $callback = null)

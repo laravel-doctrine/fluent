@@ -37,7 +37,7 @@ class GedmoExtensions
         Gedmo\IpTraceable::class,
         Gedmo\Loggable::class,
         Gedmo\Sluggable::class,
-        Gedmo\Softdeleteable::class,
+        Gedmo\SoftDeleteable::class,
         Gedmo\Sortable::class,
         Gedmo\Timestampable::class,
         Gedmo\Translatable::class,

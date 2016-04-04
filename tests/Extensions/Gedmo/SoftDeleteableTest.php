@@ -6,13 +6,13 @@ use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
-use Gedmo\Softdeleteable\Mapping\Driver\Fluent as SoftdeleteableDriver;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Softdeleteable;
+use Gedmo\SoftDeleteable\Mapping\Driver\Fluent as SoftDeleteableDriver;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\SoftDeleteable;
 
 /**
  * @mixin \PHPUnit_Framework_TestCase
  */
-class SoftdeleteableTest extends \PHPUnit_Framework_TestCase
+class SoftDeleteableTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var string
@@ -25,7 +25,7 @@ class SoftdeleteableTest extends \PHPUnit_Framework_TestCase
     protected $classMetadata;
 
     /**
-     * @var Softdeleteable
+     * @var SoftDeleteable
      */
     private $extension;
 
@@ -33,30 +33,30 @@ class SoftdeleteableTest extends \PHPUnit_Framework_TestCase
     {
         $this->fieldName     = 'deletedAt';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
-        $this->extension     = new Softdeleteable($this->classMetadata, $this->fieldName);
+        $this->extension     = new SoftDeleteable($this->classMetadata, $this->fieldName);
     }
 
     public function test_it_should_add_itself_as_a_field_macro()
     {
-        Softdeleteable::enable();
+        SoftDeleteable::enable();
 
         $field = Field::make(new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')), 'string', $this->fieldName);
 
         $this->assertInstanceOf(
-            Softdeleteable::class,
-            call_user_func([$field, Softdeleteable::MACRO_METHOD])
+            SoftDeleteable::class,
+            call_user_func([$field, SoftDeleteable::MACRO_METHOD])
         );
     }
 
     public function test_it_should_make_itself_a_builder_macro()
     {
-        Softdeleteable::enable();
+        SoftDeleteable::enable();
 
         $builder = new Builder($cmb = new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')));
 
         $this->assertInstanceOf(
-            Softdeleteable::class,
-            call_user_func([$builder, Softdeleteable::MACRO_METHOD], 'deletedAt')
+            SoftDeleteable::class,
+            call_user_func([$builder, SoftDeleteable::MACRO_METHOD], 'deletedAt')
         );
     }
 
@@ -98,7 +98,7 @@ class SoftdeleteableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Softdeleteable
+     * @return SoftDeleteable
      */
     protected function getExtension()
     {
