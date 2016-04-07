@@ -22,7 +22,8 @@ trait ManyTo
                 $column->getReferenceColumn(),
                 $column->isNullable(),
                 $column->isUnique(),
-                $column->getOnDelete()
+                $column->getOnDelete(),
+                $column->getColumnDefinition()
             );
         }
 
@@ -36,6 +37,7 @@ trait ManyTo
      * @param bool|false  $nullable
      * @param bool|false  $unique
      * @param string|null $onDelete
+     * @param string|null $columnDefinition
      *
      * @return $this
      */
@@ -45,7 +47,8 @@ trait ManyTo
         $referenceColumn = null,
         $nullable = false,
         $unique = false,
-        $onDelete = null
+        $onDelete = null,
+        $columnDefinition = null
     ) {
         $joinColumn = new JoinColumn(
             $this->getNamingStrategy(),
@@ -54,7 +57,8 @@ trait ManyTo
             $referenceColumn,
             $nullable,
             $unique,
-            $onDelete
+            $onDelete,
+            $columnDefinition
         );
 
         $this->pushJoinColumn($joinColumn);
