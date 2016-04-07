@@ -34,13 +34,16 @@ class MapperSet
     public function getMapperFor($className)
     {
         if (!$this->hasMapperFor($className)) {
-            throw new MappingException(
-                "Class [$className] does not have a mapping configuration. " .
-                "Make sure you create a Mapping class that extends either " .
-                EntityMapping::class . ", " . EmbeddableMapping::class . " or " . MappedSuperClassMapping::class . ". " .
-                "If you are using inheritance mapping, remember to create mappings for " .
-                "every child of the inheritance tree."
-            );
+            throw new MappingException(sprintf(
+                "Class [%s] does not have a mapping configuration. " .
+                "Make sure you create a Mapping class that extends either %s, %s or %s. " .
+                "If you are using inheritance mapping, remember to create mappings " .
+                "for every child of the inheritance tree.",
+                $className,
+                EntityMapping::class,
+                EmbeddableMapping::class,
+                MappedSuperClassMapping::class
+            ));
         }
 
         return $this->mappers[$className];

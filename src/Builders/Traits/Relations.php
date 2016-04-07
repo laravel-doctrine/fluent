@@ -13,11 +13,7 @@ use LaravelDoctrine\Fluent\Relations\Relation;
 trait Relations
 {
     /**
-     * @param string        $entity
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return OneToOne
+     * {@inheritdoc}
      */
     public function hasOne($entity, $field = null, callable $callback = null)
     {
@@ -27,11 +23,7 @@ trait Relations
     }
 
     /**
-     * @param string        $entity
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return OneToOne
+     * {@inheritdoc}
      */
     public function oneToOne($entity, $field = null, callable $callback = null)
     {
@@ -47,11 +39,7 @@ trait Relations
     }
 
     /**
-     * @param string        $entity
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return ManyToOne
+     * {@inheritdoc}
      */
     public function belongsTo($entity, $field = null, callable $callback = null)
     {
@@ -59,11 +47,7 @@ trait Relations
     }
 
     /**
-     * @param string        $entity
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return ManyToOne
+     * {@inheritdoc}
      */
     public function manyToOne($entity, $field = null, callable $callback = null)
     {
@@ -79,11 +63,7 @@ trait Relations
     }
 
     /**
-     * @param string        $entity
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return OneToMany
+     * {@inheritdoc}
      */
     public function hasMany($entity, $field = null, callable $callback = null)
     {
@@ -91,11 +71,7 @@ trait Relations
     }
 
     /**
-     * @param string        $entity
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return OneToMany
+     * {@inheritdoc}
      */
     public function oneToMany($entity, $field = null, callable $callback = null)
     {
@@ -111,11 +87,7 @@ trait Relations
     }
 
     /**
-     * @param string        $entity
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return ManyToMany
+     * {@inheritdoc}
      */
     public function belongsToMany($entity, $field = null, callable $callback = null)
     {
@@ -123,11 +95,7 @@ trait Relations
     }
 
     /**
-     * @param string        $entity
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return ManyToMany
+     * {@inheritdoc}
      */
     public function manyToMany($entity, $field = null, callable $callback = null)
     {
@@ -143,12 +111,7 @@ trait Relations
     }
 
     /**
-     * Adds a custom relation to the entity.
-     *
-     * @param Relation      $relation
-     * @param callable|null $callback
-     *
-     * @return Relation
+     * {@inheritdoc}
      */
     public function addRelation(Relation $relation, callable $callback = null)
     {

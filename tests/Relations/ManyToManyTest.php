@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
+use Tests\Builders\IsMacroable;
 use Tests\Relations\Traits\Indexable;
 use Tests\Relations\Traits\NonPrimary;
 use Tests\Relations\Traits\Orderable;
@@ -14,7 +15,7 @@ use Tests\Relations\Traits\Owning;
 
 class ManyToManyTest extends RelationTestCase
 {
-    use Indexable, Orderable, Owning, Ownable, NonPrimary;
+    use Indexable, Orderable, Owning, Ownable, NonPrimary, IsMacroable;
 
     /**
      * @var ManyToMany
@@ -202,5 +203,15 @@ class ManyToManyTest extends RelationTestCase
         $this->relation->addJoinColumn('children');
 
         $this->assertCount(1, $this->relation->getJoinColumns());
+    }
+
+    /**
+     * Get the builder under test.
+     *
+     * @return Macroable
+     */
+    protected function getMacroableBuilder()
+    {
+        return $this->relation;
     }
 }

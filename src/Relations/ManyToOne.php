@@ -5,6 +5,9 @@ namespace LaravelDoctrine\Fluent\Relations;
 use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
+use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\GedmoManyToOneHints;
 use LaravelDoctrine\Fluent\Relations\Traits\ManyTo;
 use LaravelDoctrine\Fluent\Relations\Traits\Owning;
 use LaravelDoctrine\Fluent\Relations\Traits\Primary;
@@ -23,7 +26,8 @@ use LaravelDoctrine\Fluent\Relations\Traits\Primary;
  */
 class ManyToOne extends AbstractRelation
 {
-    use ManyTo, Owning, Primary;
+    use ManyTo, Owning, Primary, Macroable, QueuesMacros;
+    use GedmoManyToOneHints;
 
     /**
      * @param ClassMetadataBuilder $builder
@@ -80,12 +84,16 @@ class ManyToOne extends AbstractRelation
      */
     public function __call($method, $args)
     {
+        if ($this->hasMacro($method)) {
+            return $this->queueMacro($method, $args);
+        }
+
         if (method_exists($this->getJoinColumn(), $method)) {
             call_user_func_array([$this->getJoinColumn(), $method], $args);
 
             return $this;
         }
 
-        parent::__call($method, $args);
+        return parent::__call($method, $args);
     }
 }

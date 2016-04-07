@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
+use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 
 /**
  * @method $this orphanRemoval()
@@ -124,6 +125,14 @@ abstract class AbstractRelation implements Relation
     }
 
     /**
+     * @return \Doctrine\ORM\Mapping\ClassMetadata|ExtensibleClassMetadata
+     */
+    public function getClassMetadata()
+    {
+        return $this->builder->getClassMetadata();
+    }
+
+    /**
      * @return AssociationBuilder
      */
     public function getAssociation()
@@ -135,7 +144,7 @@ abstract class AbstractRelation implements Relation
      * @param string      $usage
      * @param string|null $region
      *
-     * @return AssociationBuilder
+     * @return $this
      */
     public function cache($usage = 'READ_ONLY', $region = null)
     {
@@ -187,5 +196,13 @@ abstract class AbstractRelation implements Relation
     public function getNamingStrategy()
     {
         return $this->namingStrategy;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelation()
+    {
+        return $this->relation;
     }
 }

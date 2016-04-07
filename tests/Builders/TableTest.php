@@ -25,6 +25,27 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->table   = new Table($this->builder);
     }
 
+    public function test_can_be_constructed_with_a_name_string()
+    {
+    	new Table($this->builder, 'users');
+
+        $this->assertEquals('users', $this->builder->getClassMetadata()->getTableName());
+    }
+
+    public function test_it_ignores_empty_names()
+    {
+    	$this->assertNull($this->builder->getClassMetadata()->table);
+    }
+
+    public function test_it_can_be_constructed_with_a_callback_instead_of_a_name()
+    {
+    	new Table($this->builder, function(Table $builder){
+             $builder->setName('crazy_logic');
+        });
+
+        $this->assertEquals('crazy_logic', $this->builder->getClassMetadata()->getTableName());
+    }
+
     public function test_can_set_name()
     {
         $this->table->setName('users');

@@ -5,10 +5,13 @@ namespace Tests\Builders;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\Entity;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use Tests\Stubs\Entities\StubEntity;
 
 class EntityTest extends \PHPUnit_Framework_TestCase
 {
+    use IsMacroable;
+    
     /**
      * @var ClassMetadataBuilder
      */
@@ -52,5 +55,22 @@ class EntityTest extends \PHPUnit_Framework_TestCase
         $this->entity->cacheable(ClassMetadataInfo::CACHE_USAGE_READ_WRITE, 'custom_region');
         $this->assertEquals(ClassMetadataInfo::CACHE_USAGE_READ_WRITE, $this->builder->getClassMetadata()->cache['usage']);
         $this->assertEquals('custom_region', $this->builder->getClassMetadata()->cache['region']);
+    }
+
+    public function test_builder_method_should_exist()
+    {
+        $this->setExpectedException(\InvalidArgumentException::class);
+
+        $this->entity->doesNotExist();
+    }
+
+    /**
+     * Get the builder under test.
+     *
+     * @return Macroable
+     */
+    protected function getMacroableBuilder()
+    {
+        return $this->entity;
     }
 }

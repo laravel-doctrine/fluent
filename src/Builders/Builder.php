@@ -4,11 +4,12 @@ namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\GedmoBuilderHints;
 use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
 
 /**
- * @method $this array($name, callable $callback = null)
+ * @method Field array($name, callable $callback = null)
  */
 class Builder extends AbstractBuilder implements Fluent
 {
@@ -16,38 +17,28 @@ class Builder extends AbstractBuilder implements Fluent
     use Traits\Dates;
     use Traits\Aliases;
     use Traits\Relations;
+    use Traits\Constraints;
     use Traits\Macroable;
     use Traits\Queueable;
+    use Traits\QueuesMacros;
+    use GedmoBuilderHints;
 
     /**
-     * @param string|callable $name
-     * @param callable|null   $callback
-     *
-     * @return Table
+     * {@inheritdoc}
      */
     public function table($name, callable $callback = null)
     {
         $this->disallowInEmbeddedClasses();
 
-        $table = new Table($this->builder);
+        $table = new Table($this->builder, $name);
 
-        if (is_callable($name)) {
-            $name($table);
-        } else {
-            $table->setName($name);
-        }
-
-        if (is_callable($callback)) {
-            $callback($table);
-        }
+        $this->callIfCallable($callback, $table);
 
         return $table;
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return Entity
+     * {@inheritdoc}
      */
     public function entity(callable $callback = null)
     {
@@ -55,34 +46,25 @@ class Builder extends AbstractBuilder implements Fluent
 
         $entity = new Entity($this->builder, $this->namingStrategy);
 
-        if (is_callable($callback)) {
-            $callback($entity);
-        }
+        $this->callIfCallable($callback, $entity);
 
         return $entity;
     }
 
     /**
-     * @param string        $type
-     * @param callable|null $callback
-     *
-     * @return Inheritance\Inheritance
+     * {@inheritdoc}
      */
     public function inheritance($type, callable $callback = null)
     {
         $inheritance = Inheritance\InheritanceFactory::create($type, $this->builder);
 
-        if (is_callable($callback)) {
-            $callback($inheritance);
-        }
+        $this->callIfCallable($callback, $inheritance);
 
         return $inheritance;
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return Inheritance\Inheritance
+     * {@inheritdoc}
      */
     public function singleTableInheritance(callable $callback = null)
     {
@@ -90,9 +72,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return Inheritance\Inheritance
+     * {@inheritdoc}
      */
     public function joinedTableInheritance(callable $callback = null)
     {
@@ -100,65 +80,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param array|string $columns
-     *
-     * @return Index
-     */
-    public function index($columns)
-    {
-        return $this->constraint(
-            Index::class,
-            is_array($columns) ? $columns : func_get_args()
-        );
-    }
-
-    /**
-     * @param array|string $fields
-     *
-     * @return Primary
-     */
-    public function primary($fields)
-    {
-        return $this->constraint(
-            Primary::class,
-            is_array($fields) ? $fields : func_get_args()
-        );
-    }
-
-    /**
-     * @param array|string $columns
-     *
-     * @return UniqueConstraint
-     */
-    public function unique($columns)
-    {
-        return $this->constraint(
-            UniqueConstraint::class,
-            is_array($columns) ? $columns : func_get_args()
-        );
-    }
-
-    /**
-     * @param string $class
-     * @param array  $columns
-     *
-     * @return mixed
-     */
-    protected function constraint($class, array $columns)
-    {
-        $constraint = new $class($this->builder, $columns);
-
-        $this->queue($constraint);
-
-        return $constraint;
-    }
-
-    /**
-     * @param string        $embeddable
-     * @param string|null   $field
-     * @param callable|null $callback
-     *
-     * @return Embedded
+     * {@inheritdoc}
      */
     public function embed($embeddable, $field = null, callable $callback = null)
     {
@@ -175,10 +97,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param string   $name
-     * @param callable $callback
-     *
-     * @return Overrides\Override
+     * {@inheritdoc}
      */
     public function override($name, callable $callback)
     {
@@ -195,9 +114,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return LifecycleEvents
+     * {@inheritdoc}
      */
     public function events(callable $callback = null)
     {
@@ -209,7 +126,7 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function isEmbeddedClass()
     {
@@ -241,15 +158,14 @@ class Builder extends AbstractBuilder implements Fluent
         }
 
         if ($this->hasMacro($method)) {
-            return $this->callMacro($method, $params);
+            return $this->queueMacro($method, $params);
         }
 
         throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
     }
 
     /**
-     * @param  string         $message
-     * @throws LogicException
+     * {@inheritdoc}
      */
     protected function disallowInEmbeddedClasses($message = "")
     {

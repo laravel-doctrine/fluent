@@ -154,9 +154,9 @@ class GeneratedValue implements Buildable
      */
     private function customize($name, $initial, $size)
     {
-        $this->name    = $name    ?: $this->name;
+        $this->name    = $name ?: $this->name;
         $this->initial = $initial ?: $this->initial;
-        $this->size    = $size    ?: $this->size;
+        $this->size    = $size ?: $this->size;
     }
 
     /**

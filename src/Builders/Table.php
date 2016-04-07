@@ -2,8 +2,25 @@
 
 namespace LaravelDoctrine\Fluent\Builders;
 
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+
 class Table extends AbstractBuilder
 {
+    /**
+     * @param ClassMetadataBuilder $builder
+     * @param string|callable|null $name
+     */
+    public function __construct(ClassMetadataBuilder $builder, $name = null)
+    {
+        parent::__construct($builder);
+
+        if (is_callable($name)) {
+            $name($this);
+        } else {
+            $this->setName($name);
+        }
+    }
+
     /**
      * @param string $name
      *

@@ -3,9 +3,14 @@
 namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
+use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
+use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 
 class Entity extends AbstractBuilder
 {
+    use Macroable, Queueable, QueuesMacros;
+
     /**
      * @param string $class
      *
@@ -49,5 +54,20 @@ class Entity extends AbstractBuilder
         $meta->enableCache(compact('usage', $region === null ?: 'region'));
 
         return $this;
+    }
+
+    /**
+     * @param string $method
+     * @param array  $params
+     *
+     * @return mixed
+     */
+    public function __call($method, $params)
+    {
+        if ($this->hasMacro($method)) {
+            return $this->queueMacro($method, $params);
+        }
+
+        throw new \InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
     }
 }

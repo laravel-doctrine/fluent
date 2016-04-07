@@ -4,105 +4,123 @@ namespace Tests\Builders\Traits;
 
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Delay;
+use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
+use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 
+/**
+ * @covers \LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros
+ */
 class QueueableTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var QueueableClass
+     */
+    private $queueable;
+
+    protected function setUp()
+    {
+        $this->queueable = new QueueableClass();
+    }
+
     public function test_can_queue_buildables()
     {
-        $builder = new QueueableClass;
-        $builder->queue(new BuildableClass);
-        $builder->queue(new BuildableClass);
+        $this->queueable->addToQueue(\Mockery::mock(Buildable::class));
+        $this->queueable->addToQueue(\Mockery::mock(Buildable::class));
 
-        $this->assertCount(2, $builder->getQueued());
+        $this->assertCount(2, $this->queueable->getQueued());
     }
 
     public function test_can_queue_and_callback_buildables()
     {
-        $builder = new QueueableClass;
+        $buildable = \Mockery::mock(Buildable::class, ['callMe' => true]);
+        $buildable->shouldReceive('callMe')->once();
 
-        $called = 0;
-        $builder->callbackAndQueue(new BuildableClass, function ($buildable) use (&$called) {
-            $this->assertInstanceOf(Buildable::class, $buildable);
-            $called++;
+        $this->queueable->callbackAndQueue($buildable, function ($buildable) {
+            $buildable->callMe();
         });
 
-        $builder->callbackAndQueue(new BuildableClass, function ($buildable) use (&$called) {
-            $this->assertInstanceOf(Buildable::class, $buildable);
-            $called++;
-        });
-
-        $this->assertEquals(2, $called);
-        $this->assertCount(2, $builder->getQueued());
+        $this->assertCount(1, $this->queueable->getQueued());
     }
 
     public function test_it_should_build_the_queued_buildables()
     {
-        $buildable = new BuildableClass;
+        /** @var Buildable|\Mockery\Mock $buildable */
+        $buildable = \Mockery::mock(Buildable::class);
+        /** @var Buildable|\Mockery\Mock $buildable2 */
+        $buildable2 = \Mockery::mock(Buildable::class);
 
-        $builder = new QueueableClass;
-        $builder->queue($buildable);
-        $builder->queue($buildable);
+        $buildable->shouldReceive('build')->once();
+        $buildable2->shouldReceive('build')->once();
 
-        $builder->build();
+        $this->queueable->addToQueue($buildable);
+        $this->queueable->addToQueue($buildable2);
 
-        $this->assertEquals(2, $buildable->getCalled());
+        $this->queueable->build();
     }
 
     public function test_it_should_build_the_delayed_queued_buildables()
     {
-        $buildable = new BuildableClass;
-        $delayed = new DelayedBuildableClass;
+        $buildable = new BuildableBeforeDelay();
+        /** @var Delay|Buildable|\Mockery\Mock $delayed */
+        $delayed = new DelayedClass();
 
-        $builder = new QueueableClass;
-        $builder->queue($buildable);
-        $builder->queue($delayed);
+        $this->queueable->addToQueue($buildable);
+        $this->queueable->addToQueue($delayed);
 
-        $builder->build();
+        $this->queueable->build();
+    }
 
-        $this->assertEquals(1, $buildable->getCalled());
-        $this->assertEquals(1, $delayed->getCalled());
+    public function test_macro_inception_doesnt_get_the_buildable_built_twice()
+    {
+        $mock = \Mockery::mock(Buildable::class);
+        $mock->shouldReceive('build')->once();
+
+        QueueableClass::macro('firstLevel', function() use ($mock) {
+            return $mock;
+        });
+
+        QueueableClass::macro('inception', function(QueueableClass $builder){
+            return $builder->firstLevel();
+        });
+
+        $this->queueable->inception();
+        $this->queueable->build();
     }
 }
 
 class QueueableClass
 {
-    use Queueable;
-}
+    use Queueable, Macroable, QueuesMacros;
 
-class BuildableClass implements Buildable
-{
-    /**
-     * @var int
-     */
-    protected $called;
-
-    /**
-     * @param int $called
-     */
-    public function __construct($called = 0)
+    public function addToQueue(Buildable $buildable)
     {
-        $this->called = $called;
+        $this->queue($buildable);
     }
 
-    /**
-     * Execute the build process
-     */
+    public function __call($name, $arguments)
+    {
+        if ($this->hasMacro($name)) {
+            return $this->queueMacro($name, $arguments);
+        }
+    }
+}
+
+class DelayedClass implements Buildable, Delay
+{
+    public static $expectation;
+
     public function build()
     {
-        $this->called++;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCalled()
-    {
-        return $this->called;
+        self::$expectation->wasCalled();
     }
 }
 
-
-class DelayedBuildableClass extends BuildableClass implements Delay
+class BuildableBeforeDelay implements Buildable
 {
+    public function build()
+    {
+        DelayedClass::$expectation = \Mockery::mock(['wasCalled' => true]);
+        DelayedClass::$expectation->shouldReceive('wasCalled')->once();
+    }
 }
