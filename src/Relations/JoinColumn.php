@@ -35,9 +35,8 @@ class JoinColumn
      * @var string|null
      */
     protected $onDelete = null;
-    
+
     /**
-     *
      * @var string|null
      */
     protected $columnDefinition = null;
@@ -216,9 +215,8 @@ class JoinColumn
 
         return $this;
     }
-    
+
     /**
-     * 
      * @return string|null
      */
     public function getColumnDefinition()
