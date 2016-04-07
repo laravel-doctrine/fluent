@@ -37,6 +37,11 @@ class JoinColumn
     protected $onDelete = null;
 
     /**
+     * @var string|null
+     */
+    protected $columnDefinition = null;
+
+    /**
      * @var NamingStrategy
      */
     protected $namingStrategy;
@@ -49,6 +54,7 @@ class JoinColumn
      * @param bool           $nullable
      * @param bool           $unique
      * @param string|null    $onDelete
+     * @param string|null    $columnDefinition
      */
     public function __construct(
         NamingStrategy $namingStrategy,
@@ -57,15 +63,17 @@ class JoinColumn
         $referenceColumn = null,
         $nullable = true,
         $unique = false,
-        $onDelete = null
+        $onDelete = null,
+        $columnDefinition = null
     ) {
+        $this->namingStrategy   = $namingStrategy;
+        $this->relation         = $relation;
         $this->joinColumn       = $joinColumn;
         $this->referenceColumn  = $referenceColumn;
-        $this->relation         = $relation;
-        $this->namingStrategy   = $namingStrategy;
         $this->nullable         = $nullable;
-        $this->onDelete         = $onDelete;
         $this->unique           = $unique;
+        $this->onDelete         = $onDelete;
+        $this->columnDefinition = $columnDefinition;
     }
 
     /**
@@ -206,5 +214,13 @@ class JoinColumn
         $this->onDelete = $onDelete;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getColumnDefinition()
+    {
+        return $this->columnDefinition;
     }
 }
