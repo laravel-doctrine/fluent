@@ -3,16 +3,23 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Gedmo\Exception\InvalidArgumentException;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use Gedmo\Sluggable\Mapping\Driver\Fluent as SluggableDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Sluggable;
+use Tests\Stubs\Entities\StubEntity;
 
 /**
  * @mixin \PHPUnit_Framework_TestCase
  */
 class SluggableTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ClassMetadataBuilder
+     */
+    private $classMetadataBuilder;
+
     /**
      * @var string
      */
@@ -30,18 +37,16 @@ class SluggableTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->fieldName     = 'slug';
-        $this->classMetadata = new ExtensibleClassMetadata('foo');
-        Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', 'slug')->build();
-
-        $this->extension     = new Sluggable($this->classMetadata, $this->fieldName, 'name');
+        $this->fieldName = 'slug';
+        $this->classMetadata = new ExtensibleClassMetadata(StubEntity::class);
+        $this->classMetadataBuilder = new ClassMetadataBuilder($this->classMetadata);
     }
 
     public function test_it_should_add_itself_as_a_field_macro()
     {
         Sluggable::enable();
 
-        $field = Field::make(new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')), 'string', $this->fieldName)->build();
+        $field = Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', $this->fieldName)->build();
 
         $this->assertInstanceOf(
             Sluggable::class,
@@ -55,13 +60,40 @@ class SluggableTest extends \PHPUnit_Framework_TestCase
 
         Sluggable::enable();
 
-        $field = Field::make(new ClassMetadataBuilder(new ExtensibleClassMetadata('Foo')), 'smallint', $this->fieldName)->build();
+        $field = Field::make($this->classMetadataBuilder, 'bigint', $this->fieldName);
         call_user_func([$field, Sluggable::MACRO_METHOD], 'name');
+        $field->build();
     }
 
+    public function test_it_queues_when_used_as_field_macro_so_that_the_field_gets_built_before_the_extension()
+    {
+    	Sluggable::enable();
+
+        $builder = new Builder($this->classMetadataBuilder);
+
+        $builder->string('title');
+        $builder->string('slug')->sluggable('title');
+
+        $builder->build();
+
+        $this->assertBuildResultIs([
+            'fields'      => ['title'],
+            'handlers'    => [],
+            'slug'        => $this->fieldName,
+            'style'       => 'default',
+            'dateFormat'  => 'Y-m-d-H:i',
+            'updatable'   => true,
+            'unique'      => true,
+            'unique_base' => null,
+            'separator'   => '-',
+            'prefix'      => '',
+            'suffix'      => ''
+        ]);
+    }
 
     public function test_it_should_add_sluggable_to_the_given_field()
     {
+        $this->classMetadataBuilder->addField('slug', 'string');
         $this->getExtension()->build();
 
         $this->assertBuildResultIs([
@@ -81,6 +113,8 @@ class SluggableTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_set_custom_settingss()
     {
+        $this->classMetadataBuilder->addField('slug', 'string');
+
         $this->getExtension()
              ->baseOn('custom')
              ->handlers('Handler')
@@ -146,7 +180,7 @@ class SluggableTest extends \PHPUnit_Framework_TestCase
      */
     protected function getExtension()
     {
-        return $this->extension;
+        return new Sluggable($this->classMetadata, $this->fieldName, 'name');
     }
 
     /**
