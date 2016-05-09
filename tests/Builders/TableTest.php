@@ -88,4 +88,12 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($table, $this->builder->getClassMetadata()->table);
     }
+
+    public function test_can_set_options_and_change_schema () {
+        $this->table->setOptions(['collate' => 'utf8mb4_unicode_ci']);
+        $this->table->schema('a_schema');
+
+        $this->assertEquals('a_schema', $this->builder->getClassMetadata()->getSchemaName());
+        $this->assertEquals(['collate' => 'utf8mb4_unicode_ci'], $this->builder->getClassMetadata()->table['options']);
+    }
 }
