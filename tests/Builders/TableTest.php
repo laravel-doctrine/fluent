@@ -120,4 +120,16 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('utf8mb4_unicode_ci', $this->builder->getClassMetadata()->table['options']['collate']);
     }
+
+    public function test_can_chain_collate_charset_schema() {
+        $this->table->collate('utf8mb4_unicode_ci')->charset('utf8mb4')->schema('a_schema');
+
+        $this->table->build();
+
+        $this->assertEquals('a_schema', $this->builder->getClassMetadata()->table['schema']);
+        $this->assertEquals([
+            'collate' => 'utf8mb4_unicode_ci',
+            'charset' => 'utf8mb4'
+        ], $this->builder->getClassMetadata()->table['options']);
+    }
 }
