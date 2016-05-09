@@ -44,4 +44,16 @@ class Table extends AbstractBuilder
 
         return $this;
     }
+
+    /**
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setOptions(array $options = [])
+    {
+        $this->builder->getClassMetadata()->setPrimaryTable(['options' => $options]);
+
+        return $this;
+    }
 }
