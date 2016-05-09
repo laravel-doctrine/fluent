@@ -34,6 +34,8 @@ class Builder extends AbstractBuilder implements Fluent
 
         $this->callIfCallable($callback, $table);
 
+        $table->build();
+
         return $table;
     }
 
