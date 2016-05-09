@@ -4,9 +4,14 @@ namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 
 class Table extends AbstractBuilder implements Buildable
 {
+    use Queueable {
+        build as buildQueued;
+    }
+
     /**
      * @var array
      */
