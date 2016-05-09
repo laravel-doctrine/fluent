@@ -3,9 +3,15 @@
 namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use LaravelDoctrine\Fluent\Buildable;
 
-class Table extends AbstractBuilder
+class Table extends AbstractBuilder implements Buildable
 {
+    /**
+     * @var array
+     */
+    protected $primaryTable = [];
+
     /**
      * @param ClassMetadataBuilder $builder
      * @param string|callable|null $name
@@ -40,7 +46,31 @@ class Table extends AbstractBuilder
      */
     public function schema($schema)
     {
-        $this->builder->getClassMetadata()->setPrimaryTable(['schema' => $schema]);
+        $this->primaryTable['schema'] = $schema;
+
+        return $this;
+    }
+
+    /**
+     * @param string $charset
+     *
+     * @return $this
+     */
+    public function charset($charset)
+    {
+        $this->option('charset', $charset);
+
+        return $this;
+    }
+
+    /**
+     * @param string $collate
+     *
+     * @return $this
+     */
+    public function collate($collate)
+    {
+        $this->option('collate', $collate);
 
         return $this;
     }
@@ -50,10 +80,31 @@ class Table extends AbstractBuilder
      *
      * @return $this
      */
-    public function setOptions(array $options = [])
+    public function options(array $options = [])
     {
-        $this->builder->getClassMetadata()->setPrimaryTable(['options' => $options]);
+        $this->primaryTable['options'] = $options;
 
         return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function option($name, $value)
+    {
+        $this->primaryTable['options'][$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Execute the build process
+     */
+    public function build()
+    {
+        $this->builder->getClassMetadata()->setPrimaryTable($this->primaryTable);
     }
 }

@@ -64,15 +64,19 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $this->table->schema('a_schema');
 
+        $this->table->build();
+
         $this->assertEquals('a_schema', $this->builder->getClassMetadata()->getSchemaName());
     }
 
     public function test_can_set_options()
     {
-        $this->table->setOptions([
+        $this->table->options([
             'collate' => 'utf8mb4_unicode_ci',
             'charset' => 'utf8mb4'
         ]);
+
+        $this->table->build();
 
         $this->assertEquals([
             'collate' => 'utf8mb4_unicode_ci',
@@ -83,15 +87,19 @@ class TableTest extends \PHPUnit_Framework_TestCase
     public function test_set_options_does_not_touch_other_data() {
         $table = $this->table->getClassMetadata()->table;
 
-        $this->table->setOptions(['collate' => 'utf8mb4_unicode_ci']);
+        $this->table->options(['collate' => 'utf8mb4_unicode_ci']);
         $table['options'] = ['collate' => 'utf8mb4_unicode_ci'];
+
+        $this->table->build();
 
         $this->assertEquals($table, $this->builder->getClassMetadata()->table);
     }
 
     public function test_can_set_options_and_change_schema () {
-        $this->table->setOptions(['collate' => 'utf8mb4_unicode_ci']);
+        $this->table->options(['collate' => 'utf8mb4_unicode_ci']);
         $this->table->schema('a_schema');
+
+        $this->table->build();
 
         $this->assertEquals('a_schema', $this->builder->getClassMetadata()->getSchemaName());
         $this->assertEquals(['collate' => 'utf8mb4_unicode_ci'], $this->builder->getClassMetadata()->table['options']);
