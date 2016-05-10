@@ -32,7 +32,7 @@ class Builder extends AbstractBuilder implements Fluent
 
         $table = new Table($this->builder, $name);
 
-        $this->callIfCallable($callback, $table);
+        $this->callbackAndQueue($table, $callback);
 
         return $table;
     }
