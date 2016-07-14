@@ -2,8 +2,10 @@
 
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
+use Gedmo\Exception\InvalidMappingException;
 use Gedmo\Translatable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 
@@ -37,8 +39,8 @@ class Locale implements Buildable
      */
     public static function enable()
     {
-        Field::macro(self::MACRO_METHOD, function (Field $field) {
-            return new static($field->getClassMetadata(), $field->getName());
+        Builder::macro(self::MACRO_METHOD, function (Builder $builder, $fieldName) {
+            return new static($builder->getClassMetadata(), $fieldName);
         });
     }
 
@@ -47,8 +49,14 @@ class Locale implements Buildable
      */
     public function build()
     {
+        if ($this->classMetadata->hasField($this->fieldName)) {
+            throw new InvalidMappingException(
+                "Locale field [{$this->fieldName}] should not be mapped as column property in entity - {$this->classMetadata->name}, since it makes no sense"
+            );
+        }
+
         $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'locale' => $this->fieldName
+            'locale' => $this->fieldName,
         ]);
     }
 

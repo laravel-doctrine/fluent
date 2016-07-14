@@ -213,7 +213,6 @@ class GedmoExtensionsTest extends PHPUnit_Framework_TestCase
         return [
             ['blameable'],
             ['ipTraceable'],
-            ['locale'],
             ['sluggable'],
             ['softDelete'],
             ['sortableGroup'],
@@ -245,6 +244,7 @@ class GedmoExtensionsTest extends PHPUnit_Framework_TestCase
             ['translationClass'],
             ['tree'],
             ['uploadable'],
+            ['locale'],
         ];
     }
 
