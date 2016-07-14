@@ -64,10 +64,19 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_fail_when_trying_to_use_a_mapped_field_as_locale()
     {
+        $this->setExpectedException(InvalidMappingException::class);
         $this->builder->string('language');
         $this->builder->locale('language');
 
+        $this->builder->build();
+    }
+
+    public function test_it_should_fail_when_trying_to_use_a_mapped_field_as_locale_even_if_its_mapped_afterwards()
+    {
         $this->setExpectedException(InvalidMappingException::class);
+        $this->builder->locale('language');
+        $this->builder->string('language');
+
         $this->builder->build();
     }
 

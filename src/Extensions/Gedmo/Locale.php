@@ -6,10 +6,11 @@ use Gedmo\Exception\InvalidMappingException;
 use Gedmo\Translatable\Mapping\Driver\Fluent as FluentDriver;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
-use LaravelDoctrine\Fluent\Builders\Field;
+use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
+use LaravelDoctrine\Fluent\Extensions\Extension;
 
-class Locale implements Buildable
+class Locale implements Buildable, Extension, Delay
 {
     const MACRO_METHOD = 'locale';
 
