@@ -7,7 +7,6 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
  *
  * @method Blameable      blameable()
  * @method IpTraceable    ipTraceable()
- * @method void           locale()
  * @method Sluggable      sluggable(mixed $fields)
  * @method SoftDeleteable softDelete()
  * @method void           sortableGroup()

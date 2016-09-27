@@ -11,6 +11,7 @@ namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
  * @method TranslationClass translationClass(string $class)
  * @method Tree             tree(callable $callback = null)
  * @method Uploadable       uploadable()
+ * @method void             locale(string $fieldName)
  */
 trait GedmoBuilderHints
 {

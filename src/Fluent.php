@@ -12,6 +12,7 @@ namespace LaravelDoctrine\Fluent;
  * @method Extensions\Gedmo\TranslationClass translationClass(string $class)
  * @method Extensions\Gedmo\Tree             tree(callable $callback = null)
  * @method Extensions\Gedmo\Uploadable       uploadable()
+ * @method                                   locale(string $fieldName)
  */
 interface Fluent extends Buildable
 {

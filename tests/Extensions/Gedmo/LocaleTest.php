@@ -3,11 +3,11 @@
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use LaravelDoctrine\Fluent\Builders\Field;
+use Gedmo\Exception\InvalidMappingException;
+use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Locale;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\Translatable;
 
 /**
  * @mixin \PHPUnit_Framework_TestCase
@@ -25,30 +25,31 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
     protected $classMetadata;
 
     /**
-     * @var Translatable
+     * @var Locale
      */
-    private $extension;
+    protected $extension;
+
+    /**
+     * @var Builder
+     */
+    protected $builder;
 
     protected function setUp()
     {
+        Locale::enable();
+
         $this->fieldName     = 'locale';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
-        Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', 'locale')->build();
+        $this->builder       = new Builder(new ClassMetadataBuilder($this->classMetadata));
 
         $this->extension = new Locale($this->classMetadata, $this->fieldName);
     }
 
-    public function test_it_should_add_itself_as_a_field_macro()
+    public function test_it_should_add_itself_as_a_builder_macro()
     {
-        Locale::enable();
-
-        $field = Field::make(new ClassMetadataBuilder(
-            new ExtensibleClassMetadata('Foo')), 'string', $this->fieldName
-        )->build();
-
         $this->assertInstanceOf(
             Locale::class,
-            call_user_func([$field, Locale::MACRO_METHOD])
+            call_user_func([$this->builder, Locale::MACRO_METHOD], 'language')
         );
     }
 
@@ -57,9 +58,28 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
         $this->getExtension()->build();
 
         $this->assertBuildResultIs([
-            'locale' => 'locale',
+            'locale' => $this->fieldName,
         ]);
     }
+
+    public function test_it_should_fail_when_trying_to_use_a_mapped_field_as_locale()
+    {
+        $this->setExpectedException(InvalidMappingException::class);
+        $this->builder->string('language');
+        $this->builder->locale('language');
+
+        $this->builder->build();
+    }
+
+    public function test_it_should_fail_when_trying_to_use_a_mapped_field_as_locale_even_if_its_mapped_afterwards()
+    {
+        $this->setExpectedException(InvalidMappingException::class);
+        $this->builder->locale('language');
+        $this->builder->string('language');
+
+        $this->builder->build();
+    }
+
 
     /**
      * Assert that the resulting build matches exactly with the given array.
