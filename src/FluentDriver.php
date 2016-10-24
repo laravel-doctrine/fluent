@@ -18,7 +18,7 @@ class FluentDriver implements MappingDriver
     protected $mappers;
 
     /**
-     * @type callable
+     * @var callable
      */
     protected $fluentFactory;
 
@@ -26,16 +26,26 @@ class FluentDriver implements MappingDriver
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param string[] $mappings
+     * @param string[]|null $mappings
+     * @param string[]|null $paths
+     *
+     * @throws \Doctrine\ORM\Mapping\MappingException
      */
-    public function __construct(array $mappings = [])
+    public function __construct($mappings = null, $paths = null)
     {
         $this->fluentFactory = function (ClassMetadata $metadata) {
             return new Builder(new ClassMetadataBuilder($metadata));
         };
 
         $this->mappers = new MapperSet();
-        $this->addMappings($mappings);
+
+        if ($mappings !== null) {
+            $this->addMappings($mappings);
+        }
+
+        if ($paths !== null) {
+            $this->addPaths($paths);
+        }
     }
 
     /**
@@ -55,7 +65,8 @@ class FluentDriver implements MappingDriver
      * Gets the names of all mapped classes known to this driver.
      *
      * @throws MappingException
-     * @return string[]         The names of all mapped classes known to this driver.
+     *
+     * @return string[] The names of all mapped classes known to this driver.
      */
     public function getAllClassNames()
     {
@@ -73,7 +84,7 @@ class FluentDriver implements MappingDriver
     public function isTransient($className)
     {
         return
-            ! $this->mappers->hasMapperFor($className) ||
+            !$this->mappers->hasMapperFor($className) ||
             $this->mappers->getMapperFor($className)->isTransient();
     }
 
@@ -87,10 +98,10 @@ class FluentDriver implements MappingDriver
                 throw new InvalidArgumentException("Mapping class [{$class}] does not exist");
             }
 
-            $mapping = new $class;
+            $mapping = new $class();
 
             if (!$mapping instanceof Mapping) {
-                throw new InvalidArgumentException("Mapping class [{$class}] should implement " . Mapping::class);
+                throw new InvalidArgumentException("Mapping class [{$class}] should implement ".Mapping::class);
             }
 
             $this->addMapping($mapping);
@@ -101,7 +112,6 @@ class FluentDriver implements MappingDriver
      * @param Mapping $mapping
      *
      * @throws MappingException
-     * @return void
      */
     public function addMapping(Mapping $mapping)
     {
@@ -117,6 +127,45 @@ class FluentDriver implements MappingDriver
     }
 
     /**
+     * Add mappings from an array of folders.
+     *
+     * @param string[] $paths
+     *
+     * @throws MappingException
+     */
+    public function addPaths($paths)
+    {
+        $includedFiles = [];
+        foreach ($paths as $path) {
+            if (!is_dir($path)) {
+                throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
+            }
+
+            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::LEAVES_ONLY);
+
+            foreach ($iterator as $file) {
+                if ($file->getBasename('.php') == $file->getBasename()) {
+                    continue;
+                }
+
+                $sourceFile = realpath($file->getPathName());
+                require_once $sourceFile;
+                $includedFiles[] = $sourceFile;
+            }
+        }
+
+        $declared = get_declared_classes();
+
+        foreach ($declared as $className) {
+            $rc = new \ReflectionClass($className);
+            $sourceFile = $rc->getFileName();
+            if (in_array($sourceFile, $includedFiles) && !$this->mappers->hasMapperFor($className)) {
+                $this->addMapping(new $className());
+            }
+        }
+    }
+
+    /**
      * Override the default Fluent factory method with a custom one.
      * Use this to implement your own Fluent builder.
      * The method will receive a ClassMetadata object as its only argument.
@@ -129,7 +178,8 @@ class FluentDriver implements MappingDriver
     }
 
     /**
-     * @param  ClassMetadata $metadata
+     * @param ClassMetadata $metadata
+     *
      * @return Fluent
      */
     protected function getFluent(ClassMetadata $metadata)
