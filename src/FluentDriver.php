@@ -135,15 +135,13 @@ class FluentDriver implements MappingDriver
      */
     public function addPaths($paths)
     {
+        $includedFiles = [];
         foreach ($paths as $path) {
             if (!is_dir($path)) {
                 throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
             }
 
-            $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($path),
-                \RecursiveIteratorIterator::LEAVES_ONLY
-            );
+            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::LEAVES_ONLY);
 
             foreach ($iterator as $file) {
                 if ($file->getBasename('.php') == $file->getBasename()) {
@@ -151,76 +149,20 @@ class FluentDriver implements MappingDriver
                 }
 
                 $sourceFile = realpath($file->getPathName());
-                $className = $this->getClassFromFile($sourceFile);
+                require_once $sourceFile;
+                $includedFiles[] = $sourceFile;
+            }
+        }
+
+        $declared = get_declared_classes();
+
+        foreach ($declared as $className) {
+            $rc = new \ReflectionClass($className);
+            $sourceFile = $rc->getFileName();
+            if (in_array($sourceFile, $includedFiles) && !$this->mappers->hasMapperFor($className)) {
                 $this->addMapping(new $className());
             }
         }
-    }
-
-    /**
-     * Get the FQN of a class from a source file.
-     *
-     * @param $pathToFile
-     *
-     * @return string
-     */
-    private function getClassFromFile($pathToFile)
-    {
-        //http://jarretbyrne.com/2015/06/197/
-        //Grab the contents of the file
-        $contents = file_get_contents($pathToFile);
-
-        //Start with a blank namespace and class
-        $namespace = $class = '';
-
-        //Set helper values to know that we have found the namespace/class token and need to collect the string values after them
-        $getting_namespace = $getting_class = false;
-
-        //Go through each token and evaluate it as necessary
-        foreach (token_get_all($contents) as $token) {
-
-            //If this token is the namespace declaring, then flag that the next tokens will be the namespace name
-            if (is_array($token) && $token[0] == T_NAMESPACE) {
-                $getting_namespace = true;
-            }
-
-            //If this token is the class declaring, then flag that the next tokens will be the class name
-            if (is_array($token) && $token[0] == T_CLASS) {
-                $getting_class = true;
-            }
-
-            //While we're grabbing the namespace name...
-            if ($getting_namespace === true) {
-
-                //If the token is a string or the namespace separator...
-                if (is_array($token) && in_array($token[0], [T_STRING, T_NS_SEPARATOR])) {
-
-                    //Append the token's value to the name of the namespace
-                    $namespace .= $token[1];
-                } elseif ($token === ';') {
-
-                    //If the token is the semicolon, then we're done with the namespace declaration
-                    $getting_namespace = false;
-                }
-            }
-
-            //While we're grabbing the class name...
-            if ($getting_class === true) {
-
-                //If the token is a string, it's the name of the class
-                if (is_array($token) && $token[0] == T_STRING) {
-
-                    //Store the token's value as the class name
-                    $class = $token[1];
-
-                    //Got what we need, stope here
-                    break;
-                }
-            }
-        }
-
-        //Build the fully-qualified class name and return it
-        return $namespace ? $namespace.'\\'.$class : $class;
     }
 
     /**
