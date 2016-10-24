@@ -31,7 +31,7 @@ class FluentDriver implements MappingDriver
      *
      * @throws \Doctrine\ORM\Mapping\MappingException
      */
-    public function __construct($mappings, $paths)
+    public function __construct($mappings = null, $paths = null)
     {
         $this->fluentFactory = function (ClassMetadata $metadata) {
             return new Builder(new ClassMetadataBuilder($metadata));
