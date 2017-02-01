@@ -9,11 +9,7 @@ use LaravelDoctrine\Fluent\Builders\Field;
 trait Fields
 {
     /**
-     * @param string        $type
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function field($type, $name, callable $callback = null)
     {
@@ -25,10 +21,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function string($name, callable $callback = null)
     {
@@ -36,10 +29,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function text($name, callable $callback = null)
     {
@@ -47,10 +37,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function integer($name, callable $callback = null)
     {
@@ -58,10 +45,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function smallInteger($name, callable $callback = null)
     {
@@ -69,10 +53,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function bigInteger($name, callable $callback = null)
     {
@@ -80,10 +61,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function guid($name, callable $callback = null)
     {
@@ -91,10 +69,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function blob($name, callable $callback = null)
     {
@@ -102,10 +77,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function object($name, callable $callback = null)
     {
@@ -113,10 +85,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function float($name, callable $callback = null)
     {
@@ -124,10 +93,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function decimal($name, callable $callback = null)
     {
@@ -135,10 +101,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function boolean($name, callable $callback = null)
     {
@@ -146,10 +109,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function simpleArray($name, callable $callback = null)
     {
@@ -157,10 +117,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function jsonArray($name, callable $callback = null)
     {
@@ -168,10 +125,7 @@ trait Fields
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
+     * {@inheritdoc}
      */
     public function binary($name, callable $callback = null)
     {
