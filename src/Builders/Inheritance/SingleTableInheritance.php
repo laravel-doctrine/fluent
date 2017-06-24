@@ -5,7 +5,7 @@ namespace LaravelDoctrine\Fluent\Builders\Inheritance;
 class SingleTableInheritance extends AbstractInheritance
 {
     /**
-     * Set inheritance type
+     * Set inheritance type.
      */
     protected function setType()
     {

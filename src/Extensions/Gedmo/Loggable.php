@@ -27,7 +27,7 @@ class Loggable implements Buildable, Extension
     public function __construct(ExtensibleClassMetadata $classMetadata, $logEntry = null)
     {
         $this->classMetadata = $classMetadata;
-        $this->logEntry      = $logEntry;
+        $this->logEntry = $logEntry;
     }
 
     /**
@@ -44,7 +44,7 @@ class Loggable implements Buildable, Extension
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

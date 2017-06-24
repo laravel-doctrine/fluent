@@ -105,7 +105,7 @@ class MaterializedPath extends TreeStrategy implements Buildable, Extension, Del
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

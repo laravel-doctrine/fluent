@@ -67,10 +67,11 @@ trait Aliases
     }
 
     /**
-     * @param  string          $message
+     * @param string $message
+     *
      * @throws \LogicException
      */
-    abstract protected function disallowInEmbeddedClasses($message = "");
+    abstract protected function disallowInEmbeddedClasses($message = '');
 
     /**
      * @param string        $name

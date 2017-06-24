@@ -52,12 +52,12 @@ class TreePath implements Buildable
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName, $separator = self::DEFAULT_SEPARATOR)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
-        $this->separator     = $separator;
+        $this->fieldName = $fieldName;
+        $this->separator = $separator;
     }
 
     /**
-     * Enable TreePath
+     * Enable TreePath.
      */
     public static function enable()
     {
@@ -115,7 +115,7 @@ class TreePath implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

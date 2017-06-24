@@ -35,7 +35,7 @@ abstract class TreeStrategy implements Buildable, Extension
     }
 
     /**
-     * Enable extension
+     * Enable extension.
      */
     public static function enable()
     {
@@ -49,6 +49,7 @@ abstract class TreeStrategy implements Buildable, Extension
      * @param callable|null $callback
      *
      * @throws InvalidMappingException
+     *
      * @return $this
      */
     public function level($field = 'level', $type = 'integer', callable $callback = null)

@@ -38,7 +38,7 @@ class AssociationOverride implements Buildable
      */
     protected $relations = [
         ClassMetadataInfo::MANY_TO_ONE  => ManyToOne::class,
-        ClassMetadataInfo::MANY_TO_MANY => ManyToMany::class
+        ClassMetadataInfo::MANY_TO_MANY => ManyToMany::class,
     ];
 
     /**
@@ -53,14 +53,14 @@ class AssociationOverride implements Buildable
         $name,
         callable $callback
     ) {
-        $this->builder        = $builder;
-        $this->callback       = $callback;
-        $this->name           = $name;
+        $this->builder = $builder;
+        $this->callback = $callback;
+        $this->name = $name;
         $this->namingStrategy = $namingStrategy;
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
@@ -70,7 +70,7 @@ class AssociationOverride implements Buildable
         // so we can use it to easily generated a new mapping
         // array, without re-declaring the existing association
         $builder = $this->newClassMetadataBuilder();
-        $source  = $this->convertToMappingArray($this->builder);
+        $source = $this->convertToMappingArray($this->builder);
 
         if (!isset($this->relations[$source['type']])) {
             throw new InvalidArgumentException('Only ManyToMany and ManyToOne relations can be overridden');
@@ -92,7 +92,7 @@ class AssociationOverride implements Buildable
         $association = $association ?: $associationBuilder;
 
         if (!$association instanceof Relation) {
-            throw new InvalidArgumentException("The callback should return an instance of " . Relation::class);
+            throw new InvalidArgumentException('The callback should return an instance of '.Relation::class);
         }
 
         $association->build();
@@ -127,6 +127,7 @@ class AssociationOverride implements Buildable
      * @param ClassMetadataBuilder $builder
      *
      * @throws \Doctrine\ORM\Mapping\MappingException
+     *
      * @return array
      */
     protected function convertToMappingArray(ClassMetadataBuilder $builder)
@@ -194,6 +195,7 @@ class AssociationOverride implements Buildable
      * @param array $source
      *
      * @return mixed
+     *
      * @internal param $target
      * @internal param $source
      * @internal param $overrideMapping

@@ -22,7 +22,7 @@ abstract class FluentExtension implements Driver
 
     /**
      * Read extended metadata configuration for
-     * a single mapped class
+     * a single mapped class.
      *
      * @param ExtensibleClassMetadata $meta
      * @param array                   $config
@@ -31,7 +31,7 @@ abstract class FluentExtension implements Driver
      */
     public function readExtendedMetadata($meta, array &$config)
     {
-        if (! $meta instanceof ExtensibleClassMetadata) {
+        if (!$meta instanceof ExtensibleClassMetadata) {
             return;
         }
 
@@ -43,7 +43,8 @@ abstract class FluentExtension implements Driver
     /**
      * Make sure the original driver is Fluent.
      *
-     * @param  MappingDriver $driver
+     * @param MappingDriver $driver
+     *
      * @return void
      */
     public function setOriginalDriver($driver)
@@ -75,6 +76,6 @@ abstract class FluentExtension implements Driver
             }
         }
 
-        throw new \UnexpectedValueException("Fluent driver not found in the driver chain.");
+        throw new \UnexpectedValueException('Fluent driver not found in the driver chain.');
     }
 }

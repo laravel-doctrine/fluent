@@ -18,7 +18,7 @@ class FluentDriver implements MappingDriver
     protected $mappers;
 
     /**
-     * @type callable
+     * @var callable
      */
     protected $fluentFactory;
 
@@ -55,7 +55,8 @@ class FluentDriver implements MappingDriver
      * Gets the names of all mapped classes known to this driver.
      *
      * @throws MappingException
-     * @return string[]         The names of all mapped classes known to this driver.
+     *
+     * @return string[] The names of all mapped classes known to this driver.
      */
     public function getAllClassNames()
     {
@@ -73,7 +74,7 @@ class FluentDriver implements MappingDriver
     public function isTransient($className)
     {
         return
-            ! $this->mappers->hasMapperFor($className) ||
+            !$this->mappers->hasMapperFor($className) ||
             $this->mappers->getMapperFor($className)->isTransient();
     }
 
@@ -87,10 +88,10 @@ class FluentDriver implements MappingDriver
                 throw new InvalidArgumentException("Mapping class [{$class}] does not exist");
             }
 
-            $mapping = new $class;
+            $mapping = new $class();
 
             if (!$mapping instanceof Mapping) {
-                throw new InvalidArgumentException("Mapping class [{$class}] should implement " . Mapping::class);
+                throw new InvalidArgumentException("Mapping class [{$class}] should implement ".Mapping::class);
             }
 
             $this->addMapping($mapping);
@@ -101,6 +102,7 @@ class FluentDriver implements MappingDriver
      * @param Mapping $mapping
      *
      * @throws MappingException
+     *
      * @return void
      */
     public function addMapping(Mapping $mapping)
@@ -129,7 +131,8 @@ class FluentDriver implements MappingDriver
     }
 
     /**
-     * @param  ClassMetadata $metadata
+     * @param ClassMetadata $metadata
+     *
      * @return Fluent
      */
     protected function getFluent(ClassMetadata $metadata)

@@ -51,6 +51,7 @@ class GedmoExtensions
      * @param MappingDriverChain $driverChain
      *
      * @return void
+     *
      * @see \Gedmo\DoctrineExtensions::registerMappingIntoDriverChainORM
      */
     public static function registerAll(MappingDriverChain $driverChain)
@@ -64,6 +65,7 @@ class GedmoExtensions
      * @param MappingDriverChain $driverChain
      *
      * @return void
+     *
      * @see \Gedmo\DoctrineExtensions::registerAbstractMappingIntoDriverChainORM
      */
     public static function registerAbstract(MappingDriverChain $driverChain)

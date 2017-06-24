@@ -62,11 +62,11 @@ abstract class AbstractRelation implements Relation
      */
     public function __construct(ClassMetadataBuilder $builder, NamingStrategy $namingStrategy, $relation, $entity)
     {
-        $this->entity         = $entity;
-        $this->builder        = $builder;
-        $this->relation       = $relation;
+        $this->entity = $entity;
+        $this->builder = $builder;
+        $this->relation = $relation;
         $this->namingStrategy = $namingStrategy;
-        $this->association    = $this->createAssociation($builder, $relation, $entity);
+        $this->association = $this->createAssociation($builder, $relation, $entity);
     }
 
     /**
@@ -86,10 +86,10 @@ abstract class AbstractRelation implements Relation
     public function cascade(array $cascade)
     {
         foreach ($cascade as $name) {
-            $method = 'cascade' . Inflector::classify(strtolower($name));
+            $method = 'cascade'.Inflector::classify(strtolower($name));
 
             if (!method_exists($this->association, $method)) {
-                throw new InvalidArgumentException('Cascade [' . $name . '] does not exist');
+                throw new InvalidArgumentException('Cascade ['.$name.'] does not exist');
             }
 
             $this->{$method}();
@@ -105,10 +105,10 @@ abstract class AbstractRelation implements Relation
      */
     public function fetch($strategy)
     {
-        $method = 'fetch' . Inflector::classify(strtolower($strategy));
+        $method = 'fetch'.Inflector::classify(strtolower($strategy));
 
         if (!method_exists($this->association, $method)) {
-            throw new InvalidArgumentException('Fetch [' . $strategy . '] does not exist');
+            throw new InvalidArgumentException('Fetch ['.$strategy.'] does not exist');
         }
 
         $this->{$method}();
@@ -161,7 +161,7 @@ abstract class AbstractRelation implements Relation
     }
 
     /**
-     * Execute the build process for all queued buildables
+     * Execute the build process for all queued buildables.
      */
     public function build()
     {
@@ -171,12 +171,13 @@ abstract class AbstractRelation implements Relation
     }
 
     /**
-     * Magic call method works as a proxy for the Doctrine associationBuilder
+     * Magic call method works as a proxy for the Doctrine associationBuilder.
      *
      * @param string $method
      * @param array  $args
      *
      * @throws BadMethodCallException
+     *
      * @return $this
      */
     public function __call($method, $args)

@@ -14,7 +14,7 @@ class InheritanceFactory
         'JOINED'            => JoinedTableInheritance::class,
         'SINGLE_TABLE'      => SingleTableInheritance::class,
         Inheritance::SINGLE => SingleTableInheritance::class,
-        Inheritance::JOINED => JoinedTableInheritance::class
+        Inheritance::JOINED => JoinedTableInheritance::class,
     ];
 
     /**

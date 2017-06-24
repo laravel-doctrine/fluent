@@ -13,7 +13,7 @@ class Index implements Buildable
     protected $separator = '_';
 
     /**
-     * Suffix to be added to the index key name
+     * Suffix to be added to the index key name.
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class Index implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
@@ -90,6 +90,6 @@ class Index implements Buildable
     {
         $table = $this->builder->getClassMetadata()->getTableName();
 
-        return $table . $this->separator . implode($this->separator, $this->getColumns()) . $this->separator . $this->suffix;
+        return $table.$this->separator.implode($this->separator, $this->getColumns()).$this->separator.$this->suffix;
     }
 }

@@ -42,6 +42,7 @@ class NestedSet extends TreeStrategy implements Buildable, Extension, Delay
      * @param callable|null $callback
      *
      * @throws InvalidMappingException
+     *
      * @return $this
      */
     public function left($field = 'left', $type = 'integer', callable $callback = null)
@@ -61,6 +62,7 @@ class NestedSet extends TreeStrategy implements Buildable, Extension, Delay
      * @param callable|null $callback
      *
      * @throws InvalidMappingException
+     *
      * @return $this
      */
     public function right($field = 'right', $type = 'integer', callable $callback = null)
@@ -90,7 +92,7 @@ class NestedSet extends TreeStrategy implements Buildable, Extension, Delay
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

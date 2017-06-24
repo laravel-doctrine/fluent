@@ -33,8 +33,8 @@ class TreeSelfReference implements Buildable
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName, $key)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
-        $this->key           = $key;
+        $this->fieldName = $fieldName;
+        $this->key = $key;
     }
 
     /**
@@ -90,7 +90,7 @@ class TreeSelfReference implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

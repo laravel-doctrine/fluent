@@ -68,7 +68,7 @@ class Field implements Buildable
     protected $name;
 
     /**
-     * Protected constructor to force usage of factory method
+     * Protected constructor to force usage of factory method.
      *
      * @param FieldBuilder      $builder
      * @param ClassMetadataInfo $classMetadata
@@ -77,10 +77,10 @@ class Field implements Buildable
      */
     protected function __construct(FieldBuilder $builder, ClassMetadataInfo $classMetadata, Type $type, $name)
     {
-        $this->builder       = $builder;
+        $this->builder = $builder;
         $this->classMetadata = $classMetadata;
-        $this->type          = $type;
-        $this->name          = $name;
+        $this->type = $type;
+        $this->name = $name;
     }
 
     /**
@@ -89,6 +89,7 @@ class Field implements Buildable
      * @param string               $name
      *
      * @throws \Doctrine\DBAL\DBALException
+     *
      * @return Field
      */
     public static function make(ClassMetadataBuilder $builder, $type, $name)
@@ -264,12 +265,13 @@ class Field implements Buildable
     }
 
     /**
-     * Magic call method works as a proxy for the Doctrine FieldBuilder
+     * Magic call method works as a proxy for the Doctrine FieldBuilder.
      *
      * @param string $method
      * @param array  $args
      *
      * @throws BadMethodCallException
+     *
      * @return $this
      */
     public function __call($method, $args)

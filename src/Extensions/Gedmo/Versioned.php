@@ -32,7 +32,7 @@ class Versioned implements Buildable
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     public static function enable()
@@ -51,13 +51,13 @@ class Versioned implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
         $config = $this->classMetadata->getExtension(Fluent::EXTENSION_NAME);
 
-        $config['loggable']  = true;
+        $config['loggable'] = true;
         $config['versioned'] = array_unique(array_merge(
             isset($config['versioned']) ? $config['versioned'] : [],
             [

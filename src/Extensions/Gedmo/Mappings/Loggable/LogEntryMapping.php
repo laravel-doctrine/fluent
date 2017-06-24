@@ -25,9 +25,9 @@ class LogEntryMapping extends EntityMapping
         $builder->table('ext_log_entries');
         $builder->entity()->setRepositoryClass(LogEntryRepository::class);
 
-        $builder->index(["object_class"])->name("log_class_lookup_idx");
-        $builder->index(["logged_at"])->name("log_date_lookup_idx");
-        $builder->index(["username"])->name("log_user_lookup_idx");
-        $builder->index(["object_id", "object_class", "version"])->name("log_version_lookup_idx");
+        $builder->index(['object_class'])->name('log_class_lookup_idx');
+        $builder->index(['logged_at'])->name('log_date_lookup_idx');
+        $builder->index(['username'])->name('log_user_lookup_idx');
+        $builder->index(['object_id', 'object_class', 'version'])->name('log_version_lookup_idx');
     }
 }

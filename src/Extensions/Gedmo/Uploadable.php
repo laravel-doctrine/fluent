@@ -262,7 +262,7 @@ class Uploadable implements Buildable, Delay, Extension
     }
 
     /**
-     * Disallow specific types
+     * Disallow specific types.
      *
      * @param array|string ...$type can be an array or multiple string parameters
      *
@@ -279,7 +279,7 @@ class Uploadable implements Buildable, Delay, Extension
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
@@ -313,7 +313,7 @@ class Uploadable implements Buildable, Delay, Extension
                 'pathMethod'        => $this->pathMethod,
                 'callback'          => $this->callback,
                 'filenameGenerator' => $this->filenameGenerator,
-                'maxSize'           => (double)$this->maxSize,
+                'maxSize'           => (float) $this->maxSize,
                 'allowedTypes'      => $this->allowedTypes,
                 'disallowedTypes'   => $this->disallowedTypes,
             ]

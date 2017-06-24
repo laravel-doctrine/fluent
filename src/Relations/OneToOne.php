@@ -38,6 +38,7 @@ class OneToOne extends AbstractRelation
      * @param array  $args
      *
      * @throws \BadMethodCallException
+     *
      * @return $this
      */
     public function __call($method, $args)

@@ -25,7 +25,7 @@ class TranslationMapping extends EntityMapping
         $builder->table('ext_translations');
         $builder->entity()->setRepositoryClass(TranslationRepository::class);
 
-        $builder->index(["locale", "object_class", "foreign_key"])->name('translations_lookup_idx');
-        $builder->unique(["locale", "object_class", "field", "foreign_key"])->name('lookup_unique_idx');
+        $builder->index(['locale', 'object_class', 'foreign_key'])->name('translations_lookup_idx');
+        $builder->unique(['locale', 'object_class', 'field', 'foreign_key'])->name('lookup_unique_idx');
     }
 }

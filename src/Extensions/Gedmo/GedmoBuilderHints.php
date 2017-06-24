@@ -3,7 +3,7 @@
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 /**
- * Trait only meant for type hinting
+ * Trait only meant for type hinting.
  *
  * @method void             loggable(string $logEntry = null)
  * @method SoftDeleteable   softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')

@@ -75,7 +75,7 @@ class Sluggable implements Buildable, Extension
     protected $suffix = '';
 
     /**
-     * List of types which are valid for slug and sluggable fields
+     * List of types which are valid for slug and sluggable fields.
      *
      * @var array
      */
@@ -96,7 +96,7 @@ class Sluggable implements Buildable, Extension
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName, $fields)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
         $this->baseOn($fields);
     }
 
@@ -121,7 +121,7 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
@@ -129,13 +129,14 @@ class Sluggable implements Buildable, Extension
 
         $this->classMetadata->appendExtension($this->getExtensionName(), [
             'slugs' => [
-                $this->fieldName => $this->makeConfiguration()
-            ]
+                $this->fieldName => $this->makeConfiguration(),
+            ],
         ]);
     }
 
     /**
-     * @param  array|string $fields
+     * @param array|string $fields
+     *
      * @return Sluggable
      */
     public function baseOn($fields)
@@ -146,7 +147,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  array|string $handlers
+     * @param array|string $handlers
+     *
      * @return Sluggable
      */
     public function handlers($handlers)
@@ -157,7 +159,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  string    $style
+     * @param string $style
+     *
      * @return Sluggable
      */
     public function style($style)
@@ -168,7 +171,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  string    $dateFormat
+     * @param string $dateFormat
+     *
      * @return Sluggable
      */
     public function dateFormat($dateFormat)
@@ -179,7 +183,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  bool      $updatable
+     * @param bool $updatable
+     *
      * @return Sluggable
      */
     public function updatable($updatable = true)
@@ -190,7 +195,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  bool      $unique
+     * @param bool $unique
+     *
      * @return Sluggable
      */
     public function unique($unique = true)
@@ -201,7 +207,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  null      $unique_base
+     * @param null $unique_base
+     *
      * @return Sluggable
      */
     public function uniqueBase($unique_base)
@@ -212,7 +219,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  string    $separator
+     * @param string $separator
+     *
      * @return Sluggable
      */
     public function separator($separator)
@@ -223,7 +231,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  string    $prefix
+     * @param string $prefix
+     *
      * @return Sluggable
      */
     public function prefix($prefix)
@@ -234,7 +243,8 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * @param  string    $suffix
+     * @param string $suffix
+     *
      * @return Sluggable
      */
     public function suffix($suffix)
@@ -245,12 +255,13 @@ class Sluggable implements Buildable, Extension
     }
 
     /**
-     * Checks if $field type is valid as Sluggable field
+     * Checks if $field type is valid as Sluggable field.
      *
      * @param ClassMetadataInfo $meta
      * @param string            $field
      *
      * @throws InvalidArgumentException
+     *
      * @return bool
      */
     protected function isValidField(ClassMetadataInfo $meta, $field)
@@ -280,7 +291,7 @@ class Sluggable implements Buildable, Extension
             'unique_base' => $this->unique_base,
             'separator'   => $this->separator,
             'prefix'      => $this->prefix,
-            'suffix'      => $this->suffix
+            'suffix'      => $this->suffix,
         ];
     }
 }

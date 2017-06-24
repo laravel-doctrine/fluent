@@ -11,7 +11,7 @@ use LaravelDoctrine\Fluent\Mapping;
 class MapperSet
 {
     /**
-     * @type Mapper[]
+     * @var Mapper[]
      */
     protected $mappers = [];
 
@@ -29,16 +29,17 @@ class MapperSet
      * @param string $className
      *
      * @throws MappingException
+     *
      * @return Mapper
      */
     public function getMapperFor($className)
     {
         if (!$this->hasMapperFor($className)) {
             throw new MappingException(sprintf(
-                "Class [%s] does not have a mapping configuration. " .
-                "Make sure you create a Mapping class that extends either %s, %s or %s. " .
-                "If you are using inheritance mapping, remember to create mappings " .
-                "for every child of the inheritance tree.",
+                'Class [%s] does not have a mapping configuration. '.
+                'Make sure you create a Mapping class that extends either %s, %s or %s. '.
+                'If you are using inheritance mapping, remember to create mappings '.
+                'for every child of the inheritance tree.',
                 $className,
                 EntityMapping::class,
                 EmbeddableMapping::class,

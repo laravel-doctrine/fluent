@@ -30,11 +30,11 @@ class TreePathSource implements Buildable
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
-     * Enable TreePathSource
+     * Enable TreePathSource.
      */
     public static function enable()
     {
@@ -44,11 +44,11 @@ class TreePathSource implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
-        if (!(new Validator)->isValidFieldForPathSource($this->classMetadata, $this->fieldName)) {
+        if (!(new Validator())->isValidFieldForPathSource($this->classMetadata, $this->fieldName)) {
             throw new InvalidMappingException(
                 "Tree PathSource field - [{$this->fieldName}] type is not valid. It can be any of the integer variants, double, float or string in class - {$this->classMetadata->name}"
             );

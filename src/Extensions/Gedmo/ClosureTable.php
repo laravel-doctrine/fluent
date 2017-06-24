@@ -28,7 +28,7 @@ class ClosureTable extends TreeStrategy implements Buildable, Delay
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

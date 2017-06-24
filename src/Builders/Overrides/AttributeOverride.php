@@ -43,14 +43,14 @@ class AttributeOverride implements Buildable
         $name,
         callable $callback
     ) {
-        $this->builder        = $builder;
-        $this->callback       = $callback;
-        $this->name           = $name;
+        $this->builder = $builder;
+        $this->callback = $callback;
+        $this->name = $name;
         $this->namingStrategy = $namingStrategy;
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
@@ -77,7 +77,7 @@ class AttributeOverride implements Buildable
         $field = $field ?: $fieldBuilder;
 
         if (!$field instanceof Field) {
-            throw new InvalidArgumentException("The callback should return an instance of " . Field::class);
+            throw new InvalidArgumentException('The callback should return an instance of '.Field::class);
         }
 
         $field->build();
@@ -109,6 +109,7 @@ class AttributeOverride implements Buildable
      * @param ClassMetadataBuilder $builder
      *
      * @throws \Doctrine\ORM\Mapping\MappingException
+     *
      * @return array
      */
     protected function convertToMappingArray(ClassMetadataBuilder $builder)
@@ -130,7 +131,7 @@ class AttributeOverride implements Buildable
 
     /**
      * Merges the field mappings recursively, by keeping originals
-     * settings, but replacing and adding new once
+     * settings, but replacing and adding new once.
      *
      * @param array $source
      * @param array $target

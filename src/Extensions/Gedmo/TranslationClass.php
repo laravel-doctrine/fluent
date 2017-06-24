@@ -23,13 +23,14 @@ class TranslationClass implements Buildable
 
     /**
      * Locale constructor.
+     *
      * @param ExtensibleClassMetadata $classMetadata
      * @param string                  $class
      */
     public function __construct(ExtensibleClassMetadata $classMetadata, $class)
     {
         $this->classMetadata = $classMetadata;
-        $this->class         = $class;
+        $this->class = $class;
     }
 
     /**
@@ -43,12 +44,12 @@ class TranslationClass implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
         $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'translationClass' => $this->class
+            'translationClass' => $this->class,
         ]);
     }
 

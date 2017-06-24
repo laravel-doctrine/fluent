@@ -23,7 +23,7 @@ interface Inheritance
     const JOINED = ClassMetadataInfo::INHERITANCE_TYPE_JOINED;
 
     /**
-     * Add the discriminator column
+     * Add the discriminator column.
      *
      * @param string $column
      * @param string $type

@@ -46,7 +46,7 @@ class AssociationCache implements Buildable
      */
     public function __construct(ClassMetadata $metadata, $field, $usage = 'READ_ONLY', $region = null)
     {
-        $this->field    = $field;
+        $this->field = $field;
         $this->metadata = $metadata;
         $this->setRegion($region);
         $this->setUsage($usage);
@@ -64,6 +64,7 @@ class AssociationCache implements Buildable
      * @param string $usage
      *
      * @throws InvalidArgumentException
+     *
      * @return AssociationCache
      */
     public function setUsage($usage)
@@ -101,7 +102,7 @@ class AssociationCache implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
@@ -121,7 +122,7 @@ class AssociationCache implements Buildable
     {
         if (!in_array($usage, $usages)) {
             throw new InvalidArgumentException(
-                '[' . $usage . '] is not a valid cache usage. Available: ' . implode(', ', array_keys($this->usages))
+                '['.$usage.'] is not a valid cache usage. Available: '.implode(', ', array_keys($this->usages))
             );
         }
 

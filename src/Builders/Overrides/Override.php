@@ -37,14 +37,14 @@ class Override implements Buildable, Delay
      */
     public function __construct(ClassMetadataBuilder $builder, NamingStrategy $namingStrategy, $name, callable $callback)
     {
-        $this->builder        = $builder;
-        $this->callback       = $callback;
-        $this->name           = $name;
+        $this->builder = $builder;
+        $this->callback = $callback;
+        $this->name = $name;
         $this->namingStrategy = $namingStrategy;
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

@@ -26,13 +26,14 @@ class Locale implements Buildable, Extension, Delay
 
     /**
      * Locale constructor.
+     *
      * @param ExtensibleClassMetadata $classMetadata
      * @param string                  $fieldName
      */
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
@@ -46,7 +47,7 @@ class Locale implements Buildable, Extension, Delay
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

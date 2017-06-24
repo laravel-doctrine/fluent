@@ -30,11 +30,11 @@ class TreeLeft implements Buildable
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
-     * Enable TreeLeft
+     * Enable TreeLeft.
      */
     public static function enable()
     {
@@ -44,7 +44,7 @@ class TreeLeft implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

@@ -106,7 +106,7 @@ class Table extends AbstractBuilder implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

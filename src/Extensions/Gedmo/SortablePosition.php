@@ -28,7 +28,7 @@ class SortablePosition implements Buildable
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
@@ -52,12 +52,12 @@ class SortablePosition implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
         $this->classMetadata->appendExtension($this->getExtensionName(), [
-            'position' => $this->fieldName
+            'position' => $this->fieldName,
         ]);
     }
 }

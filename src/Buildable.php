@@ -5,7 +5,7 @@ namespace LaravelDoctrine\Fluent;
 interface Buildable
 {
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build();
 }

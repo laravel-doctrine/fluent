@@ -49,7 +49,7 @@ class GeneratedValue implements Buildable
      */
     public function __construct(FieldBuilder $builder, ClassMetadataInfo $classMetadata)
     {
-        $this->builder       = $builder;
+        $this->builder = $builder;
         $this->classMetadata = $classMetadata;
     }
 
@@ -133,7 +133,7 @@ class GeneratedValue implements Buildable
 
     /**
      * Tells Doctrine to use a custom Generator class to generate identifiers.
-     * The given class must extend \Doctrine\ORM\Id\AbstractIdGenerator
+     * The given class must extend \Doctrine\ORM\Id\AbstractIdGenerator.
      *
      * @param string $generatorClass
      *
@@ -141,7 +141,7 @@ class GeneratedValue implements Buildable
      */
     public function custom($generatorClass)
     {
-        $this->strategy  = 'CUSTOM';
+        $this->strategy = 'CUSTOM';
         $this->generator = $generatorClass;
 
         return $this;
@@ -154,13 +154,13 @@ class GeneratedValue implements Buildable
      */
     private function customize($name, $initial, $size)
     {
-        $this->name    = $name ?: $this->name;
+        $this->name = $name ?: $this->name;
         $this->initial = $initial ?: $this->initial;
-        $this->size    = $size ?: $this->size;
+        $this->size = $size ?: $this->size;
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

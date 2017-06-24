@@ -42,8 +42,8 @@ class UploadableFile implements Buildable
         $this->validateType($type);
 
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
-        $this->type          = "file{$type}Field";
+        $this->fieldName = $fieldName;
+        $this->type = "file{$type}Field";
     }
 
     /**
@@ -61,7 +61,7 @@ class UploadableFile implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
@@ -81,7 +81,7 @@ class UploadableFile implements Buildable
     {
         if (!in_array($type, self::$validTypes)) {
             throw new InvalidMappingException(
-                'Invalid uploadable field type reference. Must be one of: ' . implode(', ', self::$validTypes)
+                'Invalid uploadable field type reference. Must be one of: '.implode(', ', self::$validTypes)
             );
         }
     }

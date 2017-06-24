@@ -32,7 +32,7 @@ trait Queueable
     }
 
     /**
-     * Execute the build process for all queued buildables
+     * Execute the build process for all queued buildables.
      */
     public function build()
     {

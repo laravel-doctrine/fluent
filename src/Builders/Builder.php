@@ -161,13 +161,13 @@ class Builder extends AbstractBuilder implements Fluent
             return $this->queueMacro($method, $params);
         }
 
-        throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
+        throw new InvalidArgumentException('Fluent builder method ['.$method.'] does not exist');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function disallowInEmbeddedClasses($message = "")
+    protected function disallowInEmbeddedClasses($message = '')
     {
         if ($this->isEmbeddedClass()) {
             throw new LogicException($message);

@@ -40,7 +40,7 @@ class SoftDeleteable implements Buildable, Extension
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
@@ -54,7 +54,8 @@ class SoftDeleteable implements Buildable, Extension
     }
 
     /**
-     * @param  bool  $value
+     * @param bool $value
+     *
      * @return $this
      */
     public function timeAware($value = true)
@@ -70,7 +71,6 @@ class SoftDeleteable implements Buildable, Extension
     public static function enable()
     {
         Builder::macro(static::MACRO_METHOD, function (Builder $builder, $fieldName = 'deletedAt', $type = 'dateTime') {
-
             $builder->{$type}($fieldName)->nullable();
 
             return new static($builder->getClassMetadata(), $fieldName);
@@ -82,14 +82,14 @@ class SoftDeleteable implements Buildable, Extension
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
         $this->classMetadata->addExtension($this->getExtensionName(), [
             'softDeleteable' => true,
             'fieldName'      => $this->fieldName,
-            'timeAware'      => $this->timeAware
+            'timeAware'      => $this->timeAware,
         ]);
     }
 }

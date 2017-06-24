@@ -46,6 +46,7 @@ class Entity extends AbstractBuilder
      *                            for each entity, if none is provided.
      *
      * @return Entity
+     *
      * @see http://doctrine-orm.readthedocs.org/en/latest/reference/second-level-cache.html
      */
     public function cacheable($usage = ClassMetadataInfo::CACHE_USAGE_READ_ONLY, $region = null)
@@ -68,6 +69,6 @@ class Entity extends AbstractBuilder
             return $this->queueMacro($method, $params);
         }
 
-        throw new \InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
+        throw new \InvalidArgumentException('Fluent builder method ['.$method.'] does not exist');
     }
 }

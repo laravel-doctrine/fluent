@@ -30,7 +30,7 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * Enable extension
+     * Enable extension.
      */
     public static function enable()
     {
@@ -88,7 +88,7 @@ class Tree implements Buildable, Extension
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

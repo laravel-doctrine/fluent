@@ -3,7 +3,7 @@
 namespace LaravelDoctrine\Fluent\Extensions\Gedmo;
 
 /**
- * Trait only meant for type hinting
+ * Trait only meant for type hinting.
  *
  * @method Blameable      blameable()
  * @method IpTraceable    ipTraceable()

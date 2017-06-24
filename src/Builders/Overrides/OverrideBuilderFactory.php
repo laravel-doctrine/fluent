@@ -25,7 +25,7 @@ class OverrideBuilderFactory
             }
         }
 
-        throw new InvalidArgumentException('No attribute or association could be found for ' . $name);
+        throw new InvalidArgumentException('No attribute or association could be found for '.$name);
     }
 
     /**

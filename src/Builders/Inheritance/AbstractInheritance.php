@@ -25,12 +25,12 @@ abstract class AbstractInheritance implements Inheritance
     }
 
     /**
-     * Set inheritance type
+     * Set inheritance type.
      */
     abstract protected function setType();
 
     /**
-     * Add the discriminator column
+     * Add the discriminator column.
      *
      * @param string $column
      * @param string $type

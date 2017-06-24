@@ -30,11 +30,11 @@ class TreeRight implements Buildable
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
-     * Enable TreeRight
+     * Enable TreeRight.
      */
     public static function enable()
     {
@@ -44,11 +44,11 @@ class TreeRight implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
-        if (!(new Validator)->isValidField($this->classMetadata, $this->fieldName)) {
+        if (!(new Validator())->isValidField($this->classMetadata, $this->fieldName)) {
             throw new InvalidMappingException("Tree right field must be 'integer' in class - {$this->classMetadata->name}");
         }
 

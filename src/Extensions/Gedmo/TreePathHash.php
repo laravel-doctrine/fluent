@@ -28,11 +28,11 @@ class TreePathHash implements Buildable
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
-     * Enable TreePathHash
+     * Enable TreePathHash.
      */
     public static function enable()
     {
@@ -42,7 +42,7 @@ class TreePathHash implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

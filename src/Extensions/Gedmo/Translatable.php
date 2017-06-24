@@ -29,7 +29,7 @@ class Translatable implements Buildable, Extension
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
@@ -56,14 +56,14 @@ class Translatable implements Buildable, Extension
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
         $this->classMetadata->appendExtension($this->getExtensionName(), [
             'fields' => [
-                $this->fieldName
-            ]
+                $this->fieldName,
+            ],
         ]);
     }
 }

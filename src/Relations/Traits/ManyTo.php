@@ -12,7 +12,7 @@ trait ManyTo
     protected $joinColumns = [];
 
     /**
-     * Build the association
+     * Build the association.
      */
     public function build()
     {

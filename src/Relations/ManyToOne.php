@@ -74,12 +74,13 @@ class ManyToOne extends AbstractRelation
     }
 
     /**
-     * Magic call method works as a proxy for the Doctrine associationBuilder
+     * Magic call method works as a proxy for the Doctrine associationBuilder.
      *
      * @param string $method
      * @param array  $args
      *
      * @throws \BadMethodCallException
+     *
      * @return $this
      */
     public function __call($method, $args)

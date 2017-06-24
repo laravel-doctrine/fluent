@@ -13,7 +13,7 @@ trait Orderable
     public function orderBy($name, $order = 'ASC')
     {
         $this->getAssociation()->setOrderBy([
-            $name => $order
+            $name => $order,
         ]);
 
         return $this;

@@ -66,13 +66,13 @@ class JoinColumn
         $onDelete = null,
         $columnDefinition = null
     ) {
-        $this->namingStrategy   = $namingStrategy;
-        $this->relation         = $relation;
-        $this->joinColumn       = $joinColumn;
-        $this->referenceColumn  = $referenceColumn;
-        $this->nullable         = $nullable;
-        $this->unique           = $unique;
-        $this->onDelete         = $onDelete;
+        $this->namingStrategy = $namingStrategy;
+        $this->relation = $relation;
+        $this->joinColumn = $joinColumn;
+        $this->referenceColumn = $referenceColumn;
+        $this->nullable = $nullable;
+        $this->unique = $unique;
+        $this->onDelete = $onDelete;
         $this->columnDefinition = $columnDefinition;
     }
 

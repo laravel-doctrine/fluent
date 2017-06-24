@@ -46,7 +46,7 @@ abstract class AbstractTrackingExtension
     public function __construct(ExtensibleClassMetadata $classMetadata, $fieldName)
     {
         $this->classMetadata = $classMetadata;
-        $this->fieldName     = $fieldName;
+        $this->fieldName = $fieldName;
     }
 
     /**
@@ -77,7 +77,7 @@ abstract class AbstractTrackingExtension
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
@@ -87,7 +87,7 @@ abstract class AbstractTrackingExtension
         }
 
         if (is_array($this->trackedFields) && $this->value !== null) {
-            throw new InvalidMappingException("Extension does not support multiple value change-set detection yet.");
+            throw new InvalidMappingException('Extension does not support multiple value change-set detection yet.');
         }
 
         $this->classMetadata->appendExtension($this->getExtensionName(), [
@@ -106,9 +106,9 @@ abstract class AbstractTrackingExtension
      */
     protected function on($on, $fields = null, $value = null)
     {
-        $this->on            = $on;
+        $this->on = $on;
         $this->trackedFields = $fields;
-        $this->value         = $value;
+        $this->value = $value;
 
         return $this;
     }

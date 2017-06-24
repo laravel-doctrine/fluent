@@ -34,7 +34,7 @@ class Embedded extends AbstractBuilder implements Buildable
         parent::__construct($builder, $namingStrategy);
 
         $this->embeddable = $embeddable;
-        $this->relation   = $relation;
+        $this->relation = $relation;
     }
 
     /**
@@ -60,7 +60,7 @@ class Embedded extends AbstractBuilder implements Buildable
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {

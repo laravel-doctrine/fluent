@@ -24,11 +24,11 @@ class Primary implements Buildable
     public function __construct(ClassMetadataBuilder $builder, array $fields)
     {
         $this->builder = $builder;
-        $this->fields  = $fields;
+        $this->fields = $fields;
     }
 
     /**
-     * Execute the build process
+     * Execute the build process.
      */
     public function build()
     {
