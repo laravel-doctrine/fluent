@@ -128,6 +128,18 @@ class Builder extends AbstractBuilder implements Fluent
     /**
      * {@inheritdoc}
      */
+    public function listen(callable $callback = null)
+    {
+        $events = new EntityListeners($this->builder);
+
+        $this->callbackAndQueue($events, $callback);
+
+        return $events;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isEmbeddedClass()
     {
         return $this->builder->getClassMetadata()->isEmbeddedClass;
