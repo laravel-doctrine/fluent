@@ -64,34 +64,9 @@ class LifecycleEventsTest extends \PHPUnit_Framework_TestCase
         $this->doEventTest(Events::postLoad);
     }
 
-    public function test_load_class_metadata_event()
-    {
-        $this->doEventTest(Events::loadClassMetadata);
-    }
-
-    public function test_on_class_metadata_not_found_event()
-    {
-        $this->doEventTest(Events::onClassMetadataNotFound);
-    }
-
     public function test_pre_flush_event()
     {
         $this->doEventTest(Events::preFlush);
-    }
-
-    public function test_on_flush_event()
-    {
-        $this->doEventTest(Events::onFlush);
-    }
-
-    public function test_post_flush_event()
-    {
-        $this->doEventTest(Events::postFlush);
-    }
-
-    public function test_on_clear_event()
-    {
-        $this->doEventTest(Events::onClear);
     }
 
     public function test_fluent_builder_method_should_exist()

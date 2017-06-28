@@ -657,8 +657,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function test_events_can_be_configured_through_a_callable()
     {
         $this->fluent->events(function (LifecycleEvents $events) {
-            $events->onClear('swipeFloor');
-            $events->onFlush('cleanToilet');
+            $events->preFlush('swipeFloor');
+            $events->postRemove('cleanToilet');
         });
 
         foreach ($this->fluent->getQueued() as $buildable) {
@@ -666,11 +666,11 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue(
-            $this->fluent->getClassMetadata()->hasLifecycleCallbacks('onClear')
+            $this->fluent->getClassMetadata()->hasLifecycleCallbacks('preFlush')
         );
 
         $this->assertTrue(
-            $this->fluent->getClassMetadata()->hasLifecycleCallbacks('onFlush')
+            $this->fluent->getClassMetadata()->hasLifecycleCallbacks('postRemove')
         );
     }
 
