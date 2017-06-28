@@ -65,6 +65,7 @@ class EntityListeners implements Buildable
      * @param array  $args
      *
      * @throws InvalidArgumentException
+     *
      * @return LifecycleEvents
      */
     public function __call($event, $args)
@@ -75,7 +76,7 @@ class EntityListeners implements Buildable
             return call_user_func_array([$this, 'add'], $args);
         }
 
-        throw new InvalidArgumentException('Fluent builder method [' . $event . '] does not exist');
+        throw new InvalidArgumentException('Fluent builder method ['.$event.'] does not exist');
     }
 
     /**
@@ -89,7 +90,7 @@ class EntityListeners implements Buildable
     {
         $this->events[$event][] = [
             'class'  => $class,
-            'method' => $method ?: $event
+            'method' => $method ?: $event,
         ];
 
         return $this;
