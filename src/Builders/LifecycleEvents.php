@@ -55,6 +55,7 @@ class LifecycleEvents implements Buildable
      * @param array  $args
      *
      * @throws InvalidArgumentException
+     *
      * @return LifecycleEvents
      */
     public function __call($method, $args)
@@ -65,7 +66,7 @@ class LifecycleEvents implements Buildable
             return call_user_func_array([$this, 'add'], $args);
         }
 
-        throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
+        throw new InvalidArgumentException('Fluent builder method ['.$method.'] does not exist');
     }
 
     /**
