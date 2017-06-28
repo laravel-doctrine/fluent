@@ -4,6 +4,7 @@ namespace LaravelDoctrine\Fluent\Builders;
 
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Buildable;
 
 /**
@@ -14,12 +15,7 @@ use LaravelDoctrine\Fluent\Buildable;
  * @method LifecycleEvents preUpdate(string $method)
  * @method LifecycleEvents postUpdate(string $method)
  * @method LifecycleEvents postLoad(string $method)
- * @method LifecycleEvents loadClassMetadata(string $method)
- * @method LifecycleEvents onClassMetadataNotFound(string $method)
  * @method LifecycleEvents preFlush(string $method)
- * @method LifecycleEvents onFlush(string $method)
- * @method LifecycleEvents postFlush(string $method)
- * @method LifecycleEvents onClear(string $method)
  */
 class LifecycleEvents implements Buildable
 {
@@ -32,19 +28,14 @@ class LifecycleEvents implements Buildable
      * @var array
      */
     private $events = [
-        Events::preRemove               => [],
-        Events::postRemove              => [],
-        Events::prePersist              => [],
-        Events::postPersist             => [],
-        Events::preUpdate               => [],
-        Events::postUpdate              => [],
-        Events::postLoad                => [],
-        Events::loadClassMetadata       => [],
-        Events::onClassMetadataNotFound => [],
-        Events::preFlush                => [],
-        Events::onFlush                 => [],
-        Events::postFlush               => [],
-        Events::onClear                 => [],
+        Events::preRemove   => [],
+        Events::postRemove  => [],
+        Events::prePersist  => [],
+        Events::postPersist => [],
+        Events::preUpdate   => [],
+        Events::postUpdate  => [],
+        Events::postLoad    => [],
+        Events::preFlush    => [],
     ];
 
     /**
@@ -63,8 +54,7 @@ class LifecycleEvents implements Buildable
      * @param string $method
      * @param array  $args
      *
-     * @throws \InvalidArgumentException
-     *
+     * @throws InvalidArgumentException
      * @return LifecycleEvents
      */
     public function __call($method, $args)
@@ -75,7 +65,7 @@ class LifecycleEvents implements Buildable
             return call_user_func_array([$this, 'add'], $args);
         }
 
-        throw new \InvalidArgumentException('Fluent builder method ['.$method.'] does not exist');
+        throw new InvalidArgumentException('Fluent builder method [' . $method . '] does not exist');
     }
 
     /**
