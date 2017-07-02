@@ -16,6 +16,7 @@ use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Embedded;
+use LaravelDoctrine\Fluent\Builders\EntityListeners;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\Index;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
@@ -33,11 +34,12 @@ use LaravelDoctrine\Fluent\Relations\Relation;
 use LogicException;
 use Tests\FakeEntity;
 use Tests\Stubs\Embedabbles\StubEmbeddable;
+use Tests\Stubs\StubEntityListener;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
     use IsMacroable;
-    
+
     /**
      * @var ClassMetadataBuilder
      */
@@ -674,6 +676,50 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function test_can_add_entity_listener()
+    {
+        $entityListeners = $this->fluent->listen();
+
+        $this->assertInstanceOf(EntityListeners::class, $entityListeners);
+        $this->assertContains($entityListeners, $this->fluent->getQueued());
+    }
+
+    public function test_entity_listeners_can_be_configured_through_a_callable()
+    {
+        $this->fluent->listen(function (EntityListeners $events) {
+            $events->onFlush(StubEntityListener::class, 'swipeFloor');
+            $events->postFlush(StubEntityListener::class, 'cleanToilet');
+
+            // defaults to the event name as method
+            $events->onClear(StubEntityListener::class);
+        });
+
+        foreach ($this->fluent->getQueued() as $buildable) {
+            $buildable->build();
+        }
+
+        $this->assertEquals([
+            [
+                'class'  => StubEntityListener::class,
+                'method' => 'swipeFloor',
+            ]
+        ], $this->fluent->getClassMetadata()->entityListeners['onFlush']);
+
+        $this->assertEquals([
+            [
+                'class'  => StubEntityListener::class,
+                'method' => 'cleanToilet',
+            ]
+        ], $this->fluent->getClassMetadata()->entityListeners['postFlush']);
+
+        $this->assertEquals([
+            [
+                'class'  => StubEntityListener::class,
+                'method' => 'onClear',
+            ]
+        ], $this->fluent->getClassMetadata()->entityListeners['onClear']);
+    }
+
     public function test_can_override_an_attribute()
     {
         $this->fluent->string('name');
@@ -825,7 +871,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_buildable_objects_returned_from_macros_get_queued_and_built()
     {
-        Builder::macro('foo', function(){
+        Builder::macro('foo', function () {
             /** @var Buildable|\Mockery\Mock $buildable */
             $buildable = \Mockery::mock(Buildable::class);
             $buildable->shouldReceive('build')->once();

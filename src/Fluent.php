@@ -460,4 +460,11 @@ interface Fluent extends Buildable
      * @return Builders\LifecycleEvents
      */
     public function events(callable $callback = null);
+
+    /**
+     * @param callable|null $callback
+     *
+     * @return Builders\EntityListeners
+     */
+    public function listen(callable $callback = null);
 }
