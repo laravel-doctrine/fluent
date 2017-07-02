@@ -82,11 +82,11 @@ class Field implements Buildable
      */
     protected function __construct(FieldBuilder $fieldBuilder, ClassMetadataBuilder $builder, Type $type, $name)
     {
-        $this->fieldBuilder    = $fieldBuilder;
+        $this->fieldBuilder = $fieldBuilder;
         $this->metaDatabuilder = $builder;
-        $this->classMetadata   = $builder->getClassMetadata();
-        $this->type            = $type;
-        $this->name            = $name;
+        $this->classMetadata = $builder->getClassMetadata();
+        $this->type = $type;
+        $this->name = $name;
     }
 
     /**
@@ -95,6 +95,7 @@ class Field implements Buildable
      * @param string               $name
      *
      * @throws \Doctrine\DBAL\DBALException
+     *
      * @return Field
      */
     public static function make(ClassMetadataBuilder $builder, $type, $name)
@@ -240,7 +241,7 @@ class Field implements Buildable
     }
 
     /**
-     * @param null $name
+     * @param string|null $name
      *
      * @return Field
      */
@@ -297,6 +298,7 @@ class Field implements Buildable
      * @param array  $args
      *
      * @throws BadMethodCallException
+     *
      * @return $this
      */
     public function __call($method, $args)
