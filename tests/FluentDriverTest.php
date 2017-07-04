@@ -19,6 +19,7 @@ use Tests\Stubs\MappedSuperClasses\StubMappedSuperClass;
 use Tests\Stubs\Mappings\StubEmbeddableMapping;
 use Tests\Stubs\Mappings\StubEntityMapping;
 use Tests\Stubs\Mappings\StubMappedSuperClassMapping;
+use function LaravelDoctrine\Fluent\mappingsFrom;
 
 class FluentDriverTest extends \PHPUnit_Framework_TestCase
 {
@@ -228,6 +229,53 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
 
         $driver->getMappers()->addMapper('fake', new EntityMapper($mapping));
         $driver->loadMetadataForClass('fake', new ClassMetadataInfo('fake'));
+    }
+
+    /**
+     * This is not "only" a FluentDriver test.
+     * This tests the `mappingsFrom` function, in conjunction with the driver's ability
+     * to receive both Mapping class names or Mapping objects.
+     */
+    public function test_it_can_be_built_with_paths_using_the_provided_helper()
+    {
+        $driver = new FluentDriver(array_merge(
+            mappingsFrom([__DIR__ . '/Stubs/Mappings']),
+            [FakeClassMapping::class]
+        ));
+
+        $classNames = $driver->getAllClassNames();
+        $this->assertContains(StubEntity::class, $classNames);
+        $this->assertContains(StubEmbeddable::class, $classNames);
+        $this->assertContains(StubMappedSuperClass::class, $classNames);
+        $this->assertContains(FakeEntity::class, $classNames);
+
+        $driver->loadMetadataForClass(
+            StubEntity::class, new ClassMetadataInfo(StubEntity::class)
+        );
+        $this->assertInstanceOf(
+            EntityMapper::class, $driver->getMappers()->getMapperFor(StubEntity::class)
+        );
+
+        $driver->loadMetadataForClass(
+            StubEmbeddable::class, new ClassMetadataInfo(StubEmbeddable::class)
+        );
+        $this->assertInstanceOf(
+            EmbeddableMapper::class, $driver->getMappers()->getMapperFor(StubEmbeddable::class)
+        );
+
+        $driver->loadMetadataForClass(
+            StubMappedSuperClass::class, new ClassMetadataInfo(StubMappedSuperClass::class)
+        );
+        $this->assertInstanceOf(
+            MappedSuperClassMapper::class, $driver->getMappers()->getMapperFor(StubMappedSuperClass::class)
+        );
+
+        $driver->loadMetadataForClass(
+            FakeEntity::class, new ClassMetadataInfo(FakeEntity::class)
+        );
+        $this->assertInstanceOf(
+            EntityMapper::class, $driver->getMappers()->getMapperFor(FakeEntity::class)
+        );
     }
 }
 

@@ -23,10 +23,9 @@ class FluentDriver implements MappingDriver
     protected $fluentFactory;
 
     /**
-     * Initializes a new FileDriver that looks in the given path(s) for mapping
-     * documents and operates in the specified operating mode.
+     * Initializes a new FluentDriver that will load given Mapping classes / objects.
      *
-     * @param string[] $mappings
+     * @param string[]|Mapping[] $mappings
      */
     public function __construct(array $mappings = [])
     {
@@ -79,35 +78,31 @@ class FluentDriver implements MappingDriver
     }
 
     /**
-     * @param string[] $mappings
+     * Adds an array of mapping classes / objects to the driver.
+     *
+     * @param string[]|Mapping[] $mappings
+     * @throws MappingException
+     * @throws InvalidArgumentException
      */
     public function addMappings(array $mappings = [])
     {
-        foreach ($mappings as $class) {
-            if (!class_exists($class)) {
-                throw new InvalidArgumentException("Mapping class [{$class}] does not exist");
-            }
-
-            $mapping = new $class();
-
-            if (!$mapping instanceof Mapping) {
-                throw new InvalidArgumentException("Mapping class [{$class}] should implement ".Mapping::class);
-            }
-
+        foreach ($mappings as $mapping) {
             $this->addMapping($mapping);
         }
     }
 
     /**
-     * @param Mapping $mapping
+     * @param string|Mapping $mapping
      *
      * @throws MappingException
-     *
+     * @throws InvalidArgumentException
      * @return void
      */
-    public function addMapping(Mapping $mapping)
+    public function addMapping($mapping)
     {
-        $this->mappers->add($mapping);
+        $this->mappers->add($mapping instanceof Mapping ?
+            $mapping : $this->createMapping($mapping)
+        );
     }
 
     /**
@@ -138,5 +133,27 @@ class FluentDriver implements MappingDriver
     protected function getFluent(ClassMetadata $metadata)
     {
         return call_user_func($this->fluentFactory, $metadata);
+    }
+
+    /**
+     * Create a mapping object from a mapping class, assuming an empty constructor.
+     *
+     * @param  string $class
+     * @return Mapping
+     * @throws InvalidArgumentException
+     */
+    protected function createMapping($class)
+    {
+        if (!class_exists($class)) {
+            throw new InvalidArgumentException("Mapping class [{$class}] does not exist");
+        }
+
+        $mapping = new $class();
+
+        if (!$mapping instanceof Mapping) {
+            throw new InvalidArgumentException("Mapping class [{$class}] should implement ".Mapping::class);
+        }
+
+        return $mapping;
     }
 }
