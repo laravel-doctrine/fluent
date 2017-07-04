@@ -13,13 +13,15 @@ use RegexIterator;
 /**
  * Returns an array of Mapping objects found on the given paths.
  *
- * @param  string[] $paths
- * @param  string   $fileExtension
- * @return Mapping[]
+ * @param string[] $paths
+ * @param string   $fileExtension
  *
  * @throws MappingException
+ *
+ * @return Mapping[]
  */
-function mappingsFrom(array $paths, $fileExtension = '.php') {
+function mappingsFrom(array $paths, $fileExtension = '.php')
+{
     $includedFiles = [];
 
     foreach ($paths as $path) {

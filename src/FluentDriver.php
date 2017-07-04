@@ -81,6 +81,7 @@ class FluentDriver implements MappingDriver
      * Adds an array of mapping classes / objects to the driver.
      *
      * @param string[]|Mapping[] $mappings
+     *
      * @throws MappingException
      * @throws InvalidArgumentException
      */
@@ -96,6 +97,7 @@ class FluentDriver implements MappingDriver
      *
      * @throws MappingException
      * @throws InvalidArgumentException
+     *
      * @return void
      */
     public function addMapping($mapping)
@@ -138,9 +140,11 @@ class FluentDriver implements MappingDriver
     /**
      * Create a mapping object from a mapping class, assuming an empty constructor.
      *
-     * @param  string $class
-     * @return Mapping
+     * @param string $class
+     *
      * @throws InvalidArgumentException
+     *
+     * @return Mapping
      */
     protected function createMapping($class)
     {
