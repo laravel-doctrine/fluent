@@ -30,6 +30,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(StubEntity::class));
+        $this->builder->setTable('stub_entities');
 
         $this->field = Field::make($this->builder, 'string', 'name');
     }
@@ -46,6 +47,32 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->field->build();
 
         $this->assertTrue($this->builder->getClassMetadata()->getFieldMapping('name')['nullable']);
+    }
+
+    public function test_can_make_field_index()
+    {
+        $this->field->index();
+
+        $this->field->build();
+
+        $indexes = $this->builder->getClassMetadata()->table['indexes'];
+
+        $this->assertArrayHasKey('stub_entities_name_index', $indexes);
+        $this->assertCount(1, $indexes['stub_entities_name_index']['columns']);
+        $this->assertContains('name', $indexes['stub_entities_name_index']['columns']);
+    }
+
+    public function test_can_make_field_index_with_custom_name()
+    {
+        $this->field->index('index_name');
+
+        $this->field->build();
+
+        $indexes = $this->builder->getClassMetadata()->table['indexes'];
+
+        $this->assertArrayHasKey('index_name', $indexes);
+        $this->assertCount(1, $indexes['index_name']['columns']);
+        $this->assertContains('name', $indexes['index_name']['columns']);
     }
 
     public function test_can_set_column_name()

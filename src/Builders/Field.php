@@ -50,7 +50,12 @@ class Field implements Buildable
     /**
      * @var FieldBuilder
      */
-    protected $builder;
+    protected $fieldBuilder;
+
+    /**
+     * @var ClassMetadataBuilder
+     */
+    protected $metaDatabuilder;
 
     /**
      * @var ClassMetadataInfo
@@ -70,15 +75,16 @@ class Field implements Buildable
     /**
      * Protected constructor to force usage of factory method.
      *
-     * @param FieldBuilder      $builder
-     * @param ClassMetadataInfo $classMetadata
-     * @param Type              $type
-     * @param string            $name
+     * @param FieldBuilder         $fieldBuilder
+     * @param ClassMetadataBuilder $builder
+     * @param Type                 $type
+     * @param string               $name
      */
-    protected function __construct(FieldBuilder $builder, ClassMetadataInfo $classMetadata, Type $type, $name)
+    protected function __construct(FieldBuilder $fieldBuilder, ClassMetadataBuilder $builder, Type $type, $name)
     {
-        $this->builder = $builder;
-        $this->classMetadata = $classMetadata;
+        $this->fieldBuilder = $fieldBuilder;
+        $this->metaDatabuilder = $builder;
+        $this->classMetadata = $builder->getClassMetadata();
         $this->type = $type;
         $this->name = $name;
     }
@@ -98,7 +104,7 @@ class Field implements Buildable
 
         $field = $builder->createField($name, $type->getName());
 
-        return new static($field, $builder->getClassMetadata(), $type, $name);
+        return new static($field, $builder, $type, $name);
     }
 
     /**
@@ -157,7 +163,7 @@ class Field implements Buildable
      */
     public function generatedValue(callable $callback = null)
     {
-        $generatedValue = new GeneratedValue($this->builder, $this->classMetadata);
+        $generatedValue = new GeneratedValue($this->fieldBuilder, $this->classMetadata);
 
         if ($callback) {
             $callback($generatedValue);
@@ -176,7 +182,7 @@ class Field implements Buildable
      */
     public function unsigned()
     {
-        $this->builder->option('unsigned', true);
+        $this->fieldBuilder->option('unsigned', true);
 
         return $this;
     }
@@ -191,7 +197,7 @@ class Field implements Buildable
      */
     public function fixed($fixed)
     {
-        $this->builder->option('fixed', $fixed);
+        $this->fieldBuilder->option('fixed', $fixed);
 
         return $this;
     }
@@ -205,7 +211,7 @@ class Field implements Buildable
      */
     public function comment($comment)
     {
-        $this->builder->option('comment', $comment);
+        $this->fieldBuilder->option('comment', $comment);
 
         return $this;
     }
@@ -219,7 +225,7 @@ class Field implements Buildable
      */
     public function collation($collation)
     {
-        $this->builder->option('collation', $collation);
+        $this->fieldBuilder->option('collation', $collation);
 
         return $this;
     }
@@ -229,7 +235,28 @@ class Field implements Buildable
      */
     public function primary()
     {
-        $this->builder->makePrimaryKey();
+        $this->fieldBuilder->makePrimaryKey();
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $name
+     *
+     * @return Field
+     */
+    public function index($name = null)
+    {
+        $index = new Index(
+            $this->metaDatabuilder,
+            [$this->getName()]
+        );
+
+        if ($name !== null) {
+            $index->name($name);
+        }
+
+        $this->callbackAndQueue($index);
 
         return $this;
     }
@@ -239,7 +266,7 @@ class Field implements Buildable
      */
     public function useForVersioning()
     {
-        $this->builder->isVersionField();
+        $this->fieldBuilder->isVersionField();
 
         return $this;
     }
@@ -249,7 +276,7 @@ class Field implements Buildable
      */
     public function build()
     {
-        $this->builder->build();
+        $this->fieldBuilder->build();
 
         $this->buildQueued();
 
@@ -261,7 +288,7 @@ class Field implements Buildable
      */
     public function getBuilder()
     {
-        return $this->builder;
+        return $this->fieldBuilder;
     }
 
     /**
@@ -303,7 +330,7 @@ class Field implements Buildable
      */
     protected function setDefault($default)
     {
-        $this->builder->option('default', $default);
+        $this->fieldBuilder->option('default', $default);
 
         return $this;
     }
