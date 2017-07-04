@@ -82,6 +82,7 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
             StubEntity::class,
             new ClassMetadataInfo(StubEntity::class)
         );
+
         $this->assertInstanceOf(
             EntityMapper::class,
             $driver->getMappers()->getMapperFor(StubEntity::class)
@@ -91,6 +92,7 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
             StubEmbeddable::class,
             new ClassMetadataInfo(StubEmbeddable::class)
         );
+
         $this->assertInstanceOf(
             EmbeddableMapper::class,
             $driver->getMappers()->getMapperFor(StubEmbeddable::class)
@@ -100,6 +102,7 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
             StubMappedSuperClass::class,
             new ClassMetadataInfo(StubMappedSuperClass::class)
         );
+
         $this->assertInstanceOf(
             MappedSuperClassMapper::class,
             $driver->getMappers()->getMapperFor(StubMappedSuperClass::class)
@@ -126,9 +129,96 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function test_can_load_mappings_through_file_path()
+    {
+        $driver = new FluentDriver([], [__DIR__ . '/' . 'Stubs/Mappings']);
+
+        $this->assertContains(
+            StubEntity::class,
+            $driver->getAllClassNames()
+        );
+
+        $this->assertContains(
+            StubEmbeddable::class,
+            $driver->getAllClassNames()
+        );
+
+        $this->assertContains(
+            StubMappedSuperClass::class,
+            $driver->getAllClassNames()
+        );
+
+        $driver->loadMetadataForClass(
+            StubEntity::class,
+            new ClassMetadataInfo(StubEntity::class)
+        );
+
+        $this->assertInstanceOf(
+            EntityMapper::class,
+            $driver->getMappers()->getMapperFor(StubEntity::class)
+        );
+
+        $driver->loadMetadataForClass(
+            StubEmbeddable::class,
+            new ClassMetadataInfo(StubEmbeddable::class)
+        );
+
+        $this->assertInstanceOf(
+            EmbeddableMapper::class,
+            $driver->getMappers()->getMapperFor(StubEmbeddable::class)
+        );
+
+        $driver->loadMetadataForClass(
+            StubMappedSuperClass::class,
+            new ClassMetadataInfo(StubMappedSuperClass::class)
+        );
+
+        $this->assertInstanceOf(
+            MappedSuperClassMapper::class,
+            $driver->getMappers()->getMapperFor(StubMappedSuperClass::class)
+        );
+    }
+
+    public function test_can_load_paths()
+    {
+        $driver = new FluentDriver();
+        $driver->loadPaths([__DIR__ . '/' . 'Stubs/Mappings']);
+
+        $this->assertContains(
+            StubEntity::class,
+            $driver->getAllClassNames()
+        );
+
+        $this->assertContains(
+            StubEmbeddable::class,
+            $driver->getAllClassNames()
+        );
+
+        $this->assertContains(
+            StubMappedSuperClass::class,
+            $driver->getAllClassNames()
+        );
+    }
+
+    public function test_loading_by_paths_throws_exception_if_dir_not_exists()
+    {
+        $folder = __DIR__ . '/' . 'Stubs/non-existing-folder';
+
+        $this->setExpectedException(
+            MappingException::class,
+            'File mapping drivers must have a valid directory path, however the given path [' . $folder . '] seems to be incorrect!'
+        );
+
+        $driver = new FluentDriver();
+        $driver->loadPaths([$folder]);
+
+        $driver->getAllClassNames();
+    }
+
     public function test_the_given_mapping_class_should_exist()
     {
-        $this->setExpectedException(\InvalidArgumentException::class, 'Mapping class [Tests\DoesnExist] does not exist');
+        $this->setExpectedException(\InvalidArgumentException::class,
+            'Mapping class [Tests\DoesnExist] does not exist');
 
         $driver = new FluentDriver;
 
@@ -139,7 +229,8 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
 
     public function test_the_given_mapping_class_should_implement_mapping()
     {
-        $this->setExpectedException(\InvalidArgumentException::class, 'Mapping class [Tests\Stubs\Entities\StubEntity] should implement LaravelDoctrine\Fluent\Mapping');
+        $this->setExpectedException(\InvalidArgumentException::class,
+            'Mapping class [Tests\Stubs\Entities\StubEntity] should implement LaravelDoctrine\Fluent\Mapping');
 
         $driver = new FluentDriver;
 
@@ -223,7 +314,7 @@ class FluentDriverTest extends \PHPUnit_Framework_TestCase
             return new CustomBuilder(new ClassMetadataBuilder($metadata));
         });
 
-        $mapping = $this->getMock(EntityMapping::class);
+        $mapping = $this->createMock(EntityMapping::class);
         $mapping->expects($this->once())->method('map')->with($this->isInstanceOf(CustomBuilder::class));
 
         $driver->getMappers()->addMapper('fake', new EntityMapper($mapping));
