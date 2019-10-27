@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\Mapping\NamingStrategy;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Mappers\MapperSet;
@@ -27,11 +28,14 @@ class FluentDriver implements MappingDriver
      * documents and operates in the specified operating mode.
      *
      * @param string[] $mappings
+     * @param NamingStrategy $namingStrategy
      */
-    public function __construct(array $mappings = [])
-    {
-        $this->fluentFactory = function (ClassMetadata $metadata) {
-            return new Builder(new ClassMetadataBuilder($metadata));
+    public function __construct(
+        array $mappings = [],
+        NamingStrategy $namingStrategy = null
+    ) {
+        $this->fluentFactory = function (ClassMetadata $metadata) use ($namingStrategy) {
+            return new Builder(new ClassMetadataBuilder($metadata), $namingStrategy);
         };
 
         $this->mappers = new MapperSet();
