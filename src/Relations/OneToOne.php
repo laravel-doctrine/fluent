@@ -16,8 +16,11 @@ use LaravelDoctrine\Fluent\Relations\Traits\Primary;
  */
 class OneToOne extends AbstractRelation
 {
-    use Owning, Ownable, Primary, Macroable, QueuesMacros;
-
+    use Owning;
+    use Ownable;
+    use Primary;
+    use Macroable;
+    use QueuesMacros;
     /**
      * @param ClassMetadataBuilder $builder
      * @param string               $relation

@@ -26,7 +26,11 @@ use LaravelDoctrine\Fluent\Relations\Traits\Primary;
  */
 class ManyToOne extends AbstractRelation
 {
-    use ManyTo, Owning, Primary, Macroable, QueuesMacros;
+    use ManyTo;
+    use Owning;
+    use Primary;
+    use Macroable;
+    use QueuesMacros;
     use GedmoManyToOneHints;
 
     /**

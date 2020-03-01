@@ -13,8 +13,9 @@ use LaravelDoctrine\Fluent\Relations\Traits\Ownable;
  */
 class OneToMany extends AbstractRelation
 {
-    use Ownable, Orderable, Indexable;
-
+    use Ownable;
+    use Orderable;
+    use Indexable;
     /**
      * @var OneToManyAssociationBuilder
      */

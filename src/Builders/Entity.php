@@ -9,8 +9,9 @@ use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
 
 class Entity extends AbstractBuilder
 {
-    use Macroable, Queueable, QueuesMacros;
-
+    use Macroable;
+    use Queueable;
+    use QueuesMacros;
     /**
      * @param string $class
      *

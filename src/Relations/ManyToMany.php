@@ -21,7 +21,13 @@ use LaravelDoctrine\Fluent\Relations\Traits\Owning;
  */
 class ManyToMany extends AbstractRelation
 {
-    use ManyTo, Owning, Ownable, Orderable, Indexable, Macroable, QueuesMacros;
+    use ManyTo;
+    use Owning;
+    use Ownable;
+    use Orderable;
+    use Indexable;
+    use Macroable;
+    use QueuesMacros;
     use GedmoManyToManyHints;
 
     /**
