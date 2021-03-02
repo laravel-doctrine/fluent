@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Extensions;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadata as ClassMetadataImplementation;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use PHPUnit_Framework_TestCase;

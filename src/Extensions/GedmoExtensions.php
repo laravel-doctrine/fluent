@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Extensions;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use LaravelDoctrine\Fluent\FluentDriver;
 
 class GedmoExtensions

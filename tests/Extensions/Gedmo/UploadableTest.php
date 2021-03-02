@@ -2,7 +2,7 @@
 
 namespace Tests\Extensions\Gedmo;
 
-use Doctrine\Common\Persistence\Mapping\RuntimeReflectionService;
+use Doctrine\Persistence\Mapping\RuntimeReflectionService;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
@@ -32,7 +32,7 @@ class UploadableTest extends PHPUnit_Framework_TestCase
     {
         $this->classMetadata = new ExtensibleClassMetadata(UploadableClass::class);
         $this->classMetadata->wakeupReflection(new RuntimeReflectionService());
-        
+
         Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', 'foo')->build();
 
         $this->builder = new Uploadable($this->classMetadata);
@@ -61,7 +61,7 @@ class UploadableTest extends PHPUnit_Framework_TestCase
         $builder->string('bar')->asFilePath();
         $builder->decimal('baz')->asFileSize();
         $builder->string('barbaz')->asFileMimeType();
-        
+
         $builder->build();
 
         $this->assertExtensionConfiguration([
@@ -203,39 +203,39 @@ class UploadableTest extends PHPUnit_Framework_TestCase
             'disallowedTypes' => ['jpg', 'png', 'gif'],
         ]);
     }
-    
+
     public function test_it_shouldnt_allow_and_disallow_at_the_same_time()
     {
         $this->setExpectedException(InvalidMappingException::class);
-        
+
     	$this->workingBuilder()->allow('jpg')->disallow('doc')->build();
     }
-    
+
     public function test_it_needs_a_field_set_up_as_path_or_name()
     {
         $this->setExpectedException(InvalidMappingException::class);
 
         $this->builder->build();
     }
-    
+
     public function test_it_validates_method_exists()
     {
         $this->setExpectedException(InvalidMappingException::class);
-        
+
         $this->workingBuilder()->pathMethod('nonExistent')->build();
     }
-    
+
     public function test_it_validates_callback_exists()
     {
         $this->setExpectedException(InvalidMappingException::class);
-        
+
         $this->workingBuilder()->callback('nonExistent')->build();
     }
-    
+
     public function test_it_validates_positive_sizes()
     {
         $this->setExpectedException(InvalidMappingException::class);
-        
+
         $this->workingBuilder()->maxSize(-1)->build();
     }
 
@@ -245,9 +245,9 @@ class UploadableTest extends PHPUnit_Framework_TestCase
     public function test_it_validates_that_file_path_field_is_mapped_as_a_string($type)
     {
         $this->setExpectedException(InvalidMappingException::class);
-        
+
         Uploadable::enable();
-        
+
         $fluent = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy);
         $fluent->uploadable();
         $fluent->field($type, 'bar')->asFilePath();
@@ -260,9 +260,9 @@ class UploadableTest extends PHPUnit_Framework_TestCase
     public function test_it_validates_that_file_name_field_is_mapped_as_a_string($type)
     {
         $this->setExpectedException(InvalidMappingException::class);
-        
+
         Uploadable::enable();
-        
+
         $fluent = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy);
         $fluent->uploadable();
         $fluent->field($type, 'bar')->asFileName();
@@ -275,9 +275,9 @@ class UploadableTest extends PHPUnit_Framework_TestCase
     public function test_it_validates_that_file_mime_type_field_is_mapped_as_a_string($type)
     {
         $this->setExpectedException(InvalidMappingException::class);
-        
+
         Uploadable::enable();
-        
+
         $fluent = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy);
         $fluent->uploadable();
         $fluent->field($type, 'bar')->asFileMimeType();
@@ -290,9 +290,9 @@ class UploadableTest extends PHPUnit_Framework_TestCase
     public function test_it_validates_that_file_mime_type_field_is_mapped_as_a_decimal($type)
     {
         $this->setExpectedException(InvalidMappingException::class);
-        
+
         Uploadable::enable();
-        
+
         $fluent = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy);
         $fluent->uploadable();
         $fluent->field($type, 'bar')->asFileSize();
@@ -337,7 +337,7 @@ class UploadableTest extends PHPUnit_Framework_TestCase
         $this->classMetadata->addExtension(Fluent::EXTENSION_NAME, [
             'fileNameField' => 'foo',
         ]);
-        
+
         return $this->builder;
     }
 
@@ -345,17 +345,17 @@ class UploadableTest extends PHPUnit_Framework_TestCase
     {
         return $this->getTypesExcept('string');
     }
-    
+
     public function getTypesWithoutDecimal()
     {
         return $this->getTypesExcept('decimal');
     }
-    
+
     private function getTypesExcept($type)
     {
         $types = Type::getTypesMap();
         unset($types[$type]);
-        
+
         return array_map(function($type){
             return [$type];
         }, array_keys($types));

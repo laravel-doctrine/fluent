@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Overrides;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use InvalidArgumentException;
