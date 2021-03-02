@@ -2,9 +2,9 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Overrides;
 
-use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use InvalidArgumentException;
 
 class OverrideBuilderFactory

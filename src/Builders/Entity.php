@@ -12,6 +12,7 @@ class Entity extends AbstractBuilder
     use Macroable;
     use Queueable;
     use QueuesMacros;
+
     /**
      * @param string $class
      *

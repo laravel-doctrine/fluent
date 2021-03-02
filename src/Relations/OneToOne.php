@@ -21,6 +21,7 @@ class OneToOne extends AbstractRelation
     use Primary;
     use Macroable;
     use QueuesMacros;
+
     /**
      * @param ClassMetadataBuilder $builder
      * @param string               $relation

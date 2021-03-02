@@ -83,7 +83,8 @@ abstract class AbstractTrackingExtension
     {
         if ($this->on === null) {
             throw new InvalidMappingException(
-                "Field - [{$this->fieldName}] trigger 'on' is not one of [update, create, change] in class - {$this->classMetadata->name}");
+                "Field - [{$this->fieldName}] trigger 'on' is not one of [update, create, change] in class - {$this->classMetadata->name}"
+            );
         }
 
         if (is_array($this->trackedFields) && $this->value !== null) {
