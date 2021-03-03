@@ -4,9 +4,9 @@ namespace LaravelDoctrine\Fluent;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\Mapping\NamingStrategy;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\ORM\Mapping\NamingStrategy;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Mappers\MapperSet;
@@ -27,7 +27,7 @@ class FluentDriver implements MappingDriver
      * Initializes a new FileDriver that looks in the given path(s) for mapping
      * documents and operates in the specified operating mode.
      *
-     * @param string[] $mappings
+     * @param string[]            $mappings
      * @param null|NamingStrategy $namingStrategy
      */
     public function __construct(
