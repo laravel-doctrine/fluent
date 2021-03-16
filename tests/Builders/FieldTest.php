@@ -11,12 +11,14 @@ use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\GeneratedValue;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 
-class FieldTest extends \PHPUnit_Framework_TestCase
+class FieldTest extends TestCase
 {
-    use IsMacroable;
-    
+    use IsMacroable, MockeryPHPUnitIntegration;
+
     /**
      * @var ClassMetadataBuilder
      */
@@ -27,7 +29,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
      */
     protected $field;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(StubEntity::class));
         $this->builder->setTable('stub_entities');
@@ -202,10 +204,8 @@ class FieldTest extends \PHPUnit_Framework_TestCase
 
     public function test_cannot_call_non_existing_field_builder_methods()
     {
-        $this->setExpectedException(
-            BadMethodCallException::class,
-            'FieldBuilder method [nonExisting] does not exist.'
-        );
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('FieldBuilder method [nonExisting] does not exist.');
 
         $this->field->nonExisting();
     }
@@ -312,7 +312,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
 
     public function test_ids_cannot_be_used_for_versioning()
     {
-        $this->setExpectedException(MappingException::class);
+        $this->expectException(MappingException::class);
 
         $this->field
             ->primary()
@@ -327,7 +327,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     
     public function test_buildable_objects_returned_from_macros_get_queued_and_built()
     {
-    	Field::macro('foo', function(){
+        Field::macro('foo', function(){
             /** @var Buildable|\Mockery\Mock $buildable */
             $buildable = \Mockery::mock(Buildable::class);
             $buildable->shouldReceive('build')->once();
@@ -356,7 +356,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $builder = new ClassMetadataBuilder(new ClassMetadataInfo(StubEntity::class));
         $field   = Field::make($builder, $type, "aField");
 
-        $this->setExpectedException(MappingException::class);
+        $this->expectException(MappingException::class);
         $field->useForVersioning()->build();
     }
 

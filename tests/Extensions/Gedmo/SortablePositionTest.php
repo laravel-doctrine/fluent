@@ -7,8 +7,9 @@ use Gedmo\Sortable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\SortablePosition;
+use PHPUnit\Framework\TestCase;
 
-class SortablePositionTest extends \PHPUnit_Framework_TestCase
+class SortablePositionTest extends TestCase
 {
     /**
      * @var string
@@ -25,7 +26,7 @@ class SortablePositionTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'position';
         $this->classMetadata = new ExtensibleClassMetadata('foo');

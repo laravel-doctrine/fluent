@@ -7,17 +7,18 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Mappers\EmbeddableMapper;
 use LaravelDoctrine\Fluent\Mappers\Mapper;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Embedabbles\StubEmbeddable;
 use Tests\Stubs\Mappings\StubEmbeddableMapping;
 
-class EmbeddableMapperTest extends \PHPUnit_Framework_TestCase
+class EmbeddableMapperTest extends TestCase
 {
     /**
      * @var EmbeddableMapper
      */
     protected $mapper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $mapping      = new StubEmbeddableMapping();
         $this->mapper = new EmbeddableMapper($mapping);

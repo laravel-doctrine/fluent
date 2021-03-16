@@ -4,23 +4,21 @@ namespace Tests\Mappers;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Builders\Builder;
-use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Mappers\EntityMapper;
 use LaravelDoctrine\Fluent\Mappers\Mapper;
-use Mockery as m;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 use Tests\Stubs\Mappings\StubEntityMapping;
 
-class EntityMapperTest extends \PHPUnit_Framework_TestCase
+class EntityMapperTest extends TestCase
 {
     /**
      * @var EntityMapper
      */
     protected $mapper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $mapping      = new StubEntityMapping;
         $this->mapper = new EntityMapper($mapping);
@@ -45,9 +43,9 @@ class EntityMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains('id', $metadata->fieldNames);
         $this->assertContains('name', $metadata->fieldNames);
-        $this->assertContains(StubEntity::class, $metadata->associationMappings['parent']['targetEntity']);
-        $this->assertContains(StubEntity::class, $metadata->associationMappings['children']['targetEntity']);
-        $this->assertContains(StubEntity::class, $metadata->associationMappings['one']['targetEntity']);
-        $this->assertContains(StubEntity::class, $metadata->associationMappings['many']['targetEntity']);
+        $this->assertEquals(StubEntity::class, $metadata->associationMappings['parent']['targetEntity']);
+        $this->assertEquals(StubEntity::class, $metadata->associationMappings['children']['targetEntity']);
+        $this->assertEquals(StubEntity::class, $metadata->associationMappings['one']['targetEntity']);
+        $this->assertEquals(StubEntity::class, $metadata->associationMappings['many']['targetEntity']);
     }
 }

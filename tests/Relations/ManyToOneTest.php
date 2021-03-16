@@ -8,13 +8,14 @@ use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Relations\JoinColumn;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Tests\Builders\IsMacroable;
 use Tests\Relations\Traits\Owning;
 use Tests\Relations\Traits\Primary;
 
 class ManyToOneTest extends RelationTestCase
 {
-    use Owning, Primary, IsMacroable;
+    use Owning, Primary, IsMacroable, MockeryPHPUnitIntegration;
 
     /**
      * @var ManyToOne
@@ -31,7 +32,7 @@ class ManyToOneTest extends RelationTestCase
      */
     protected $field = 'parent';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(
             FluentEntity::class

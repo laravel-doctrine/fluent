@@ -19,7 +19,7 @@ class JoinedTableInheritanceTest extends InheritanceTestCase
      */
     protected $inheritance;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(
             StubEntity::class

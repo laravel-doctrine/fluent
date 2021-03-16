@@ -4,15 +4,16 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TreePath;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class TreePathTest extends \PHPUnit_Framework_TestCase
+class TreePathTest extends TestCase
 {
     /**
      * @var string
@@ -29,7 +30,7 @@ class TreePathTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'path';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
@@ -85,7 +86,8 @@ class TreePathTest extends \PHPUnit_Framework_TestCase
 
     public function test_separator_should_given()
     {
-        $this->setExpectedException(InvalidMappingException::class, 'Tree Path field - [path] Separator ||| is invalid. It must be only one character long.');
+        $this->expectException(InvalidMappingException::class);
+        $this->expectExceptionMessage('Tree Path field - [path] Separator ||| is invalid. It must be only one character long.');
 
         $this->getExtension()
              ->separator('|||')

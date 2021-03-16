@@ -4,15 +4,16 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TreeLevel;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class TreeLevelTest extends \PHPUnit_Framework_TestCase
+class TreeLevelTest extends TestCase
 {
     /**
      * @var string
@@ -29,7 +30,7 @@ class TreeLevelTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'lvl';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
@@ -63,7 +64,8 @@ class TreeLevelTest extends \PHPUnit_Framework_TestCase
 
     public function test_level_should_be_integer()
     {
-        $this->setExpectedException(InvalidMappingException::class, 'Tree level field must be \'integer\' in class - foo');
+        $this->expectException(InvalidMappingException::class);
+        $this->expectExceptionMessage('Tree level field must be \'integer\' in class - foo');
 
         $this->classMetadata = new ExtensibleClassMetadata('foo');
         Field::make(new ClassMetadataBuilder($this->classMetadata), 'string', $this->fieldName)->build();

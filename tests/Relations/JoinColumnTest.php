@@ -4,15 +4,16 @@ namespace Tests\Relations;
 
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Relations\JoinColumn;
+use PHPUnit\Framework\TestCase;
 
-class JoinColumnTest extends \PHPUnit_Framework_TestCase
+class JoinColumnTest extends TestCase
 {
     /**
      * @var JoinColumn
      */
     protected $column;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->column = new JoinColumn(
             new DefaultNamingStrategy(),

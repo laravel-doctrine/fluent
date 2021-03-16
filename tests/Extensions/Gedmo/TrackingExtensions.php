@@ -6,7 +6,7 @@ use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
 trait TrackingExtensions
 {
@@ -33,7 +33,7 @@ trait TrackingExtensions
     
     public function test_it_should_fail_without_binding_which_event_to_use()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         $this->getExtension()->build();
     }
@@ -122,7 +122,7 @@ trait TrackingExtensions
 
     public function test_it_should_not_allow_tracking_an_array_of_fields_with_a_specific_value_for_changes()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         $this->getExtension()->onChange(['foobar', 'baz'], 'this_will_explode')->build();
     }

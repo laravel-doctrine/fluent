@@ -2,15 +2,16 @@
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Translatable;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class TranslatableTest extends \PHPUnit_Framework_TestCase
+class TranslatableTest extends TestCase
 {
     /**
      * @var string
@@ -27,7 +28,7 @@ class TranslatableTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'title';
         $this->classMetadata = new ExtensibleClassMetadata('foo');

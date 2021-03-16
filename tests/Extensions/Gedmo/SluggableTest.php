@@ -3,17 +3,18 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Gedmo\Exception\InvalidArgumentException;
+use Gedmo\Sluggable\Mapping\Driver\Fluent as SluggableDriver;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Sluggable\Mapping\Driver\Fluent as SluggableDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Sluggable;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class SluggableTest extends \PHPUnit_Framework_TestCase
+class SluggableTest extends TestCase
 {
     /**
      * @var ClassMetadataBuilder
@@ -35,7 +36,7 @@ class SluggableTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName = 'slug';
         $this->classMetadata = new ExtensibleClassMetadata(StubEntity::class);
@@ -56,7 +57,8 @@ class SluggableTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_only_make_a_valid_field_sluggable()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'Sluggable field is not a valid field type');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Sluggable field is not a valid field type');
 
         Sluggable::enable();
 

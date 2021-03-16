@@ -7,18 +7,22 @@ use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Builders\Traits\Queueable;
 use LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \LaravelDoctrine\Fluent\Builders\Traits\QueuesMacros
  */
-class QueueableTest extends \PHPUnit_Framework_TestCase
+class QueueableTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var QueueableClass
      */
     private $queueable;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queueable = new QueueableClass();
     }

@@ -3,16 +3,16 @@
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
-use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TreePathHash;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class TreePathHashTest extends \PHPUnit_Framework_TestCase
+class TreePathHashTest extends TestCase
 {
     /**
      * @var string
@@ -29,7 +29,7 @@ class TreePathHashTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'hash';
         $this->classMetadata = new ExtensibleClassMetadata('foo');

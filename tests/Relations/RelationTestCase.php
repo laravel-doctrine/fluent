@@ -5,10 +5,9 @@ namespace Tests\Relations;
 use BadMethodCallException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use InvalidArgumentException;
-use LaravelDoctrine\Fluent\Relations\ManyToMany;
-use LaravelDoctrine\Fluent\Relations\OneToMany;
+use PHPUnit\Framework\TestCase;
 
-class RelationTestCase extends \PHPUnit_Framework_TestCase
+class RelationTestCase extends TestCase
 {
     protected $field;
 
@@ -38,7 +37,8 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
 
     public function test_should_be_valid_cascade_action()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'Cascade [invalid] does not exist');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cascade [invalid] does not exist');
 
         $this->relation->cascade(['invalid']);
     }
@@ -54,7 +54,8 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
 
     public function test_should_be_valid_fetch_action()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'Fetch [invalid] does not exist');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Fetch [invalid] does not exist');
 
         $this->relation->fetch('invalid');
     }
@@ -83,10 +84,8 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
 
     public function test_valid_cache_usage_should_be_given()
     {
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            '[invalid] is not a valid cache usage. Available: READ_ONLY, NONSTRICT_READ_WRITE, READ_WRITE'
-        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('[invalid] is not a valid cache usage. Available: READ_ONLY, NONSTRICT_READ_WRITE, READ_WRITE');
 
         $this->relation->cache('invalid');
     }
@@ -113,10 +112,8 @@ class RelationTestCase extends \PHPUnit_Framework_TestCase
 
     public function test_calling_non_existing_methods_will_throw_exception()
     {
-        $this->setExpectedException(
-            BadMethodCallException::class,
-            'Relation method [doSomethingWrong] does not exist.'
-        );
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Relation method [doSomethingWrong] does not exist.');
 
         $this->relation->doSomethingWrong();
     }

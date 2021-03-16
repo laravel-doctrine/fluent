@@ -32,7 +32,7 @@ class OneToManyTest extends RelationTestCase
      */
     protected $field = 'children';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(
             FluentEntity::class

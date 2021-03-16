@@ -4,15 +4,16 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Locale;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class LocaleTest extends \PHPUnit_Framework_TestCase
+class LocaleTest extends TestCase
 {
     /**
      * @var string
@@ -34,7 +35,7 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
      */
     protected $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         Locale::enable();
 
@@ -64,7 +65,7 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_fail_when_trying_to_use_a_mapped_field_as_locale()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
         $this->builder->string('language');
         $this->builder->locale('language');
 
@@ -73,7 +74,7 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_fail_when_trying_to_use_a_mapped_field_as_locale_even_if_its_mapped_afterwards()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
         $this->builder->locale('language');
         $this->builder->string('language');
 

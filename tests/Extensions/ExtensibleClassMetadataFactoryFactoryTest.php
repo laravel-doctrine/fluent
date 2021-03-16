@@ -6,10 +6,13 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadataFactory;
-use PHPUnit_Framework_TestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-class ExtensibleClassMetadataFactoryTest extends PHPUnit_Framework_TestCase
+class ExtensibleClassMetadataFactoryFactoryTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function test_it_builds_extensible_class_metadata_objects()
     {
         $em = \Mockery::mock(EntityManager::class);

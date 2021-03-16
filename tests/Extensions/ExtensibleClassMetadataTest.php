@@ -4,16 +4,16 @@ namespace Tests\Extensions;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadata as ClassMetadataImplementation;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ExtensibleClassMetadataTest extends PHPUnit_Framework_TestCase
+class ExtensibleClassMetadataTest extends TestCase
 {
     /**
      * @var ExtensibleClassMetadata
      */
     private $cm;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cm = new ExtensibleClassMetadata("Foo");
     }

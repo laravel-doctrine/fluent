@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
 use LaravelDoctrine\Fluent\Relations\OneToOne;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Tests\Builders\IsMacroable;
 use Tests\Relations\Traits\OneTo;
 use Tests\Relations\Traits\Ownable;
@@ -16,7 +17,7 @@ use Tests\Relations\Traits\Primary;
 
 class OneToOneTest extends RelationTestCase
 {
-    use OneTo, Owning, Ownable, Primary, IsMacroable;
+    use OneTo, Owning, Ownable, Primary, IsMacroable, MockeryPHPUnitIntegration;
 
     /**
      * @var ManyToOne
@@ -33,7 +34,7 @@ class OneToOneTest extends RelationTestCase
      */
     protected $field = 'parent';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(
             FluentEntity::class

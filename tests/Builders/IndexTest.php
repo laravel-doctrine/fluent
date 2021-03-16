@@ -5,16 +5,17 @@ namespace Tests\Builders;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\Index;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 
-class IndexTest extends \PHPUnit_Framework_TestCase
+class IndexTest extends TestCase
 {
     /**
      * @var ClassMetadataBuilder
      */
     protected $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(StubEntity::class));
         $this->builder->setTable('stub_entities');

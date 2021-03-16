@@ -32,13 +32,15 @@ use LaravelDoctrine\Fluent\Relations\OneToMany;
 use LaravelDoctrine\Fluent\Relations\OneToOne;
 use LaravelDoctrine\Fluent\Relations\Relation;
 use LogicException;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use Tests\FakeEntity;
 use Tests\Stubs\Embedabbles\StubEmbeddable;
 use Tests\Stubs\StubEntityListener;
 
-class BuilderTest extends \PHPUnit_Framework_TestCase
+class BuilderTest extends TestCase
 {
-    use IsMacroable;
+    use IsMacroable, MockeryPHPUnitIntegration;
 
     /**
      * @var ClassMetadataBuilder
@@ -82,7 +84,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         'simpleArray'      => Type::SIMPLE_ARRAY,
     ];
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         Type::addType(CarbonDateTimeType::CARBONDATETIME, CarbonDateTimeType::class);
         Type::addType(CarbonDateTimeTzType::CARBONDATETIMETZ, CarbonDateTimeTzType::class);
@@ -91,7 +93,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         Type::addType(ZendDateType::ZENDDATE, ZendDateType::class);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(
             FluentEntity::class
@@ -161,7 +163,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function test_cannot_use_table_settings_for_embeddable()
     {
         $this->builder->setEmbeddable();
-        $this->setExpectedException(LogicException::class);
+        $this->expectException(LogicException::class);
 
         $this->fluent->table('users');
     }
@@ -222,7 +224,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->builder->setEmbeddable();
 
-        $this->setExpectedException(LogicException::class);
+        $this->expectException(LogicException::class);
 
         $this->fluent->entity();
     }
@@ -374,7 +376,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->builder->setEmbeddable();
 
-        $this->setExpectedException(LogicException::class);
+        $this->expectException(LogicException::class);
 
         $this->fluent->increments('id');
     }
@@ -383,7 +385,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->builder->setEmbeddable();
 
-        $this->setExpectedException(LogicException::class);
+        $this->expectException(LogicException::class);
 
         $this->fluent->smallIncrements('id');
     }
@@ -392,7 +394,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->builder->setEmbeddable();
 
-        $this->setExpectedException(LogicException::class);
+        $this->expectException(LogicException::class);
 
         $this->fluent->bigIncrements('id');
     }
@@ -640,10 +642,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_fluent_builder_method_should_exist()
     {
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            'Fluent builder method [doesNotExist] does not exist'
-        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Fluent builder method [doesNotExist] does not exist');
 
         $this->fluent->doesNotExist();
     }
@@ -768,6 +768,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_a_one_to_one_relation_name()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->fluent->oneToOne(FluentEntity::class);
 
         $this->fluent->build();
@@ -781,6 +783,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_a_has_one_relation_name()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->fluent->hasOne(FluentEntity::class);
 
         $this->fluent->build();
@@ -794,6 +798,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_a_belongs_to_relation_name()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->fluent->belongsTo(FluentEntity::class);
 
         $this->fluent->build();
@@ -807,6 +813,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_a_one_to_many_relation_name()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->fluent->oneToMany(FluentEntity::class)->mappedBy('fluentEntity');
 
         $this->fluent->build();
@@ -820,6 +828,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_a_has_many_relation_name()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->fluent->hasMany(FluentEntity::class)->mappedBy('fluentEntity');
 
         $this->fluent->build();
@@ -833,6 +843,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_a_many_to_many_relation_name()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->fluent->manyToMany(FluentEntity::class);
 
         $this->fluent->build();
@@ -846,6 +858,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_a_belongs_to_many_relation_name()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->fluent->belongsToMany(FluentEntity::class);
 
         $this->fluent->build();

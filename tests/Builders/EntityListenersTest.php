@@ -6,11 +6,11 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\EntityListeners;
-use Symfony\Component\VarDumper\Cloner\Stub;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 use Tests\Stubs\StubEntityListener;
 
-class EntityListenersTest extends \PHPUnit_Framework_TestCase
+class EntityListenersTest extends TestCase
 {
     /**
      * @var EntityListeners
@@ -22,7 +22,7 @@ class EntityListenersTest extends \PHPUnit_Framework_TestCase
      */
     protected $fluent;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fluent = new ClassMetadataBuilder(
             new ClassMetadataInfo(StubEntity::class)
