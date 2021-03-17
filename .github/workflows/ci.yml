@@ -6,8 +6,13 @@ jobs:
     name: PHP ${{ matrix.php }} - doctrine/orm ${{ matrix.orm }}
     strategy:
       matrix:
-        php: ['7.2', '7.3', '7.4']
-        orm: ['2.6.0', '2.7.0']
+        php: ['7.2', '7.3', '7.4', '8.0']
+        orm: ['2.6.0', '2.7.0', '2.8.0']
+        exclude:
+          - php: '8.0'
+            orm: '2.6.0'
+          - php: '8.0'
+            orm: '2.7.0'
     steps:
       - uses: actions/checkout@v2
       - name: Setup PHP
