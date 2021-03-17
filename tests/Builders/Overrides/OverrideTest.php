@@ -7,9 +7,10 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Builders\Delay;
 use LaravelDoctrine\Fluent\Builders\Overrides\Override;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 
-class OverrideTest extends \PHPUnit_Framework_TestCase
+class OverrideTest extends TestCase
 {
     public function test_can_build_attribute_override()
     {

@@ -4,16 +4,17 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Translatable\Mapping\Driver\Fluent as TranslatableDriver;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\TranslationClass;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Translatable;
+use LaravelDoctrine\Fluent\Extensions\Gedmo\TranslationClass;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class TranslationClassTest extends \PHPUnit_Framework_TestCase
+class TranslationClassTest extends TestCase
 {
     /**
      * @var string
@@ -30,7 +31,7 @@ class TranslationClassTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->className     = 'TranslationClass';
         $this->classMetadata = new ExtensibleClassMetadata('foo');

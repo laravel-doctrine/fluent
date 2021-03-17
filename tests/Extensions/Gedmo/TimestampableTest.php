@@ -8,9 +8,9 @@ use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Timestampable;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class TimestampableTest extends PHPUnit_Framework_TestCase
+class TimestampableTest extends TestCase
 {
     use TrackingExtensions;
     
@@ -19,7 +19,7 @@ class TimestampableTest extends PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'ip';
         $this->classMetadata = new ExtensibleClassMetadata('foo');

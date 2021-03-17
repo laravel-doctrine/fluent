@@ -10,16 +10,17 @@ use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Overrides\AssociationOverride;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 
-class AssociationOverrideTest extends \PHPUnit_Framework_TestCase
+class AssociationOverrideTest extends TestCase
 {
     /**
      * @var ClassMetadataBuilder
      */
     protected $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(
             StubEntity::class
@@ -31,10 +32,8 @@ class AssociationOverrideTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_return_instance_of_relation()
     {
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            'The callback should return an instance of LaravelDoctrine\Fluent\Relations\Relation'
-        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The callback should return an instance of LaravelDoctrine\Fluent\Relations\Relation');
 
         $override = $this->override('manyToMany', function () {
             return 'string';
@@ -45,10 +44,8 @@ class AssociationOverrideTest extends \PHPUnit_Framework_TestCase
 
     public function test_the_overridden_association_should_exist()
     {
-        $this->setExpectedException(
-            MappingException::class,
-            'No mapping found for field \'nonExisting\' on class \'Tests\Stubs\Entities\StubEntity\'.'
-        );
+        $this->expectException(MappingException::class);
+        $this->expectExceptionMessage('No mapping found for field \'nonExisting\' on class \'Tests\Stubs\Entities\StubEntity\'.');
 
         $override = $this->override('nonExisting', function () {
         });
@@ -58,10 +55,8 @@ class AssociationOverrideTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_only_override_many_to____relations()
     {
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            'Only ManyToMany and ManyToOne relations can be overridden'
-        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Only ManyToMany and ManyToOne relations can be overridden');
 
         $this->builder->addOwningOneToOne('oneToOne', StubEntity::class);
 

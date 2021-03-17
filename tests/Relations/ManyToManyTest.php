@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Tests\Builders\IsMacroable;
 use Tests\Relations\Traits\Indexable;
 use Tests\Relations\Traits\NonPrimary;
@@ -15,7 +16,7 @@ use Tests\Relations\Traits\Owning;
 
 class ManyToManyTest extends RelationTestCase
 {
-    use Indexable, Orderable, Owning, Ownable, NonPrimary, IsMacroable;
+    use Indexable, Orderable, Owning, Ownable, NonPrimary, IsMacroable, MockeryPHPUnitIntegration;
 
     /**
      * @var ManyToMany
@@ -32,7 +33,7 @@ class ManyToManyTest extends RelationTestCase
      */
     protected $field = 'children';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(
             FluentEntity::class

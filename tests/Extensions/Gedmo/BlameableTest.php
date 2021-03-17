@@ -9,9 +9,9 @@ use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Blameable;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class BlameableTest extends PHPUnit_Framework_TestCase
+class BlameableTest extends TestCase
 {
     use TrackingExtensions;
     
@@ -20,7 +20,7 @@ class BlameableTest extends PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->classMetadata = new ExtensibleClassMetadata('foo');
         $this->extension     = new Blameable($this->classMetadata, $this->fieldName);

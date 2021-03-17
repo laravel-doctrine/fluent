@@ -8,9 +8,9 @@ use Gedmo\Uploadable\Mapping\Driver\Fluent;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\UploadableFile;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class UploadableFileTest extends PHPUnit_Framework_TestCase
+class UploadableFileTest extends TestCase
 {
     /**
      * @var string
@@ -22,7 +22,7 @@ class UploadableFileTest extends PHPUnit_Framework_TestCase
      */
     private $classMetadata;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->classMetadata = new ExtensibleClassMetadata("Foo");
     }
@@ -95,7 +95,7 @@ class UploadableFileTest extends PHPUnit_Framework_TestCase
     
     public function test_it_validates_the_type()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
         
         $this->getBuilder("Foo")->build();
     }

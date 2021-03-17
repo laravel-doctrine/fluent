@@ -9,9 +9,10 @@ use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Builders\Overrides\AssociationOverride;
 use LaravelDoctrine\Fluent\Builders\Overrides\AttributeOverride;
 use LaravelDoctrine\Fluent\Builders\Overrides\OverrideBuilderFactory;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 
-class OverrideBuilderFactoryTest extends \PHPUnit_Framework_TestCase
+class OverrideBuilderFactoryTest extends TestCase
 {
     public function test_can_create_attribute_override()
     {
@@ -55,7 +56,8 @@ class OverrideBuilderFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_only_create_overrides_for_existing_attributes_or_relations()
     {
-        $this->setExpectedException(InvalidArgumentException::class,  'No attribute or association could be found for some_field');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('No attribute or association could be found for some_field');
 
         $builder = new ClassMetadataBuilder(new ClassMetadataInfo(
             StubEntity::class

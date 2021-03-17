@@ -7,17 +7,18 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Mappers\MappedSuperClassMapper;
 use LaravelDoctrine\Fluent\Mappers\Mapper;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\MappedSuperClasses\StubMappedSuperClass;
 use Tests\Stubs\Mappings\StubMappedSuperClassMapping;
 
-class MappedSuperClassMapperTest extends \PHPUnit_Framework_TestCase
+class MappedSuperClassMapperTest extends TestCase
 {
     /**
      * @var MappedSuperClassMapper
      */
     protected $mapper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $mapping      = new StubMappedSuperClassMapping();
         $this->mapper = new MappedSuperClassMapper($mapping);

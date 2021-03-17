@@ -4,16 +4,17 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TreeSelfReference;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class TreeSelfReferenceTest extends \PHPUnit_Framework_TestCase
+class TreeSelfReferenceTest extends TestCase
 {
     /**
      * @var string
@@ -25,7 +26,7 @@ class TreeSelfReferenceTest extends \PHPUnit_Framework_TestCase
      */
     protected $classMetadata;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'root';
         $this->classMetadata = new ExtensibleClassMetadata('foo');

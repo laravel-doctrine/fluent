@@ -6,9 +6,10 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\LifecycleEvents;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 
-class LifecycleEventsTest extends \PHPUnit_Framework_TestCase
+class LifecycleEventsTest extends TestCase
 {
     /**
      * @var LifecycleEvents
@@ -20,7 +21,7 @@ class LifecycleEventsTest extends \PHPUnit_Framework_TestCase
      */
     protected $fluent;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fluent = new ClassMetadataBuilder(
             new ClassMetadataInfo(StubEntity::class)
@@ -71,7 +72,7 @@ class LifecycleEventsTest extends \PHPUnit_Framework_TestCase
 
     public function test_fluent_builder_method_should_exist()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->builder->onFlagerbert('breakStuff');
     }

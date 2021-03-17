@@ -10,8 +10,9 @@ use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\SortableGroup;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
+use PHPUnit\Framework\TestCase;
 
-class SortableGroupTest extends \PHPUnit_Framework_TestCase
+class SortableGroupTest extends TestCase
 {
     /**
      * @var string
@@ -28,7 +29,7 @@ class SortableGroupTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'category';
         $this->classMetadata = new ExtensibleClassMetadata('foo');

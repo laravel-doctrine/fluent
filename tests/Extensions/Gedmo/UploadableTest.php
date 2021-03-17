@@ -14,9 +14,9 @@ use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Uploadable;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class UploadableTest extends PHPUnit_Framework_TestCase
+class UploadableTest extends TestCase
 {
     /**
      * @var Uploadable
@@ -28,7 +28,7 @@ class UploadableTest extends PHPUnit_Framework_TestCase
      */
     private $classMetadata;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->classMetadata = new ExtensibleClassMetadata(UploadableClass::class);
         $this->classMetadata->wakeupReflection(new RuntimeReflectionService());
@@ -206,35 +206,35 @@ class UploadableTest extends PHPUnit_Framework_TestCase
 
     public function test_it_shouldnt_allow_and_disallow_at_the_same_time()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
     	$this->workingBuilder()->allow('jpg')->disallow('doc')->build();
     }
 
     public function test_it_needs_a_field_set_up_as_path_or_name()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         $this->builder->build();
     }
 
     public function test_it_validates_method_exists()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         $this->workingBuilder()->pathMethod('nonExistent')->build();
     }
 
     public function test_it_validates_callback_exists()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         $this->workingBuilder()->callback('nonExistent')->build();
     }
 
     public function test_it_validates_positive_sizes()
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         $this->workingBuilder()->maxSize(-1)->build();
     }
@@ -244,7 +244,7 @@ class UploadableTest extends PHPUnit_Framework_TestCase
      */
     public function test_it_validates_that_file_path_field_is_mapped_as_a_string($type)
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         Uploadable::enable();
 
@@ -259,7 +259,7 @@ class UploadableTest extends PHPUnit_Framework_TestCase
      */
     public function test_it_validates_that_file_name_field_is_mapped_as_a_string($type)
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         Uploadable::enable();
 
@@ -274,7 +274,7 @@ class UploadableTest extends PHPUnit_Framework_TestCase
      */
     public function test_it_validates_that_file_mime_type_field_is_mapped_as_a_string($type)
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         Uploadable::enable();
 
@@ -289,7 +289,7 @@ class UploadableTest extends PHPUnit_Framework_TestCase
      */
     public function test_it_validates_that_file_mime_type_field_is_mapped_as_a_decimal($type)
     {
-        $this->setExpectedException(InvalidMappingException::class);
+        $this->expectException(InvalidMappingException::class);
 
         Uploadable::enable();
 

@@ -12,9 +12,9 @@ use LaravelDoctrine\Fluent\Extensions\Gedmo\TreePath;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TreePathHash;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TreePathSource;
 use LaravelDoctrine\Fluent\Fluent;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class MaterializedPathTest extends PHPUnit_Framework_TestCase
+class MaterializedPathTest extends TestCase
 {
     /**
      * @var ExtensibleClassMetadata
@@ -31,7 +31,7 @@ class MaterializedPathTest extends PHPUnit_Framework_TestCase
      */
     private $tree;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->classMetadata = new ExtensibleClassMetadata("Foo");
         $this->builder       = new Builder(new ClassMetadataBuilder($this->classMetadata));

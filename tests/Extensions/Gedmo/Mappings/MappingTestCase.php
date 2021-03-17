@@ -6,9 +6,13 @@ use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Builders\GeneratedValue;
 use LaravelDoctrine\Fluent\Fluent;
 use LaravelDoctrine\Fluent\Mapping;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
-abstract class MappingTestCase extends \PHPUnit_Framework_TestCase
+abstract class MappingTestCase extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var Mapping
      */
@@ -45,7 +49,7 @@ abstract class MappingTestCase extends \PHPUnit_Framework_TestCase
      */
     abstract protected function configureMocks();
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $class = $this->getMappingClass();
         $this->mapping = new $class;

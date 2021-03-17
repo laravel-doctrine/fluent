@@ -4,15 +4,16 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\TreePathSource;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class TreePathSourceTest extends \PHPUnit_Framework_TestCase
+class TreePathSourceTest extends TestCase
 {
     /**
      * @var string
@@ -29,7 +30,7 @@ class TreePathSourceTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'source';
         $this->classMetadata = new ExtensibleClassMetadata('foo');
@@ -54,7 +55,8 @@ class TreePathSourceTest extends \PHPUnit_Framework_TestCase
 
     public function test_path_source_must_be_valid_field()
     {
-        $this->setExpectedException(InvalidMappingException::class, 'Tree PathSource field - [source] type is not valid. It can be any of the integer variants, double, float or string in class - foo');
+        $this->expectException(InvalidMappingException::class);
+        $this->expectExceptionMessage('Tree PathSource field - [source] type is not valid. It can be any of the integer variants, double, float or string in class - foo');
 
         $this->classMetadata = new ExtensibleClassMetadata('foo');
         Field::make(new ClassMetadataBuilder($this->classMetadata), 'binary', $this->fieldName)->build();

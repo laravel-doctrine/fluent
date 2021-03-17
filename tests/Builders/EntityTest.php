@@ -6,12 +6,14 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use LaravelDoctrine\Fluent\Builders\Entity;
 use LaravelDoctrine\Fluent\Builders\Traits\Macroable;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 
-class EntityTest extends \PHPUnit_Framework_TestCase
+class EntityTest extends TestCase
 {
-    use IsMacroable;
-    
+    use IsMacroable, MockeryPHPUnitIntegration;
+
     /**
      * @var ClassMetadataBuilder
      */
@@ -22,7 +24,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
      */
     protected $entity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new ClassMetadataBuilder(new ClassMetadataInfo(StubEntity::class));
         $this->entity  = new Entity($this->builder);
@@ -59,7 +61,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
 
     public function test_builder_method_should_exist()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->entity->doesNotExist();
     }

@@ -4,11 +4,12 @@ namespace Tests\Builders\Inheritance;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use LaravelDoctrine\Fluent\Builders\Inheritance\Inheritance;
+use PHPUnit\Framework\TestCase;
 use Tests\Stubs\Entities\StubEntity;
 use Tests\Stubs\Entities\StubEntity2;
 use Tests\Stubs\Entities\StubEntity3;
 
-class InheritanceTestCase extends \PHPUnit_Framework_TestCase
+class InheritanceTestCase extends TestCase
 {
     /**
      * @var ClassMetadataBuilder

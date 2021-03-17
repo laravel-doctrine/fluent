@@ -4,20 +4,23 @@ namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
-use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use Gedmo\Tree\Mapping\Driver\Fluent as TreeDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\ClosureTable;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\MaterializedPath;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\NestedSet;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\Tree;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class TreeTest extends \PHPUnit_Framework_TestCase
+class TreeTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var string
      */
@@ -38,7 +41,7 @@ class TreeTest extends \PHPUnit_Framework_TestCase
      */
     private $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->classMetadata = new ExtensibleClassMetadata('foo');
         $this->builder       = new Builder(new ClassMetadataBuilder($this->classMetadata), new DefaultNamingStrategy);

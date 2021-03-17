@@ -2,17 +2,17 @@
 namespace Tests\Extensions\Gedmo;
 
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
+use Gedmo\SoftDeleteable\Mapping\Driver\Fluent as SoftDeleteableDriver;
 use LaravelDoctrine\Fluent\Builders\Builder;
 use LaravelDoctrine\Fluent\Builders\Field;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
-use LaravelDoctrine\Fluent\Extensions\Gedmo\AbstractTrackingExtension;
-use Gedmo\SoftDeleteable\Mapping\Driver\Fluent as SoftDeleteableDriver;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\SoftDeleteable;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @mixin \PHPUnit_Framework_TestCase
+ * @mixin TestCase
  */
-class SoftDeleteableTest extends \PHPUnit_Framework_TestCase
+class SoftDeleteableTest extends TestCase
 {
     /**
      * @var string
@@ -29,7 +29,7 @@ class SoftDeleteableTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldName     = 'deletedAt';
         $this->classMetadata = new ExtensibleClassMetadata('foo');

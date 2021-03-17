@@ -17,9 +17,9 @@ use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\GedmoExtensions;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class GedmoExtensionsTest extends PHPUnit_Framework_TestCase
+class GedmoExtensionsTest extends TestCase
 {
     /**
      * @dataProvider getClasses
