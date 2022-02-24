@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 trait Dates
 {
@@ -11,7 +11,7 @@ trait Dates
      */
     public function date($name, callable $callback = null)
     {
-        return $this->field(Type::DATE, $name, $callback);
+        return $this->field(Types::DATE_MUTABLE, $name, $callback);
     }
 
     /**
@@ -19,7 +19,7 @@ trait Dates
      */
     public function dateTime($name, callable $callback = null)
     {
-        return $this->field(Type::DATETIME, $name, $callback);
+        return $this->field(Types::DATETIME_MUTABLE, $name, $callback);
     }
 
     /**
@@ -27,7 +27,7 @@ trait Dates
      */
     public function dateTimeTz($name, callable $callback = null)
     {
-        return $this->field(Type::DATETIMETZ, $name, $callback);
+        return $this->field(Types::DATETIMETZ_MUTABLE, $name, $callback);
     }
 
     /**
@@ -35,7 +35,7 @@ trait Dates
      */
     public function time($name, callable $callback = null)
     {
-        return $this->field(Type::TIME, $name, $callback);
+        return $this->field(Types::TIME_MUTABLE, $name, $callback);
     }
 
     /**

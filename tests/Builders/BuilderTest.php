@@ -3,6 +3,7 @@
 namespace Tests\Builders;
 
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
@@ -56,20 +57,20 @@ class BuilderTest extends TestCase
      * @var array
      */
     protected $types = [
-        'string'           => Type::STRING,
-        'text'             => Type::TEXT,
-        'integer'          => Type::INTEGER,
-        'smallInteger'     => Type::SMALLINT,
-        'bigInteger'       => Type::BIGINT,
-        'float'            => Type::FLOAT,
-        'decimal'          => Type::DECIMAL,
-        'object'           => Type::OBJECT,
-        'boolean'          => Type::BOOLEAN,
-        'jsonArray'        => Type::JSON_ARRAY,
-        'date'             => Type::DATE,
-        'dateTime'         => Type::DATETIME,
-        'dateTimeTz'       => Type::DATETIMETZ,
-        'time'             => Type::TIME,
+        'string'           => Types::STRING,
+        'text'             => Types::TEXT,
+        'integer'          => Types::INTEGER,
+        'smallInteger'     => Types::SMALLINT,
+        'bigInteger'       => Types::BIGINT,
+        'float'            => Types::FLOAT,
+        'decimal'          => Types::DECIMAL,
+        'object'           => Types::OBJECT,
+        'boolean'          => Types::BOOLEAN,
+        'jsonArray'        => Types::JSON,
+        'date'             => Types::DATE_MUTABLE,
+        'dateTime'         => Types::DATETIME_MUTABLE,
+        'dateTimeTz'       => Types::DATETIMETZ_MUTABLE,
+        'time'             => Types::TIME_MUTABLE,
         'carbonDateTime'   => 'carbondatetime',
         'carbonDateTimeTz' => 'carbondatetimetz',
         'carbonDate'       => 'carbondate',
@@ -77,11 +78,11 @@ class BuilderTest extends TestCase
         'zendDate'         => 'zenddate',
         'timestamp'        => 'carbondatetime',
         'timestampTz'      => 'carbondatetimetz',
-        'binary'           => Type::BINARY,
-        'guid'             => Type::GUID,
-        'blob'             => Type::BLOB,
-        'array'            => Type::TARRAY,
-        'simpleArray'      => Type::SIMPLE_ARRAY,
+        'binary'           => Types::BINARY,
+        'guid'             => Types::GUID,
+        'blob'             => Types::BLOB,
+        'array'            => Types::ARRAY,
+        'simpleArray'      => Types::SIMPLE_ARRAY,
     ];
 
     public static function setUpBeforeClass(): void
@@ -337,7 +338,7 @@ class BuilderTest extends TestCase
 
         $this->assertContains('id', $this->fluent->getClassMetadata()->getIdentifier());
         $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertEquals(Type::INTEGER, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertEquals(Types::INTEGER, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
     }
 
     public function test_can_add_small_increments_to_entity()
@@ -353,7 +354,7 @@ class BuilderTest extends TestCase
 
         $this->assertContains('id', $this->fluent->getClassMetadata()->getIdentifier());
         $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertEquals(Type::SMALLINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertEquals(Types::SMALLINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
     }
 
     public function test_can_add_big_increments_to_entity()
@@ -369,7 +370,7 @@ class BuilderTest extends TestCase
 
         $this->assertContains('id', $this->fluent->getClassMetadata()->getIdentifier());
         $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertEquals(Type::BIGINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertEquals(Types::BIGINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
     }
 
     public function test_cannot_add_increments_to_embeddable()
@@ -460,7 +461,7 @@ class BuilderTest extends TestCase
         $field->getBuilder()->build();
 
         $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertEquals(Type::INTEGER, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertEquals(Types::INTEGER, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
         $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('id')['options']['unsigned']);
     }
 
@@ -476,7 +477,7 @@ class BuilderTest extends TestCase
         $field->getBuilder()->build();
 
         $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertEquals(Type::SMALLINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertEquals(Types::SMALLINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
         $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('id')['options']['unsigned']);
     }
 
@@ -492,7 +493,7 @@ class BuilderTest extends TestCase
         $field->getBuilder()->build();
 
         $this->assertContains('id', $this->fluent->getClassMetadata()->getFieldNames());
-        $this->assertEquals(Type::BIGINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
+        $this->assertEquals(Types::BIGINT, $this->fluent->getClassMetadata()->getFieldMapping('id')['type']);
         $this->assertTrue($this->fluent->getClassMetadata()->getFieldMapping('id')['options']['unsigned']);
     }
 

@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Builders;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\GedmoBuilderHints;
 use LaravelDoctrine\Fluent\Fluent;
@@ -153,7 +153,7 @@ class Builder extends AbstractBuilder implements Fluent
      */
     protected function setArray($name, callable $callback = null)
     {
-        return $this->field(Type::TARRAY, $name, $callback);
+        return $this->field(Types::ARRAY, $name, $callback);
     }
 
     /**
