@@ -247,7 +247,7 @@ class FieldTest extends TestCase
 
     public function test_json_array_cannot_be_used_for_versioning()
     {
-        $this->doTestInvalidTypeForVersioning("json_array");
+        $this->doTestInvalidTypeForVersioning("json");
     }
 
     public function test_boolean_cannot_be_used_for_versioning()
@@ -319,22 +319,22 @@ class FieldTest extends TestCase
             ->useForVersioning()
             ->build();
     }
-    
+
     public function test_can_obtain_its_type_after_creation()
     {
         $this->assertInstanceOf(StringType::class, $this->field->getType());
     }
-    
+
     public function test_buildable_objects_returned_from_macros_get_queued_and_built()
     {
         Field::macro('foo', function(){
             /** @var Buildable|\Mockery\Mock $buildable */
             $buildable = \Mockery::mock(Buildable::class);
             $buildable->shouldReceive('build')->once();
-            
+
             return $buildable;
         });
-        
+
         $this->field->foo();
         $this->field->build();
     }

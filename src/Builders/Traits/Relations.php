@@ -2,7 +2,7 @@
 
 namespace LaravelDoctrine\Fluent\Builders\Traits;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use LaravelDoctrine\Fluent\Buildable;
 use LaravelDoctrine\Fluent\Relations\ManyToMany;
 use LaravelDoctrine\Fluent\Relations\ManyToOne;
@@ -128,7 +128,7 @@ trait Relations
      */
     protected function guessSingularField($entity, $field = null)
     {
-        return $field ?: Inflector::singularize(
+        return $field ?: (InflectorFactory::create()->build())->singularize(
             lcfirst(basename(str_replace('\\', '/', $entity)))
         );
     }
@@ -141,7 +141,7 @@ trait Relations
      */
     protected function guessPluralField($entity, $field = null)
     {
-        return $field ?: Inflector::pluralize($this->guessSingularField($entity));
+        return $field ?: (InflectorFactory::create()->build())->pluralize($this->guessSingularField($entity));
     }
 
     /**

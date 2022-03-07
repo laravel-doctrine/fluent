@@ -3,7 +3,7 @@
 namespace LaravelDoctrine\Fluent\Relations;
 
 use BadMethodCallException;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\NamingStrategy;
@@ -86,7 +86,7 @@ abstract class AbstractRelation implements Relation
     public function cascade(array $cascade)
     {
         foreach ($cascade as $name) {
-            $method = 'cascade'.Inflector::classify(strtolower($name));
+            $method = 'cascade'.(InflectorFactory::create()->build())->classify(strtolower($name));
 
             if (!method_exists($this->association, $method)) {
                 throw new InvalidArgumentException('Cascade ['.$name.'] does not exist');
@@ -105,7 +105,7 @@ abstract class AbstractRelation implements Relation
      */
     public function fetch($strategy)
     {
-        $method = 'fetch'.Inflector::classify(strtolower($strategy));
+        $method = 'fetch'.(InflectorFactory::create()->build())->classify(strtolower($strategy));
 
         if (!method_exists($this->association, $method)) {
             throw new InvalidArgumentException('Fetch ['.$strategy.'] does not exist');
