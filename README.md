@@ -5,10 +5,7 @@
 [![GitHub release](https://img.shields.io/github/release/laravel-doctrine/fluent.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/fluent)
 [![Packagist](https://img.shields.io/packagist/dt/laravel-doctrine/fluent.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/fluent)
 [![License](https://img.shields.io/packagist/l/laravel-doctrine/fluent.svg?style=flat-square)](https://packagist.org/packages/laravel-doctrine/fluent)
-
 [![Github actions](https://github.com/laravel-doctrine/fluent/workflows/CI/badge.svg?branch=1.x)](https://github.com/laravel-doctrine/fluent/actions?query=workflow%3ACI+branch%3A1.x)
-[![StyleCI](https://styleci.io/repos/42745661/shield)](https://styleci.io/repos/42745661)
-[![Scrutinizer](https://img.shields.io/scrutinizer/g/laravel-doctrine/fluent.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-doctrine/fluent/)
 
 *A fluent mapping driver for Doctrine2*
 
