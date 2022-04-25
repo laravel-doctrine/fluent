@@ -36,10 +36,10 @@ class EntityListenersTest extends TestCase
      *
      * @param string      $event
      * @param string      $listener
-     * @param string|null $method
      * @param string      $expectedMethod
+     * @param string|null $method
      */
-    public function test_can_add_event_listeners($event, $listener, $method = null, $expectedMethod)
+    public function test_can_add_event_listeners($event, $listener, $expectedMethod, $method = null)
     {
         $this->builder->{$event}($listener, $method);
 
@@ -108,7 +108,7 @@ class EntityListenersTest extends TestCase
             [Events::onFlush, StubEntityListener::class, 'handle', 'handle'],
             [Events::postFlush, StubEntityListener::class, 'handle', 'handle'],
             [Events::onClear, StubEntityListener::class, 'handle', 'handle'],
-            [Events::onClear, StubEntityListener::class, null, 'onClear'],
+            [Events::onClear, StubEntityListener::class, 'onClear', null],
         ];
     }
 }

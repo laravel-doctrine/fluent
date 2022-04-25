@@ -54,7 +54,7 @@ class Entity extends AbstractBuilder
     public function cacheable($usage = ClassMetadataInfo::CACHE_USAGE_READ_ONLY, $region = null)
     {
         $meta = $this->builder->getClassMetadata();
-        $meta->enableCache(compact('usage', $region === null ?: 'region'));
+        $meta->enableCache(compact('usage', $region === null ? [] : 'region'));
 
         return $this;
     }
