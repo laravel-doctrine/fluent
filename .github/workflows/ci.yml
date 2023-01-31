@@ -1,46 +1,31 @@
 name: CI
-on: [push, pull_request]
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+  pull_request:
 jobs:
   tests:
     runs-on: 'ubuntu-latest'
-    name: PHP ${{ matrix.php }} - doctrine/orm ${{ matrix.orm }}
+    name: PHP ${{ matrix.php }} - Doctrine ${{ matrix.doctrine }}
     strategy:
       matrix:
-        php: ['7.2', '7.3', '7.4', '8.0', '8.1']
-        orm: ['2.6', '2.7', '2.8', '2.9', '2.10', '2.11']
-        exclude:
-          - php: '8.0'
-            orm: '2.6.0'
-          - php: '8.0'
-            orm: '2.7.0'
-          - php: '8.1'
-            orm: '2.6.0'
-          - php: '8.1'
-            orm: '2.7.0'
+        php: ['8.0', '8.1', '8.2']
+        doctrine: ['2.11', '2.12', '2.13', '2.14']
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          ini-values: error_reporting=E_ALL
           tools: phpunit, git
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: "php-${{ matrix.php }}-${{matrix.orm}}-composer-locked-${{ hashFiles('composer.lock') }}"
-          restore-keys: "php-${{ matrix.php }}-${{matrix.orm}}-composer-locked-"
 
       - name: Install Composer dependencies
         run: rm -f composer.lock
 
-      - name: Install doctrine/orm ${{ matrix.orm }}
-        run: composer require --no-progress --no-scripts --no-plugins doctrine/orm "~${{ matrix.orm }}" -v
+      - name: Install doctrine/orm ${{ matrix.doctrine }}
+        run: composer require --no-progress --no-scripts --no-plugins doctrine/orm "~${{ matrix.doctrine }}.0" -v
 
       - name: Update dependencies
         run: composer update --no-interaction
