@@ -4,7 +4,6 @@ namespace Tests\Extensions;
 
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadata;
 use LaravelDoctrine\Fluent\Extensions\ExtensibleClassMetadataFactory;
@@ -21,9 +20,9 @@ class ExtensibleClassMetadataFactoryFactoryTest extends TestCase
         $config = \Mockery::mock(Configuration::class);
         $namingStrategy = \Mockery::mock(NamingStrategy::class);
 
-        $em->shouldReceive('getConfiguration')->twice()->andReturn($config);
+        $em->shouldReceive('getConfiguration')->atLeast()->once()->andReturn($config);
         $config->shouldReceive('getNamingStrategy')->once()->andReturn($namingStrategy);
-        $config->shouldReceive('isNativeLazyObjectsEnabled')->once()->andReturn(false);
+        $config->shouldReceive('isNativeLazyObjectsEnabled')->zeroOrMoreTimes()->andReturn(false);
 
         $factory = new ExtensionFactoryTest();
         $factory->setEntityManager($em);

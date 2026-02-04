@@ -177,19 +177,21 @@ class AssociationOverride implements Buildable
      */
     protected function mapJoinTable(array $target = [], array $source = [])
     {
-        $joinTable['name'] = $target['name'];
+        $joinTable = [];
+
+        $joinTable['name'] = $target['name'] ?? $source['name'];
 
         if ($this->hasJoinColumns($target)) {
             $joinTable['joinColumns'] = $this->mapJoinColumns(
                 $target['joinColumns'],
-                $source['joinColumns']
+                $source['joinColumns'] ?? []
             );
         }
 
         if ($this->hasInverseJoinColumns($target)) {
             $joinTable['inverseJoinColumns'] = $this->mapJoinColumns(
                 $target['inverseJoinColumns'],
-                $source['inverseJoinColumns']
+                $source['inverseJoinColumns'] ?? []
             );
         }
 
@@ -209,13 +211,27 @@ class AssociationOverride implements Buildable
     protected function mapJoinColumns(array $target = [], array $source = [])
     {
         $joinColumns = [];
-        foreach ($target as $index => $joinColumn) {
-            if (isset($source[$index])) {
-                $diff = array_diff((array) $joinColumn, (array) $source[$index]);
 
-                if (!empty($diff)) {
-                    $joinColumns[] = $diff;
+        foreach ($target as $index => $joinColumn) {
+            if (!isset($source[$index])) {
+                continue;
+            }
+
+            $joinColumn = (array) $joinColumn;
+            $sourceCol = (array) $source[$index];
+
+            $diff = array_diff_assoc($joinColumn, $sourceCol);
+
+            if ($diff !== []) {
+                // Doctrine ORM 3.1 needs referencedColumnName present
+                if (isset($diff['name']) && !isset($diff['referencedColumnName'])) {
+                    $diff['referencedColumnName'] =
+                        $joinColumn['referencedColumnName']
+                        ?? $sourceCol['referencedColumnName']
+                        ?? 'id';
                 }
+
+                $joinColumns[] = $diff;
             }
         }
 
