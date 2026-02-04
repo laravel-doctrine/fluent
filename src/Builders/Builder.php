@@ -2,15 +2,11 @@
 
 namespace LaravelDoctrine\Fluent\Builders;
 
-use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 use LaravelDoctrine\Fluent\Extensions\Gedmo\GedmoBuilderHints;
 use LaravelDoctrine\Fluent\Fluent;
 use LogicException;
 
-/**
- * @method Field array($name, ?callable $callback = null)
- */
 class Builder extends AbstractBuilder implements Fluent
 {
     use Traits\Fields;
@@ -146,17 +142,6 @@ class Builder extends AbstractBuilder implements Fluent
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Field
-     */
-    protected function setArray($name, ?callable $callback = null)
-    {
-        return $this->field(Types::ARRAY, $name, $callback);
-    }
-
-    /**
      * @param string $method
      * @param array  $params
      *
@@ -164,11 +149,6 @@ class Builder extends AbstractBuilder implements Fluent
      */
     public function __call($method, $params)
     {
-        // Workaround for reserved keywords
-        if ($method === 'array') {
-            return call_user_func_array([$this, 'setArray'], $params);
-        }
-
         if ($this->hasMacro($method)) {
             return $this->queueMacro($method, $params);
         }

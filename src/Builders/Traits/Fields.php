@@ -79,14 +79,6 @@ trait Fields
     /**
      * {@inheritdoc}
      */
-    public function object($name, ?callable $callback = null)
-    {
-        return $this->field(Types::OBJECT, $name, $callback);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function float($name, ?callable $callback = null)
     {
         return $this->field(Types::FLOAT, $name, $callback)->precision(8)->scale(2);

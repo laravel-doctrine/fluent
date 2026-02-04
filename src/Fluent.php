@@ -3,9 +3,8 @@
 namespace LaravelDoctrine\Fluent;
 
 /**
- * @method Builders\Field array($name, ?callable $callback = null)
- *
  * Extensions:
+ *
  * @method void                              loggable(string $logEntry = null)
  * @method Extensions\Gedmo\SoftDeleteable   softDelete(string $fieldName = 'deletedAt', string $type = 'dateTime')
  * @method void                              timestamps(string $createdAt = 'createdAt', string $updatedAt = 'updatedAt', string $type = 'dateTime')
@@ -391,14 +390,6 @@ interface Fluent extends Buildable
      * @return Builders\Field
      */
     public function blob($name, ?callable $callback = null);
-
-    /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @return Builders\Field
-     */
-    public function object($name, ?callable $callback = null);
 
     /**
      * @param string        $name

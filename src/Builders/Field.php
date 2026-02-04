@@ -101,7 +101,7 @@ class Field implements Buildable
     {
         $type = Type::getType($type);
 
-        $field = $builder->createField($name, $type->getName());
+        $field = $builder->createField($name, Type::lookupName($type));
 
         return new static($field, $builder, $type, $name);
     }

@@ -242,11 +242,6 @@ class FieldTest extends TestCase
         $this->doTestValidTypeForVersioning('datetime');
     }
 
-    public function test_array_cannot_be_used_for_versioning()
-    {
-        $this->doTestInvalidTypeForVersioning('array');
-    }
-
     public function test_simple_array_cannot_be_used_for_versioning()
     {
         $this->doTestInvalidTypeForVersioning('simple_array');
@@ -280,11 +275,6 @@ class FieldTest extends TestCase
     public function test_decimal_cannot_be_used_for_versioning()
     {
         $this->doTestInvalidTypeForVersioning('decimal');
-    }
-
-    public function test_object_cannot_be_used_for_versioning()
-    {
-        $this->doTestInvalidTypeForVersioning('object');
     }
 
     public function test_string_cannot_be_used_for_versioning()
